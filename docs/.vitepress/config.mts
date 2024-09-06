@@ -60,13 +60,6 @@ export default {
 		siteTitle: "Ming Blog",
 	},
 	vite: {
-		build: {
-			chunkSizeWarningLimit: Infinity,
-			minify: "terser",
-		},
-		json: {
-			stringify: true,
-		},
 		server: {
 			host: true,
 			port: 6173,
@@ -105,12 +98,7 @@ function sidebarPages(): DefaultTheme.SidebarItem[] {
 		{
 			collapsed: false,
 			text: "Vue",
-			items: [
-				{
-					link: "yyyy",
-					text: "xxxx",
-				},
-			],
+			items: [],
 		},
 		{
 			collapsed: false,
