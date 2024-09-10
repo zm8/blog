@@ -9,22 +9,21 @@
 ### 1. vue2
 
 使用 `Vue.component('component-a', { /* ... */ })`, 使用 webpack 的 `require.context` 解析目录进行全局注册。
-参考地址: https://v2.cn.vuejs.org/v2/guide/components-registration.html#%E5%85%A8%E5%B1%80%E6%B3%A8%E5%86%8C
 
 ### 2. vue3
 
 使用 app.component 的方法:
 
-```vue
-app .component('ComponentA', ComponentA) .component('ComponentB', ComponentB)
-.component('ComponentC', ComponentC)
+```js
+app
+  .component('ComponentA', ComponentA)
+  .component('ComponentB', ComponentB)
+  .component('ComponentC', ComponentC)
 ```
-
-参考地址: https://cn.vuejs.org/guide/components/registration.html
 
 ## MVVM 的理解
 
-MVVM 是 Model-View-ViewModel 的缩写。Model 层代表数据模型，View 代表 UI 组件，通过 ViewModel 把 Model 和 View 连接起来。
+MVVM 是 `Model-View-ViewModel` 的缩写。Model 层代表数据模型，View 代表 UI 组件，通过 ViewModel 把 Model 和 View 连接起来。
 
 ## Vue 实现双向数据绑定原理是什么？
 
@@ -55,7 +54,7 @@ vue 的 Dom 的更新是异步的，数据更新，Dom 不会马上更新。
 2. `Object.definedProperty` 不支持数组的一些 api, 所以重写了数组方法。
 3. Proxy 直接代理整个对象，也可以监听数组的变化，性能更好。
 
-## 说一下 watch 与 computed 的区别是什么？以及他们的使用场景分别是什么？
+## watch 与 computed 的区别是什么？以及他们的使用场景分别是什么？
 
 - computed 有缓存，它依赖的值变了才会重新计算，watch 没有；
 - watch 支持异步，computed 不支持；
@@ -100,7 +99,7 @@ vue3 则是建立一个存储新节点数组中的剩余节点在旧节点数组
 
 对于 vue 来讲，生命周期就是一个 vue 实例从创建到销毁的过程。
 
-### 1. beforeCreate：
+### 1. beforeCreate
 
 new Vue( ) 之后触发的第一个钩子
 
@@ -145,7 +144,7 @@ new Vue( ) 之后触发的第一个钩子
 
 通过传递 mounted 属性，然后子组件挂载完成 $emit 触发。
 
-```vue
+```
 // Parent.vue
 <Child @mounted="doSomething" />
 
@@ -154,7 +153,7 @@ new Vue( ) 之后触发的第一个钩子
 
 通过 @hook 来监听:
 
-```vue
+```
 // Parent.vue
 <Child @hook:mounted="doSomething"></Child>
 
@@ -164,7 +163,7 @@ Child.vue mounted(){ console.log('子组件触发 mounted 钩子函数 ...'); },
 钩子函数 ...
 ```
 
-## Vue 实现双向数据绑定原理是什么？
+## Vue 实现双向数据绑定原理是什么?
 
 Vue 的数据双向绑定整合了 Observer，Compile 和 Watcher 三者，通过 Observer 来监听自己的 model 的数据变化，通过 Compile 来解析编译模板指令，最终利用 Watcher 搭起 Observer 和 Compile 之间的通信桥梁，达到数据变化->视图更新，视图交互变化（例如 input 操作）->数据 model 变更的双向绑定效果。
 
@@ -220,7 +219,7 @@ hiper 来查看 DNS 解析，lighthouse 查看 FCP 白屏时间。
 - 骨架加载
 - 图片懒加载，使用占位图片
 
-## 39. 说一下 vue 模版编译的原理是什么
+## 39. Vue 模版编译的原理是什么
 
 parse: 接受 template，按着模版和数据生成对应的 ast
 optimize: 遍历 ast 每一个节点，标记静态节点，diff 的时候 对比这部分 dom，提升性能。
@@ -323,20 +322,20 @@ FancyButton 组件的模版是这样的:
 <button class="fancy-btn">Click me!</button>
 ```
 
-#### 对比 React
+### 对比 React
 
 相当于 react 里的 `props.children`
 FancyButton 组件代码:
 
 ```jsx
 function FancyButton(props) {
-  ;<button class="fancy-btn">{props.children}</button>
+  return <button class="fancy-btn">{props.children}</button>
 }
 ```
 
 ### 使用场景 1 - layout 布局
 
-```vue
+```jsx
 <BaseLayout>
   <template #header> // 相当于 <template v-slot:header>
     <h1>Here might be a page title</h1>
@@ -353,7 +352,7 @@ function FancyButton(props) {
 
 BaseLayout 里面的写法:
 
-```vue
+```html
 <div class="container">
   <header>
     <slot name="header"></slot>
@@ -369,7 +368,7 @@ BaseLayout 里面的写法:
 
 最终渲染的 dom:
 
-```vue
+```html
 <div class="container">
   <header>
     <h1>Here might be a page title</h1>
@@ -388,7 +387,7 @@ BaseLayout 里面的写法:
 
 渲染一个列表，数据进行远程加载，滚动分页等。但是列表的内容和样式留给它的父组件使用。
 
-```vue
+```html
 <FancyList :api-url="url" :per-page="10">
   <template #item="{ body, username, likes }">
     <div class="item">
@@ -399,9 +398,9 @@ BaseLayout 里面的写法:
 </FancyList>
 ```
 
-<FancyList> 组件中:
+`<FancyList>` 组件中:
 
-```vue
+```html
 <ul>
   <li v-for="item in items">
     <slot name="item" v-bind="item"></slot>
@@ -411,12 +410,12 @@ BaseLayout 里面的写法:
 
 ## v-model 实现原理
 
-v-model 本质就是 :value + input 方法的语法糖。
+v-model 本质就是 `:value + input` 方法的语法糖。
 以输入框为例，当用户在输入框输入内容时，会触发 input 事件，从而更新 value。而 value 的改变同样会更新视图，这就是 vue 中的双向绑定。
 
 ### 原生元素
 
-```vue
+```html
 <input v-model="msg" />
 
 <checkbox v-model="msg" />
@@ -426,7 +425,7 @@ v-model 本质就是 :value + input 方法的语法糖。
 
 会被编译成:
 
-```vue
+```html
 <input :value="msg" @input="msg = $event.target.value" />
 
 <checkbox
@@ -444,55 +443,55 @@ v-model 本质就是 :value + input 方法的语法糖。
 
 组件的 v-model 会被编译成:
 
-```vue
+```html
 <BaseInput v-model="lovingVue" />
 ```
 
 会被编译成:
 
-```vue
+```html
 <BaseInput :value="lovingVue" @input="lovingVue = $event" />
 ```
 
 ### BaseCheckbox 组件
 
-```vue
+```html
 <BaseCheckbox v-model="lovingVue" />
 ```
 
 会被编译成:
 
-```vue
+```html
 <BaseCheckbox :checked="lovingVue" @change="lovingVue = $event" />
 ```
 
 ### BaseSelect 组件
 
-```vue
+```html
 <BaseSelect v-model="selected" :options="options" />
 
 <script>
-import BaseSelect from './components/BaseSelect.vue'
+  import BaseSelect from './components/BaseSelect.vue'
 
-export default {
-  //...
-  data() {
-    return {
-      selected: 'A',
-      options: [
-        { text: 'One', value: 'A' },
-        { text: 'Two', value: 'B' },
-        { text: 'Three', value: 'C' }
-      ]
+  export default {
+    //...
+    data() {
+      return {
+        selected: 'A',
+        options: [
+          { text: 'One', value: 'A' },
+          { text: 'Two', value: 'B' },
+          { text: 'Three', value: 'C' }
+        ]
+      }
     }
   }
-}
 </script>
 ```
 
 会被编译成:
 
-```vue
+```html
 <BaseSelect :value="selected" @change="selected = $event" :options="options" />
 ```
 
@@ -501,13 +500,13 @@ export default {
 [演练场: ](https://play.vuejs.org/#eNp9UttO4zAU/JUjCylF6jZa7T5VAe1FfdiVuAh4wzxE6WkxJLZlH4eiKP/OsV1KuT4lnhmPZ3w8iN/WzvqAYi4q3zhlCTxSsMdSq84aRzCAwxWMsHKmg4KlxY46efxr+E+jpi09K/ew6MtiAKkboz0BKWoRjqLhpOi/dWaJLdRuHbrogJu6sy0Wh1JXZc7CKXhByHhNyCuA6vb78TBsrcaxKnmd8P0wW+95Uh1Jkb5SQMnSqtz5ial4E/eDa1jiSmk8d8b6yXWRnIobzpjxRaco4sEu2TEfmOivKihtA8U/AHq0KSBuSIoMzfu6DXupM/orbWL0APnIyesDp3CAfaxAfJvITaLDYd76vjN5HsdKrWd33mhuPKQZiYYvQrXoziwpHpcUc0hM5Oq2NQ//E0Yu4PQZb26xuf8Av/ObiElx7tCj67nGjssZM724PE3NdyTPLcTSX5AX6E0bYsYs+xP0kmPv6VLaf+mNKr2+8osNofbPpWLQqByTXgoee3wDn1V/iftj9jPtk3oU4xOFJhgI)
 参考地址: https://cn.vuejs.org/guide/components/v-model.html#component-v-model
 
-```vue
+```html
 <CustomInput v-model="searchText" />
 ```
 
 相当于:
 
-```vue
+```html
 <CustomInput
   :model-value="searchText"
   @update:model-value="(newValue) => (searchText = newValue)"

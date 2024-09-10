@@ -528,12 +528,11 @@ order 属性定义项目的排列顺序。**数值越小**，排列越靠前，�
 - 可覆盖父元素的 `align-items` 的属性
 
 ::: tip 参考链接
+<https://www.runoob.com/cssref/css3-pr-flex-shrink.html>
 
-https://www.runoob.com/cssref/css3-pr-flex-shrink.html
+<https://www.jianshu.com/p/17b1b445ecd4>
 
-https://www.jianshu.com/p/17b1b445ecd4
+<https://gedd.ski/post/the-difference-between-width-and-flex-basis/>
 
-https://gedd.ski/post/the-difference-between-width-and-flex-basis/
-
-http://www.ruanyifeng.com/blog/2015/07/flex-grammar.html
+<http://www.ruanyifeng.com/blog/2015/07/flex-grammar.html>
 :::

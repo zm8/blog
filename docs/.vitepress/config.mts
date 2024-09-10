@@ -60,13 +60,6 @@ export default {
     siteTitle: 'Ming Blog'
   },
   vite: {
-    build: {
-      chunkSizeWarningLimit: Infinity,
-      minify: 'terser'
-    },
-    json: {
-      stringify: true
-    },
     server: {
       host: true,
       port: 6173
