@@ -2,22 +2,20 @@
 
 ## mac 杀死一个进程
 
-```
-> lsof -i :7001    # 查看7001端口的进程id
-> kill -9 78452    # 杀掉进程id
+```bash
+lsof -i :7001    # 查看7001端口的进程id
+kill -9 78452    # 杀掉进程id
 ```
 
 ## nvm
 
-```
+```bash
 nvm install 8.9.4 // 安装版本
 nvm use 8.9.4 // 使用哪个版本
 nvm alias default 8.9.4 // 默认哪个版本
 ```
 
 ## Terminal 快捷键
-
-(参考地址)[https://support.apple.com/zh-cn/guide/terminal/trmlshtcts/mac]
 
 ```bash
 Ctrl + A # 移到行开头

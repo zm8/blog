@@ -21,23 +21,23 @@
 ## 4.nodejs 计算文件的 md5
 
 ```js
-const fs = require("fs");
-const crypto = require("crypto");
+const fs = require('fs')
+const crypto = require('crypto')
 
 function md5File(path) {
-	return new Promise((resolve) => {
-		var rs = fs.createReadStream(path);
-		var hash = crypto.createHash("md5");
-		rs.on("data", (chunk) => {
-			hash.update(chunk);
-		});
-		rs.on("end", function () {
-			resolve(hash.digest("hex"));
-		});
-	});
+  return new Promise((resolve) => {
+    var rs = fs.createReadStream(path)
+    var hash = crypto.createHash('md5')
+    rs.on('data', (chunk) => {
+      hash.update(chunk)
+    })
+    rs.on('end', function () {
+      resolve(hash.digest('hex'))
+    })
+  })
 }
 
-md5File("./1.js").then((data) => {
-	console.log(data);
-});
+md5File('./1.js').then((data) => {
+  console.log(data)
+})
 ```

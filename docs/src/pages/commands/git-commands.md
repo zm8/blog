@@ -1,5 +1,18 @@
 # git 常用命令
 
+## git 贮藏
+
+如果多个项目并行的时候，代码还没提交，但是要切分支，可以使用 git 命令：`git stash`
+
+```bash
+git stash  #(贮藏)
+git stash apply #(取出贮藏，但是"不删除"贮藏)
+git stash pop #(取出贮藏, 但是会"删除"贮藏)
+```
+
+在 sourceTree 中操作如下：
+![image](https://user-images.githubusercontent.com/32337542/223653997-6f0462d3-d4b3-4067-be4d-113a318044eb.png)
+
 ## 建立新分支
 
 ```bash
@@ -12,14 +25,14 @@ git push -u origin test/xxx;
 git push --set-upstream origin test/xxx;
 ```
 
-## git add 想撤销
+## git add 后想撤销
 
 ```bash
 > git reset #撤销所有
 > git reset test.js  #只撤销 test.js
 ```
 
-## git commit 后撤销
+## git commit 后想撤销
 
 ```bash
 > git reset --soft HEAD^  #撤销commit，不撤销git add
@@ -62,7 +75,7 @@ git branch -m newBranch
 git branch -m oldBranch newBranch
 ```
 
-### 建立本地分支与远程分支的映射关系:
+### 建立本地分支与远程分支的映射关系
 
 ```bash
 > git branch -u origin/xxx

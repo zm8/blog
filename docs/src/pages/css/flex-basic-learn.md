@@ -1,4 +1,4 @@
-# flex 学习
+# Flex 基础学习
 
 ## 1: 基本概念
 
@@ -28,23 +28,23 @@
 
 ```html
 <style type="text/css">
-	.container {
-		width: 600px;
-		height: 300px;
-		border: 1px solid blue;
-	}
+  .container {
+    width: 600px;
+    height: 300px;
+    border: 1px solid blue;
+  }
 
-	.div {
-		width: 100px;
-		height: 100px;
-		background-color: green;
-		border: 1px solid #ff0000;
-	}
+  .div {
+    width: 100px;
+    height: 100px;
+    background-color: green;
+    border: 1px solid #ff0000;
+  }
 </style>
 
 <div class="container">
-	<div class="div">1</div>
-	<div class="div">2</div>
+  <div class="div">1</div>
+  <div class="div">2</div>
 </div>
 ```
 
@@ -54,9 +54,9 @@
 
 ```html
 <style type="text/css">
-	.container {
-		display: flex;
-	}
+  .container {
+    display: flex;
+  }
 </style>
 ```
 
@@ -66,19 +66,19 @@
 
 ```html
 <div class="container">
-	<div class="div">1</div>
-	<div class="div">2</div>
-	<div class="div">3</div>
-	<div class="div">4</div>
-	<div class="div">5</div>
-	<div class="div">6</div>
-	<div class="div">7</div>
-	<div class="div">8</div>
-	<div class="div">9</div>
-	<div class="div">10</div>
-	<div class="div">11</div>
-	<div class="div">12</div>
-	<div class="div">13</div>
+  <div class="div">1</div>
+  <div class="div">2</div>
+  <div class="div">3</div>
+  <div class="div">4</div>
+  <div class="div">5</div>
+  <div class="div">6</div>
+  <div class="div">7</div>
+  <div class="div">8</div>
+  <div class="div">9</div>
+  <div class="div">10</div>
+  <div class="div">11</div>
+  <div class="div">12</div>
+  <div class="div">13</div>
 </div>
 ```
 
@@ -113,26 +113,26 @@
 
 ```html
 <style type="text/css">
-	.container {
-		display: flex;
-		flex-direction: wrap;
-	}
-	.div {
-		width: 100px;
-		height: 120px;
-		background-color: green;
-		border: 1px solid #ff0000;
-	}
+  .container {
+    display: flex;
+    flex-direction: wrap;
+  }
+  .div {
+    width: 100px;
+    height: 120px;
+    background-color: green;
+    border: 1px solid #ff0000;
+  }
 </style>
 <div class="container">
-	<div class="div">1</div>
-	<div class="div">2</div>
-	<div class="div">3</div>
-	<div class="div">4</div>
-	<div class="div">5</div>
-	<div class="div">6</div>
-	<div class="div">7</div>
-	<div class="div">8</div>
+  <div class="div">1</div>
+  <div class="div">2</div>
+  <div class="div">3</div>
+  <div class="div">4</div>
+  <div class="div">5</div>
+  <div class="div">6</div>
+  <div class="div">7</div>
+  <div class="div">8</div>
 </div>
 ```
 
@@ -198,25 +198,25 @@
 
 ```html
 <style type="text/css">
-	.container {
-		width: 600px;
-		height: 300px;
-		border: 1px solid blue;
-		display: flex;
-	}
+  .container {
+    width: 600px;
+    height: 300px;
+    border: 1px solid blue;
+    display: flex;
+  }
 
-	.div {
-		width: 100px;
-		/* height: 100px; */
-		background-color: green;
-		border: 1px solid #ff0000;
-	}
+  .div {
+    width: 100px;
+    /* height: 100px; */
+    background-color: green;
+    border: 1px solid #ff0000;
+  }
 </style>
 
 <div class="container">
-	<div class="div">1</div>
-	<div class="div">2</div>
-	<div class="div">3</div>
+  <div class="div">1</div>
+  <div class="div">2</div>
+  <div class="div">3</div>
 </div>
 ```
 
@@ -226,20 +226,20 @@
 
 ```html
 <style type="text/css">
-	.container {
-		width: 600px;
-		height: 300px;
-		border: 1px solid blue;
-		display: flex;
-		align-items: flex-start;
-	}
+  .container {
+    width: 600px;
+    height: 300px;
+    border: 1px solid blue;
+    display: flex;
+    align-items: flex-start;
+  }
 
-	.div {
-		width: 100px;
-		/* height: 100px; */
-		background-color: green;
-		border: 1px solid #ff0000;
-	}
+  .div {
+    width: 100px;
+    /* height: 100px; */
+    background-color: green;
+    border: 1px solid #ff0000;
+  }
 </style>
 ```
 
@@ -253,26 +253,26 @@
 
 ```html
 <style type="text/css">
-	.container {
-		width: 600px;
-		height: 300px;
-		border: 1px solid blue;
-		display: flex;
-		align-items: center;
-	}
+  .container {
+    width: 600px;
+    height: 300px;
+    border: 1px solid blue;
+    display: flex;
+    align-items: center;
+  }
 
-	.div {
-		width: 100px;
-		height: 100px;
-		background-color: green;
-		border: 1px solid #ff0000;
-	}
+  .div {
+    width: 100px;
+    height: 100px;
+    background-color: green;
+    border: 1px solid #ff0000;
+  }
 </style>
 
 <div class="container">
-	<div class="div" style="padding-top: 20px;">1</div>
-	<div class="div" style="padding-top: 80px;height: 160px;">2</div>
-	<div class="div" style="padding-top: 60px;">3</div>
+  <div class="div" style="padding-top: 20px;">1</div>
+  <div class="div" style="padding-top: 80px;height: 160px;">2</div>
+  <div class="div" style="padding-top: 60px;">3</div>
 </div>
 ```
 
@@ -299,15 +299,15 @@
 
 ```html
 <style type="text/css">
-	.container {
-		display: flex;
-		flex-wrap: wrap;
-		align-content: stretch;
-	}
+  .container {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: stretch;
+  }
 
-	.div {
-		height: 120px;
-	}
+  .div {
+    height: 120px;
+  }
 </style>
 ```
 
@@ -344,7 +344,7 @@ order 属性定义项目的排列顺序。**数值越小**，排列越靠前，�
 
 ```css
 .div:nth-of-type(3) {
-	order: -1;
+  order: -1;
 }
 ```
 
@@ -370,24 +370,24 @@ order 属性定义项目的排列顺序。**数值越小**，排列越靠前，�
 
 ```html
 <style type="text/css">
-	.container {
-		width: 600px;
-		height: 300px;
-		border: 1px solid blue;
-		display: flex;
-	}
+  .container {
+    width: 600px;
+    height: 300px;
+    border: 1px solid blue;
+    display: flex;
+  }
 
-	.div {
-		width: 100px;
-		height: 100px;
-		background-color: green;
-		border: 1px solid #ff0000;
-	}
+  .div {
+    width: 100px;
+    height: 100px;
+    background-color: green;
+    border: 1px solid #ff0000;
+  }
 </style>
 <div class="container">
-	<div class="div" style="flex-grow: 5;">1</div>
-	<div class="div" style="flex-grow: 1;">2</div>
-	<div class="div">3</div>
+  <div class="div" style="flex-grow: 5;">1</div>
+  <div class="div" style="flex-grow: 1;">2</div>
+  <div class="div">3</div>
 </div>
 ```
 
@@ -396,14 +396,14 @@ order 属性定义项目的排列顺序。**数值越小**，排列越靠前，�
 
 ```html
 <div class="container">
-	<!-- 设置 1 和 100都没有区别 -->
-	<div class="div" style="flex-grow: 1;">1</div>
-	<div class="div">2</div>
-	<div class="div">3</div>
-	<div class="div">4</div>
-	<div class="div">5</div>
-	<div class="div">6</div>
-	<div class="div">7</div>
+  <!-- 设置 1 和 100都没有区别 -->
+  <div class="div" style="flex-grow: 1;">1</div>
+  <div class="div">2</div>
+  <div class="div">3</div>
+  <div class="div">4</div>
+  <div class="div">5</div>
+  <div class="div">6</div>
+  <div class="div">7</div>
 </div>
 ```
 
@@ -413,14 +413,14 @@ order 属性定义项目的排列顺序。**数值越小**，排列越靠前，�
 
 ```html
 <div class="container">
-	<!-- flex-grow 不起作用 -->
-	<div class="div" style="flex-grow: 5;">1</div>
-	<div class="div">2</div>
-	<div class="div">3</div>
-	<div class="div">4</div>
-	<div class="div">5</div>
-	<div class="div">6</div>
-	<div class="div">7</div>
+  <!-- flex-grow 不起作用 -->
+  <div class="div" style="flex-grow: 5;">1</div>
+  <div class="div">2</div>
+  <div class="div">3</div>
+  <div class="div">4</div>
+  <div class="div">5</div>
+  <div class="div">6</div>
+  <div class="div">7</div>
 </div>
 ```
 
@@ -449,29 +449,29 @@ order 属性定义项目的排列顺序。**数值越小**，排列越靠前，�
 
 ```html
 <style type="text/css">
-	.container {
-		width: 600px;
-		height: 300px;
-		border: 1px solid blue;
-		display: flex;
-	}
+  .container {
+    width: 600px;
+    height: 300px;
+    border: 1px solid blue;
+    display: flex;
+  }
 
-	.div {
-		width: 120px;
-		height: 120px;
-		background-color: green;
-		border: 1px solid #ff0000;
-	}
+  .div {
+    width: 120px;
+    height: 120px;
+    background-color: green;
+    border: 1px solid #ff0000;
+  }
 </style>
 
 <div class="container">
-	<div class="div" style="flex-shrink: 2;">1</div>
-	<div class="div" style="flex-shrink: 2;">2</div>
-	<div class="div">3</div>
-	<div class="div">4</div>
-	<div class="div">5</div>
-	<div class="div">6</div>
-	<div class="div">7</div>
+  <div class="div" style="flex-shrink: 2;">1</div>
+  <div class="div" style="flex-shrink: 2;">2</div>
+  <div class="div">3</div>
+  <div class="div">4</div>
+  <div class="div">5</div>
+  <div class="div">6</div>
+  <div class="div">7</div>
 </div>
 ```
 
@@ -486,30 +486,30 @@ order 属性定义项目的排列顺序。**数值越小**，排列越靠前，�
 
 ```html
 <style type="text/css">
-	.container {
-		width: 600px;
-		height: 300px;
-		border: 1px solid blue;
-		display: flex;
-	}
+  .container {
+    width: 600px;
+    height: 300px;
+    border: 1px solid blue;
+    display: flex;
+  }
 
-	.div {
-		width: 100px;
-		height: 100px;
-		background-color: green;
-		border: 1px solid #ff0000;
-	}
+  .div {
+    width: 100px;
+    height: 100px;
+    background-color: green;
+    border: 1px solid #ff0000;
+  }
 
-	.div:nth-of-type(1) {
-		flex-basis: 60px;
-		width: 10px; /* 被忽略 */
-	}
+  .div:nth-of-type(1) {
+    flex-basis: 60px;
+    width: 10px; /* 被忽略 */
+  }
 </style>
 
 <div class="container">
-	<div class="div">1</div>
-	<div class="div">2</div>
-	<div class="div">3</div>
+  <div class="div">1</div>
+  <div class="div">2</div>
+  <div class="div">3</div>
 </div>
 ```
 
