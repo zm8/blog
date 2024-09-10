@@ -1,3 +1,3 @@
-# Blog
+# My Blog
 
-Visit: `https://zm8.github.io/blog/`
+[`https://zm8.github.io/blog/`](https://zm8.github.io/blog/)
