@@ -1,3 +1,3 @@
-# blog
+# My Blog
 
-hello
+[`https://zm8.github.io/blog/`](https://zm8.github.io/blog/)
