@@ -6,25 +6,25 @@ ES6 原始继承代码如下:
 
 ```javascript
 class Parent {
-	static NAME_P = "NAME_P";
-	constructor(x, y) {
-		this.x = x;
-		this.y = y;
-	}
-	outParent() {
-		return "outParent";
-	}
+  static NAME_P = "NAME_P";
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+  }
+  outParent() {
+    return "outParent";
+  }
 }
 
 class Child extends Parent {
-	static NAME_C = "NAME_C";
-	constructor(x, y, color) {
-		super(x, y);
-		this.color = color;
-	}
-	outChild() {
-		return "outChild";
-	}
+  static NAME_C = "NAME_C";
+  constructor(x, y, color) {
+    super(x, y);
+    this.color = color;
+  }
+  outChild() {
+    return "outChild";
+  }
 }
 ```
 
@@ -32,33 +32,33 @@ babel 转换成 ES5 代码，简单版如下:
 
 ```javascript
 function _inherits(subClass, superClass) {
-	// 继承了prototype
-	subClass.prototype.__proto__ = superClass.prototype;
-	// 继承了 函数静态属性
-	subClass.__proto__ = superClass;
+  // 继承了prototype
+  subClass.prototype.__proto__ = superClass.prototype;
+  // 继承了 函数静态属性
+  subClass.__proto__ = superClass;
 }
 
 var Parent = function (x, y) {
-	this.x = x;
-	this.y = y;
+  this.x = x;
+  this.y = y;
 };
 Parent.prototype.outParent = function () {
-	return "outParent";
+  return "outParent";
 };
 Parent.NAME_P = "NAME_P";
 
 var Child = (function (_Parent) {
-	_inherits(Child, _Parent);
+  _inherits(Child, _Parent);
 
-	function Child(x, y, color) {
-		// Child.__proto__ 其实就是 Parent
-		Child.__proto__.call(this, x, y);
-		this.color = color;
-	}
-	Child.prototype.outChild = function () {
-		return "outChild";
-	};
-	return Child;
+  function Child(x, y, color) {
+    // Child.__proto__ 其实就是 Parent
+    Child.__proto__.call(this, x, y);
+    this.color = color;
+  }
+  Child.prototype.outChild = function () {
+    return "outChild";
+  };
+  return Child;
 })(Parent);
 Child.NAME_C = "NAME_C";
 
@@ -84,10 +84,10 @@ console.log(obj.outParent()); // outParent
 
 ```javascript
 var o = {
-	a: 1,
-	f: function () {
-		console.log(this.a);
-	},
+  a: 1,
+  f: function () {
+    console.log(this.a);
+  }
 };
 
 var o2 = Object.create(o);
@@ -144,11 +144,11 @@ o.__proto__ === Object.prototype; // true
 ```javascript
 var o = { a: 1 };
 var o2 = Object.create(o, {
-	b: {
-		writable: true,
-		configurable: true,
-		value: "Hello",
-	},
+  b: {
+    writable: true,
+    configurable: true,
+    value: "Hello"
+  }
 });
 
 console.log(o2.a); // 1
@@ -161,17 +161,17 @@ console.log(o2.__proto__.b); // undefined, 说明是定义在自身上的属性
 
 ```javascript
 Object.defineProperties(o2, {
-	b: {
-		writable: true,
-		configurable: true,
-		value: "Hello",
-	},
+  b: {
+    writable: true,
+    configurable: true,
+    value: "Hello"
+  }
 });
 
 // 或
 Object.defineProperty(o2, "b", {
-	writable: true,
-	configurable: true,
-	value: "Hello",
+  writable: true,
+  configurable: true,
+  value: "Hello"
 });
 ```

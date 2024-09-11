@@ -19,12 +19,14 @@ React 常用的 fiber 类型, fiber 是个对象, 有很多种类, 比如函数�
 
 ## React Router 基本原理
 
-1. 基于 hash 实现
-   通过监听 hashchange 方法
+1.基于 hash 实现
 
-2. 基于 history 实现
-   重写 `history.pushState, history.replaceState` 从而可以监听到事件。
-   对于浏览器的前进和后退，监听 popstate 方法。
+通过监听 hashchange 方法
+
+2.基于 history 实现
+
+重写 `history.pushState, history.replaceState` 从而可以监听到事件。
+对于浏览器的前进和后退，监听 popstate 方法。
 
 ## 什么是虚拟 DOM?
 
@@ -37,9 +39,10 @@ React 常用的 fiber 类型, fiber 是个对象, 有很多种类, 比如函数�
 性能方面: 能够避免频繁操作真实 dom，减少回流和重绘。
 跨平台: 由于 虚拟 DOM 本质上就是用一种数据结构来描述界面节点，所以有跨平台能力。
 
-2. 缺点
-1. 首次渲染的时候把虚拟 dom 转换成真实 dom，比直接操作真实 dom 慢。
-1. 虚拟 dom 内存中维护一个额外的虚拟状态，会导致一定的内存消耗。
+### 2. 缺点
+
+- 首次渲染的时候把虚拟 dom 转换成真实 dom，比直接操作真实 dom 慢。
+- 虚拟 dom 内存中维护一个额外的虚拟状态，会导致一定的内存消耗。
 
 ## diff 算法
 
@@ -108,7 +111,7 @@ useTransition 执行返回一个数组。数组有两个状态值：
 - startTransition: 通过回调函数将状态更新包装起来告诉 React 这是一个过渡任务，是一个低优先级的更新，允许标记更新作为一个过渡阶段，React 可以被中断执行。
 
 ```js
-const [isPending, startTransition] = useTransition()
+const [isPending, startTransition] = useTransition();
 ```
 
 `useSyncExternalStore` 它通过强制的同步状态更新，使得外部 store 可以支持并发读取。主要给第三方的库 redux 使用。
@@ -117,4 +120,4 @@ const [isPending, startTransition] = useTransition()
 
 `useDeferredValue`产生一个新的状态是延时状态。
 
-### 3. React17 的 SSR 架构 一切都是串行的，React18 提供 Suspense，优化前端的加载速度和可交互的等待时间。
+### 3. React17 的 SSR 架构 一切都是串行的，React18 提供 Suspense，优化前端的加载速度和可交互的等待时间

@@ -16,9 +16,9 @@
 
 ```js
 app
-  .component('ComponentA', ComponentA)
-  .component('ComponentB', ComponentB)
-  .component('ComponentC', ComponentC)
+  .component("ComponentA", ComponentA)
+  .component("ComponentB", ComponentB)
+  .component("ComponentC", ComponentC);
 ```
 
 ## MVVM 的理解
@@ -50,9 +50,11 @@ vue 的 Dom 的更新是异步的，数据更新，Dom 不会马上更新。
 
 ## Proxy 相比 defineProperty 的优势在哪里
 
-1. `Object.defineProperty` 只能劫持对象属性的 getter 和 setter 方法。
-2. `Object.definedProperty` 不支持数组的一些 api, 所以重写了数组方法。
-3. Proxy 直接代理整个对象，也可以监听数组的变化，性能更好。
+1.`Object.defineProperty` 只能劫持对象属性的 getter 和 setter 方法。
+
+2.`Object.definedProperty` 不支持数组的一些 api, 所以重写了数组方法。
+
+3.Proxy 直接代理整个对象，也可以监听数组的变化，性能更好。
 
 ## watch 与 computed 的区别是什么？以及他们的使用场景分别是什么？
 
@@ -133,35 +135,61 @@ new Vue( ) 之后触发的第一个钩子
 
 生命周期的调用顺序说一下:
 
-1. 加载渲染过程：父 beforeCreate -> 父 created -> 父 beforeMount ---> 子 beforeCreate -> 子 created -> 子 beforeMount
-   ---> 子 mounted->父 mounted
+1.加载渲染过程：父 beforeCreate -> 父 created -> 父 beforeMount ---> 子 beforeCreate -> 子 created -> 子 beforeMount
+---> 子 mounted->父 mounted
 
-2. 子组件更新过程：父 beforeUpdate->子 beforeUpdate->子 updated->父 updated
+2.子组件更新过程：父 beforeUpdate->子 beforeUpdate->子 updated->父 updated
 
-3. 销毁过程：父 beforeDestroy->子 beforeDestroy->子 destroyed->父 destroyed
+3.销毁过程：父 beforeDestroy->子 beforeDestroy->子 destroyed->父 destroyed
 
 ## 父组件可以监听到子组件的生命周期吗？
 
 通过传递 mounted 属性，然后子组件挂载完成 $emit 触发。
 
-```
-// Parent.vue
-<Child @mounted="doSomething" />
+Parent.vue
 
-// Child.vue mounted() { this.$emit("mounted"); }
+```vue
+<Child @mounted="doSomething" />
+```
+
+Child.vue
+
+```js
+<script>
+mounted() {
+  this.$emit("mounted");
+}
+</script>
 ```
 
 通过 @hook 来监听:
 
-```
-// Parent.vue
-<Child @hook:mounted="doSomething"></Child>
+Parent.vue
 
-doSomething() { console.log('父组件监听到 mounted 钩子函数 ...'); }, //
-Child.vue mounted(){ console.log('子组件触发 mounted 钩子函数 ...'); }, //
-以上输出顺序为： // 子组件触发 mounted 钩子函数 ... // 父组件监听到 mounted
-钩子函数 ...
+```vue
+<Child @hook:mounted="doSomething"></Child>
+<script>
+doSomething() {
+  console.log('父组件监听到 mounted 钩子函数 ...');
+}
+</script>
 ```
+
+Child.vue
+
+```vue
+<script>
+mounted(){
+  console.log('子组件触发 mounted 钩子函数 ...');
+}
+</script>
+```
+
+以上输出顺序为：
+
+1.子组件触发 mounted 钩子函数
+
+2.父组件监听到 mounted 钩子函数
 
 ## Vue 实现双向数据绑定原理是什么?
 
@@ -219,7 +247,7 @@ hiper 来查看 DNS 解析，lighthouse 查看 FCP 白屏时间。
 - 骨架加载
 - 图片懒加载，使用占位图片
 
-## 39. Vue 模版编译的原理是什么
+## Vue 模版编译的原理是什么
 
 parse: 接受 template，按着模版和数据生成对应的 ast
 optimize: 遍历 ast 每一个节点，标记静态节点，diff 的时候 对比这部分 dom，提升性能。
@@ -231,17 +259,17 @@ generate 把前两步生成完善的 ast，转换成渲染函数。
 
 ```js
 var _wr = function (type) {
-  var orig = history[type]
+  var orig = history[type];
   return function () {
-    var rv = orig.apply(this, arguments)
-    var e = new Event(type)
-    e.arguments = arguments
-    window.dispatchEvent(e)
-    return rv
-  }
-}
-history.pushState = _wr('pushState')
-history.replaceState = _wr('replaceState')
+    var rv = orig.apply(this, arguments);
+    var e = new Event(type);
+    e.arguments = arguments;
+    window.dispatchEvent(e);
+    return rv;
+  };
+};
+history.pushState = _wr("pushState");
+history.replaceState = _wr("replaceState");
 ```
 
 ## Vue2.x 中如何检测数组的变化
@@ -255,18 +283,18 @@ export default {
   data() {
     return {
       list: [1, 2, 3]
-    }
+    };
   },
   methods: {
     modify() {
-      this.list[2] = 10 // 不生效
-      this.$set(this.list, 2, 10) // 生效
+      this.list[2] = 10; // 不生效
+      this.$set(this.list, 2, 10); // 生效
 
-      this.list.length = 2 // 不生效
-      this.list.splice(2, 1) // 生效
+      this.list.length = 2; // 不生效
+      this.list.splice(2, 1); // 生效
     }
   }
-}
+};
 </script>
 ```
 
@@ -329,7 +357,7 @@ FancyButton 组件代码:
 
 ```jsx
 function FancyButton(props) {
-  return <button class="fancy-btn">{props.children}</button>
+  return <button class="fancy-btn">{props.children}</button>;
 }
 ```
 
@@ -471,21 +499,21 @@ v-model 本质就是 `:value + input` 方法的语法糖。
 <BaseSelect v-model="selected" :options="options" />
 
 <script>
-  import BaseSelect from './components/BaseSelect.vue'
+  import BaseSelect from "./components/BaseSelect.vue";
 
   export default {
     //...
     data() {
       return {
-        selected: 'A',
+        selected: "A",
         options: [
-          { text: 'One', value: 'A' },
-          { text: 'Two', value: 'B' },
-          { text: 'Three', value: 'C' }
+          { text: "One", value: "A" },
+          { text: "Two", value: "B" },
+          { text: "Three", value: "C" }
         ]
-      }
+      };
     }
-  }
+  };
 </script>
 ```
 
@@ -496,9 +524,6 @@ v-model 本质就是 `:value + input` 方法的语法糖。
 ```
 
 ### vue3 组件 v-model
-
-[演练场: ](https://play.vuejs.org/#eNp9UttO4zAU/JUjCylF6jZa7T5VAe1FfdiVuAh4wzxE6WkxJLZlH4eiKP/OsV1KuT4lnhmPZ3w8iN/WzvqAYi4q3zhlCTxSsMdSq84aRzCAwxWMsHKmg4KlxY46efxr+E+jpi09K/ew6MtiAKkboz0BKWoRjqLhpOi/dWaJLdRuHbrogJu6sy0Wh1JXZc7CKXhByHhNyCuA6vb78TBsrcaxKnmd8P0wW+95Uh1Jkb5SQMnSqtz5ial4E/eDa1jiSmk8d8b6yXWRnIobzpjxRaco4sEu2TEfmOivKihtA8U/AHq0KSBuSIoMzfu6DXupM/orbWL0APnIyesDp3CAfaxAfJvITaLDYd76vjN5HsdKrWd33mhuPKQZiYYvQrXoziwpHpcUc0hM5Oq2NQ//E0Yu4PQZb26xuf8Av/ObiElx7tCj67nGjssZM724PE3NdyTPLcTSX5AX6E0bYsYs+xP0kmPv6VLaf+mNKr2+8osNofbPpWLQqByTXgoee3wDn1V/iftj9jPtk3oU4xOFJhgI)
-参考地址: https://cn.vuejs.org/guide/components/v-model.html#component-v-model
 
 ```html
 <CustomInput v-model="searchText" />
@@ -522,16 +547,13 @@ v-model 本质就是 `:value + input` 方法的语法糖。
 <!-- CustomInput.vue -->
 <script>
 export default {
-  props: ['modelValue'],
-  emits: ['update:modelValue']
-}
+  props: ["modelValue"],
+  emits: ["update:modelValue"]
+};
 </script>
 
 <template>
-  <input
-    :value="modelValue"
-    @input="$emit('update:modelValue', $event.target.value)"
-  />
+  <input :value="modelValue" @input="$emit('update:modelValue', $event.target.value)" />
 </template>
 ```
 
@@ -539,12 +561,13 @@ export default {
 
 vue3 使用一个组件有 2 种方式:
 
-1.  组合式 `<script setup></script>`
-2.  选项式`<script></script>`
+1.组合式 `<script setup></script>`
+
+2.选项式`<script></script>`
 
 ```vue
 <script setup>
-import SlotAdvance from './components/SlotAdvance/SlotAdvance.vue'
+import SlotAdvance from "./components/SlotAdvance/SlotAdvance.vue";
 </script>
 
 <template>
@@ -554,12 +577,12 @@ import SlotAdvance from './components/SlotAdvance/SlotAdvance.vue'
 
 ```vue
 <script>
-import SlotAdvance from './components/SlotAdvance/SlotAdvance.vue'
+import SlotAdvance from "./components/SlotAdvance/SlotAdvance.vue";
 export default {
   components: {
     SlotAdvance
   }
-}
+};
 </script>
 
 <template>
@@ -572,11 +595,11 @@ export default {
 
 ```vue
 <script setup>
-import SlotAdvance from './components/SlotAdvance/SlotAdvance.vue'
+import SlotAdvance from "./components/SlotAdvance/SlotAdvance.vue";
 export default {
   components: {
     SlotAdvance
   }
-}
+};
 </script>
 ```

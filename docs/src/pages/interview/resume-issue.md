@@ -31,30 +31,30 @@ JSBridge 简单理解就是向 JavaScript 中提供了可以调用 Native 方法
 
 ```js
 // directive.js
-import * as ECharts from 'echarts'
-import elementResizeDetectorMaker from 'element-resize-detector'
-import Vue from 'vue'
-const HANDLER = '_vue_resize_handler'
+import * as ECharts from "echarts";
+import elementResizeDetectorMaker from "element-resize-detector";
+import Vue from "vue";
+const HANDLER = "_vue_resize_handler";
 function bind(el, binding) {
   el[HANDLER] = binding.value
     ? binding.value
     : () => {
-        let chart = ECharts.getInstanceByDom(el)
+        let chart = ECharts.getInstanceByDom(el);
         if (!chart) {
-          return
+          return;
         }
-        chart.resize()
-      }
+        chart.resize();
+      };
   // 监听绑定的div大小变化，更新 echarts 大小
-  elementResizeDetectorMaker().listenTo(el, el[HANDLER])
+  elementResizeDetectorMaker().listenTo(el, el[HANDLER]);
 }
 function unbind(el) {
   // window.removeEventListener("resize", el[HANDLER]);
-  elementResizeDetectorMaker().removeListener(el, el[HANDLER])
-  delete el[HANDLER]
+  elementResizeDetectorMaker().removeListener(el, el[HANDLER]);
+  delete el[HANDLER];
 }
 // 自定义指令：v-chart-resize 示例：v-chart-resize="fn"
-Vue.directive('chart-resize', { bind, unbind })
+Vue.directive("chart-resize", { bind, unbind });
 ```
 
 ### 角色

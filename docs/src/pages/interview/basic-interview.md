@@ -1,4 +1,4 @@
-# 前端基础
+# 前端常见面试总结
 
 ## nginx 做过哪些优化
 
@@ -14,9 +14,9 @@
 
 ```js
 function getInt(num) {
-  var rounded
-  rounded = (0.5 + num) | 0
-  return rounded
+  var rounded;
+  rounded = (0.5 + num) | 0;
+  return rounded;
 }
 ```
 
@@ -42,16 +42,16 @@ module.exports = {
       include: paths.appSrc,
       use: [
         {
-          loader: 'esbuild-loader',
+          loader: "esbuild-loader",
           options: {
-            loader: 'tsx',
-            target: 'es2015'
+            loader: "tsx",
+            target: "es2015"
           }
         }
       ]
     }
   ]
-}
+};
 ```
 
 #### 3. thread-loader 多进程 打包
@@ -68,20 +68,20 @@ module.exports = {
 module.exports = {
   splitChunks: {
     // include all types of chunks
-    chunks: 'all',
+    chunks: "all",
     // 重复打包问题
     cacheGroups: {
       vendors: {
         // node_modules里的代码
         test: /[\\/]node_modules[\\/]/,
-        chunks: 'all',
+        chunks: "all",
         // name: 'vendors', 一定不要定义固定的name
         priority: 10, // 优先级
         enforce: true
       }
     }
   }
-}
+};
 ```
 
 #### 2. 对组件库引用的优化
@@ -96,13 +96,13 @@ Axios 的拦截网络请求开始，判断本地是否有 token，然后添加�
 service.interceptors.request.use(
   (config) => {
     // 判断token是否存在，如果存在，就给请求头加上token
-    if (localStorage.getItem('token')) {
-      config.headers.Authorization = localStorage.getItem('token')
+    if (localStorage.getItem("token")) {
+      config.headers.Authorization = localStorage.getItem("token");
     }
-    return config
+    return config;
   },
   (error) => {}
-)
+);
 ```
 
 拦截 response 的请求，判断当前是否没有 token 或者 登录失效了, 则跳到到登录页面。
@@ -111,7 +111,7 @@ service.interceptors.request.use(
 
 闭包是一个函数，它可以访问其包含函数中定义的变量，即使在包含函数执行完毕后仍然可以访问这些变量。
 
-### 作用：
+### 作用
 
 **保持状态**：闭包允许函数在调用之间保持状态。这意味着函数可以记住它在之前的调用中的数据，这对于实现计数器、缓存、回调函数等非常有用。
 
@@ -119,7 +119,7 @@ service.interceptors.request.use(
 
 **实现回调和事件处理**：闭包允许您将函数作为参数传递给其他函数，用于实现回调函数、事件处理程序等。
 
-### 缺点：
+### 缺点
 
 **内存消耗**：使用闭包可能导致内存消耗增加，因为闭包会保留对包含函数的作用域的引用，而这个作用域中的变量在包含函数执行完毕后仍然存在。如果滥用闭包，可能导致内存泄漏。
 
@@ -293,14 +293,14 @@ requestAnimationFrame 的优点:
 ```js
 const obj = {
   prop: 42
-}
+};
 
-Object.freeze(obj)
+Object.freeze(obj);
 
-obj.prop = 33
+obj.prop = 33;
 // Throws an error in strict mode  严格模式下会抛出错误
 
-console.log(obj.prop)
+console.log(obj.prop);
 // Expected output: 42
 ```
 
@@ -311,10 +311,10 @@ WeakMap**键名**所引用的对象都是弱引用，只要所引用的对象被
 应用场景，Dom 元素当作 WeakMap 键名。当该 DOM 元素被清除，其所对应的 WeakMap 记录就会自动被移除。
 
 ```js
-const wm = new WeakMap()
-const element = document.getElementById('example')
-wm.set(element, 'some information')
-wm.get(element) // "some information"
+const wm = new WeakMap();
+const element = document.getElementById("example");
+wm.set(element, "some information");
+wm.get(element); // "some information"
 ```
 
 ## Koa 洋葱模型的优点
@@ -329,22 +329,22 @@ wm.get(element) // "some information"
 
 ```js
 const setIntervalSimulate = (cb, time) => {
-  let t
+  let t;
   const loop = async () => {
     while (true) {
-      await new Promise((r) => (t = setTimeout(r, time)))
-      cb()
+      await new Promise((r) => (t = setTimeout(r, time)));
+      cb();
     }
-  }
-  loop()
+  };
+  loop();
   return () => {
-    clearTimeout(t)
-  }
-}
+    clearTimeout(t);
+  };
+};
 
 const clear = setIntervalSimulate(() => {
-  console.log(1)
-}, 200)
+  console.log(1);
+}, 200);
 ```
 
 ## css3
@@ -397,23 +397,23 @@ https://developer.mozilla.org/en-US/docs/Web/API/Element/animationend_event
 选择一个基准的数字(通常是中间的)，小于它的都放在左边数据集，大于它的都放在右边数据集，然后对于左边的数据集和右边的数据集重复上面的步骤。
 
 ```js
-const arr = [2, 3, 1, 5, 6, 4]
+const arr = [2, 3, 1, 5, 6, 4];
 const quickSort = (arr) => {
-  const len = arr.length
-  if (len <= 1) return arr
-  const pos = Math.floor(len / 2)
-  const middle = arr[pos]
-  const left = []
-  const right = []
+  const len = arr.length;
+  if (len <= 1) return arr;
+  const pos = Math.floor(len / 2);
+  const middle = arr[pos];
+  const left = [];
+  const right = [];
   for (let i = 0; i < arr.length; i++) {
-    if (i === pos) continue
-    if (arr[i] <= middle) left.push(arr[i])
-    else right.push(arr[i])
+    if (i === pos) continue;
+    if (arr[i] <= middle) left.push(arr[i]);
+    else right.push(arr[i]);
   }
-  return quickSort(left).concat([middle]).concat(quickSort(right))
-}
-const newArr = quickSort(arr)
-console.log(newArr)
+  return quickSort(left).concat([middle]).concat(quickSort(right));
+};
+const newArr = quickSort(arr);
+console.log(newArr);
 ```
 
 ### for...of 和 for...in 区别
@@ -423,12 +423,12 @@ Iterator 接口部署在数据结构的 `Symbol.Iterator` 属性上。
 举例下面的数组:
 
 ```js
-var arr = [1, 2, 3]
-var iter = arr[Symbol.Iterator]()
-iter.next() // {value: 1, done: false}
-iter.next() // {value: 2, done: false}
-iter.next() // {value:3, done: false}
-iter.next() //  {value:undefined, done: true}
+var arr = [1, 2, 3];
+var iter = arr[Symbol.Iterator]();
+iter.next(); // {value: 1, done: false}
+iter.next(); // {value: 2, done: false}
+iter.next(); // {value:3, done: false}
+iter.next(); //  {value:undefined, done: true}
 ```
 
 具有 iterator 的数据结构如下:
@@ -446,10 +446,10 @@ NodeList 对象
 `for...of` 不能遍历对象，因为对象没有部署 `Symbol.Iterator` 数据结构:
 
 ```js
-console.log(Symbol.iterator) // Symbol(Symbol.iterator)
-var obj = { a: 1, b: 2 }
+console.log(Symbol.iterator); // Symbol(Symbol.iterator)
+var obj = { a: 1, b: 2 };
 for (let i of obj) {
-  console.log(i)
+  console.log(i);
 }
 
 /*
@@ -462,24 +462,24 @@ VM201:1 Uncaught TypeError: obj is not iterable
 
 ```js
 Object.prototype[Symbol.iterator] = function () {
-  const keys = Object.keys(this)
-  let i = 0
+  const keys = Object.keys(this);
+  let i = 0;
   return {
     next: () => {
-      const done = i > keys.length - 1
-      const value = done ? undefined : this[keys[i]]
-      i++
+      const done = i > keys.length - 1;
+      const value = done ? undefined : this[keys[i]];
+      i++;
       return {
         value,
         done
-      }
+      };
     }
-  }
-}
+  };
+};
 
-var obj = { a: 1, b: 2 }
+var obj = { a: 1, b: 2 };
 for (let i of obj) {
-  console.log(i) // 1, 2
+  console.log(i); // 1, 2
 }
 ```
 

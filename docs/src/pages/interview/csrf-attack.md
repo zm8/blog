@@ -52,7 +52,7 @@ csrf_iframe.html:
       <input type="hidden" name="amount" value="2222" />
     </form>
     <script>
-      document.forms[0].submit()
+      document.forms[0].submit();
     </script>
   </body>
 </html>
@@ -67,11 +67,7 @@ csrf_iframe.html:
     <title>csrf_3</title>
   </head>
   <body>
-    <a
-      href="http://localhost.meetsocial.cn:8888/update?amount=1234"
-      target="_blank"
-      >重磅消息</a
-    >
+    <a href="http://localhost.meetsocial.cn:8888/update?amount=1234" target="_blank">重磅消息</a>
   </body>
 </html>
 ```
@@ -110,7 +106,7 @@ CSRF 大多来自第三方网站, 直接禁止外域，所以可根据 **Referer
    服务器采用 Encrypted Token Pattern，给用户生成一个 Token，通常是使用 UserID、时间戳和随机数，通过加密的方法生成。
 
 2. 页面提交的请求携带这个 Token
-   对于 GET 请求，Token 将附在请求地址之后，这样 URL 就变成 http://url?csrftoken=tokenvalue。
+   对于 GET 请求，Token 将附在请求地址之后，这样 URL 就变成 <http://url?csrftoken=tokenvalue。>
    而对于 POST 请求来说，要在 form 的最后加上：<input type=”hidden” name=”csrftoken” value=”tokenvalue”/>
 
 3. 服务器验证 Token 是否正确
@@ -131,7 +127,7 @@ Token 是一个比较有效的 CSRF 防护方法，只要页面没有 XSS 漏洞
 #### 1. 步骤:
 
 1. 在用户访问网站页面时，服务端向请求域名注入一个 Cookie，内容为随机字符串（例如 csrfcookie=v8g9e4ksfhw）。
-2. 在前端向后端发起请求时，取出 Cookie，并添加到 URL 的参数中（接上例 POST https://www.a.com/comment?csrfcookie=v8g9e4ksfhw）。
+2. 在前端向后端发起请求时，取出 Cookie，并添加到 URL 的参数中（接上例 POST <https://www.a.com/comment?csrfcookie=v8g9e4ksfhw）。>
 3. 后端接口验证 Cookie 中的字段与 URL 参数中的字段是否一致，不一致则拒绝。
 
 #### 2. 总结:
@@ -154,23 +150,23 @@ Token 是一个比较有效的 CSRF 防护方法，只要页面没有 XSS 漏洞
 完全禁止第三方 Cookie，跨站点时，任何情况下都不会发送 Cookie。
 
 但是当前页面发送跨子域请求时, 携带 cookie 还是可以的, 打开本页面控制台输入如下代码:
-(假设当前页面地址是 http://local.meetsocial.cn:8888)
+(假设当前页面地址是 <http://local.meetsocial.cn:8888>)
 
 ```javascript
 // 调用跨子域 接口
-fetch('http://david.meetsocial.cn:8888/update', {
+fetch("http://david.meetsocial.cn:8888/update", {
   body: JSON.stringify({ amount: 2 }),
-  credentials: 'include',
-  method: 'POST'
-})
+  credentials: "include",
+  method: "POST"
+});
 ```
 
 服务端设置:
 
 ```javascript
 if (req.headers.origin) {
-  res.setHeader('Access-Control-Allow-Credentials', 'true')
-  res.setHeader('Access-Control-Allow-Origin', req.headers.origin)
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+  res.setHeader("Access-Control-Allow-Origin", req.headers.origin);
 }
 ```
 
@@ -201,15 +197,15 @@ Chrome 计划将 Lax 变为默认设置。
 目前下面的代码, 没有设置 Secure 属性控制台会有警告:
 
 ```javascript
-document.cookie = 'aaa=111;SameSite=None;'
+document.cookie = "aaa=111;SameSite=None;";
 ```
 
-> A cookie associated with a resource at http://test-sso.meetsocial.cn/ was set with `SameSite=None` but without `Secure`. **A future release of Chrome will only deliver cookies marked `SameSite=None` if they are also marked `Secure`**. You can review cookies in developer tools under Application>Storage>Cookies and see more details at https://www.chromestatus.com/feature/5633521622188032.
+> A cookie associated with a resource at <http://test-sso.meetsocial.cn/> was set with `SameSite=None` but without `Secure`. **A future release of Chrome will only deliver cookies marked `SameSite=None` if they are also marked `Secure`**. You can review cookies in developer tools under Application>Storage>Cookies and see more details at <https://www.chromestatus.com/feature/5633521622188032>.
 
 所以必须像下面这样设置:
 
 ```javascript
-document.cookie = 'bbb=2222;SameSite=None; Secure'
+document.cookie = "bbb=2222;SameSite=None; Secure";
 ```
 
 结论:
@@ -223,27 +219,27 @@ document.cookie = 'bbb=2222;SameSite=None; Secure'
 
 ## 总结
 
-#### 1. CSRF 的攻击可以来自:
+### 1. CSRF 的攻击可以来自
 
 1. 攻击者自己的网站。
 2. 有文件上传漏洞的网站。
 3. 第三方论坛等用户内容。
 4. 被攻击网站自己的评论功能等。(直接提交表单评论, 所以验证码也是)。
 
-#### 2. 如何防止自己的网站被利用成为攻击的源头呢:
+### 2. 如何防止自己的网站被利用成为攻击的源头呢
 
 1. 严格管理所有的上传接口，防止任何预期之外的上传内容（例如 HTML）。
 2. 添加 Header X-Content-Type-Options: nosniff 防止黑客上传 HTML 内容的资源（例如图片）被解析为网页。-- 待考证
 3. 对于用户上传的图片，进行转存或者校验。不要直接使用用户填写的图片链接。
 4. 当前用户打开其他用户填写的链接时，需告知风险（这也是很多论坛不允许直接在内容中发布外域链接的原因之一，不仅仅是为了用户留存，也有安全考虑）。
 
-#### 3. 防护策略:
+### 3. 防护策略
 
 1. CSRF 自动防御策略：**同源检测（Origin 和 Referer 验证）**。
 2. CSRF 主动防御措施：**Token 验证 或者 双重 Cookie 验证 以及配合 Samesite Cookie**。
 3. 保证页面的幂等性，**后端接口不要在 GET 页面中做用户操作**。
 
 ::: 参考地址
-https://cloud.tencent.com/developer/article/1406118
-https://www.ruanyifeng.com/blog/2019/09/cookie-samesite.html
+<https://cloud.tencent.com/developer/article/1406118>
+<https://www.ruanyifeng.com/blog/2019/09/cookie-samesite.html>
 :::

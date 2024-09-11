@@ -22,11 +22,11 @@
 
 ```js
 const Details = () => {
-  const ref = useRef(null)
-  const ifr = useRef(null)
-  const [showMore, setShowMore] = useState(false)
-  const [intro, setIntro] = useState({})
-  const details = intro.details ?? ''
+  const ref = useRef(null);
+  const ifr = useRef(null);
+  const [showMore, setShowMore] = useState(false);
+  const [intro, setIntro] = useState({});
+  const details = intro.details ?? "";
 
   useEffect(() => {
     const t = setTimeout(() => {
@@ -34,16 +34,16 @@ const Details = () => {
         details: `<div >
 					<p>阿斯顿发阿斯顿发</p>
 				</div>`
-      })
-    }, 1000)
+      });
+    }, 1000);
     const t2 = setTimeout(() => {
       setIntro({
         details: `<div >
 					<p>阿斯顿发阿斯顿发</p>
 					<p>阿斯顿发阿斯顿发</p>
 				</div>`
-      })
-    }, 2000)
+      });
+    }, 2000);
     const t3 = setTimeout(() => {
       setIntro({
         details: `<div >
@@ -54,47 +54,42 @@ const Details = () => {
 					<p>阿斯顿发阿斯顿发</p>
 					<p>阿斯顿发阿斯顿发</p>
 				</div>`
-      })
-    }, 3000)
+      });
+    }, 3000);
     return () => {
-      clearTimeout(t)
-      clearTimeout(t2)
-      clearTimeout(t3)
-    }
-  }, [])
+      clearTimeout(t);
+      clearTimeout(t2);
+      clearTimeout(t3);
+    };
+  }, []);
 
   useEffect(() => {
-    if (!ref.current || !ifr.current?.contentWindow) return
+    if (!ref.current || !ifr.current?.contentWindow) return;
     const onresize = () => {
-      console.log('onresize')
-      const height = ref.current?.clientHeight ?? 0
-      const show = height >= parseInt(MAX_HEIGHT, 10)
-      setShowMore(show)
+      console.log("onresize");
+      const height = ref.current?.clientHeight ?? 0;
+      const show = height >= parseInt(MAX_HEIGHT, 10);
+      setShowMore(show);
       if (ifr.current && show) {
-        ifr.current.remove()
+        ifr.current.remove();
       }
-    }
-    ifr.current.contentWindow.onresize = onresize
-    onresize()
-  }, [])
+    };
+    ifr.current.contentWindow.onresize = onresize;
+    onresize();
+  }, []);
 
   return (
     <>
       <div className="wrapper">
         <div ref={ref} dangerouslySetInnerHTML={{ __html: details }} />
-        <iframe
-          ref={ifr}
-          title="testIframe"
-          src="about:blank"
-          className="ifr"
-        />
+        <iframe ref={ifr} title="testIframe" src="about:blank" className="ifr" />
       </div>
       {showMore && <div className="show-more">查看全部</div>}
     </>
-  )
-}
+  );
+};
 ```
 
 :::参考链接
-https://mp.weixin.qq.com/s/TA7bvL3N_HbOqbT0MPrs8w
+<https://mp.weixin.qq.com/s/TA7bvL3N_HbOqbT0MPrs8w>
 :::

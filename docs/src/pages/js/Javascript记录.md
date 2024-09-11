@@ -1,12 +1,12 @@
-# JS 的记录
+# Javascript 记录
 
 ## 滚动相关
 
 ### 1. 获取滚动条的高度
 
 ```js
-var container = document.querySelector('.container')
-var scrollbarHeight = container.scrollHeight - container.clientHeight
+var container = document.querySelector(".container");
+var scrollbarHeight = container.scrollHeight - container.clientHeight;
 ```
 
 ### 2. 获取一个元素相对于其父级元素的高度
@@ -14,8 +14,8 @@ var scrollbarHeight = container.scrollHeight - container.clientHeight
 注意 container 必须设置 `relative` 才可以使用 `offsetTop`, 否则只能使用 `firstChild.getBoundingClientRect().top - container.getBoundingClientRect().top`
 
 ```js
-var firstElementChild = document.querySelector('.content').firstElementChild
-firstElementChild.offsetTop
+var firstElementChild = document.querySelector(".content").firstElementChild;
+firstElementChild.offsetTop;
 ```
 
 ### 3. 如果是向下滚动的话
@@ -23,9 +23,9 @@ firstElementChild.offsetTop
 那么最后一个元素是向下滚动 40px, 倒数第 2 个元素是向下滚动 80px;
 
 ```js
-var lastElementChild = document.querySelector('.content').lastElementChild
-var container = document.querySelector('.container')
-container.scrollHeight - lastElementChild.offsetTop
+var lastElementChild = document.querySelector(".content").lastElementChild;
+var container = document.querySelector(".container");
+container.scrollHeight - lastElementChild.offsetTop;
 ```
 
 html 代码如下:
@@ -90,5 +90,5 @@ html 代码如下:
 - Opera: 支持 (自版本 78 起)
 
 ```js
-window.crypto.randomUUID() //  '7e96031a-9db8-4f8f-aa6b-e55a8d374764'
+window.crypto.randomUUID(); //  '7e96031a-9db8-4f8f-aa6b-e55a8d374764'
 ```

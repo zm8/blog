@@ -1,103 +1,5 @@
 # Vue3 实践与问题集锦
 
-## Vue3.4 Props 解构不支持响应式
-
-`App.vue` 组件:
-
-```vue
-<template>
-  <Num :num="num" />
-  <button type="button" @click="num += 1">Add</button>
-</template>
-
-<script setup lang="ts">
-import { ref } from "vue";
-import Num from "./components/Num.vue";
-const num = ref(0);
-</script>
-```
-
-`Num.vue` 组件:
-
-```vue
-<template>
-  <!-- 模版里的num, 支持响应式 -->
-  <div>{{ num }}</div>
-
-  <!-- Vue3.4 不支持响应式 -->
-  <div>{{ numBig }}</div>
-</template>
-
-<script setup lang="ts">
-import { computed, watch } from "vue";
-const { num } = defineProps<{ num: number }>();
-const numBig = computed(() => num * 10);
-
-// 监听不到
-watch(
-  () => num,
-  () => {
-    console.log("change");
-  }
-);
-</script>
-```
-
-### 解决方案
-
-#### 1. 使用 props(推荐)
-
-```vue
-<script setup lang="ts">
-import { computed, watch } from "vue";
-const props = defineProps<{ num: number }>();
-const numBig = computed(() => props.num * 10);
-watch(
-  () => props.num,
-  () => {
-    console.log("change");
-  }
-);
-</script>
-```
-
-#### 2. 升级 Vue3.5(推荐)
-
-```vue
-<script setup lang="ts">
-import { computed, watch } from "vue";
-const { num } = defineProps<{ num: number }>();
-const numBig = computed(() => num * 10);
-watch(
-  () => num,
-  () => {
-    console.log("change");
-  }
-);
-</script>
-```
-
-#### 3. 使用 toRefs
-
-```vue
-<script setup lang="ts">
-import { computed, toRefs, watch } from "vue";
-const props = defineProps<{ num: number }>();
-const { num } = toRefs(props);
-const numBig = computed(() => num.value * 10);
-watch(num, () => {
-  console.log("change");
-});
-// 或者
-watch(
-  () => num.value,
-  () => {
-    console.log("change");
-  }
-);
-</script>
-```
-
 ## wach 监听对象和数组
 
 下面的例子 `watch` 监听不到 arr 和 obj 的变化, 除非加上 `{ deep: true }`
@@ -212,9 +114,9 @@ foo();
 </script>
 ```
 
-## createSharedComposable 包裹的 hook 一定得有返回值
+## `createSharedComposable` 包裹的 hook 必须有返回值
 
-使用 `createSharedComposable` 包裹一个 hook 的时候, 一定要有返回值，否则会不起作用。
+使用 `@vueuse/core` 中的 `createSharedComposable` 包裹 hook 时，必须返回一个值，否则将无法正常工作。
 
 ```ts
 import { createSharedComposable } from "@vueuse/core";
@@ -352,4 +254,102 @@ const useGetRate = () => {
   const { width, height } = useWindowSize();
   return width.value > height.value ? width.value : height.value;
 };
+```
+
+## Vue3.4 Props 解构不支持响应式
+
+`App.vue` 组件:
+
+```vue
+<template>
+  <Num :num="num" />
+  <button type="button" @click="num += 1">Add</button>
+</template>
+
+<script setup lang="ts">
+import { ref } from "vue";
+import Num from "./components/Num.vue";
+const num = ref(0);
+</script>
+```
+
+`Num.vue` 组件:
+
+```vue
+<template>
+  <!-- 模版里的num, 支持响应式 -->
+  <div>{{ num }}</div>
+
+  <!-- Vue3.4 不支持响应式 -->
+  <div>{{ numBig }}</div>
+</template>
+
+<script setup lang="ts">
+import { computed, watch } from "vue";
+const { num } = defineProps<{ num: number }>();
+const numBig = computed(() => num * 10);
+
+// 监听不到
+watch(
+  () => num,
+  () => {
+    console.log("change");
+  }
+);
+</script>
+```
+
+### 解决方案
+
+#### 1. 使用 props(推荐)
+
+```vue
+<script setup lang="ts">
+import { computed, watch } from "vue";
+const props = defineProps<{ num: number }>();
+const numBig = computed(() => props.num * 10);
+watch(
+  () => props.num,
+  () => {
+    console.log("change");
+  }
+);
+</script>
+```
+
+#### 2. 升级 Vue3.5(推荐)
+
+```vue
+<script setup lang="ts">
+import { computed, watch } from "vue";
+const { num } = defineProps<{ num: number }>();
+const numBig = computed(() => num * 10);
+watch(
+  () => num,
+  () => {
+    console.log("change");
+  }
+);
+</script>
+```
+
+#### 3. 使用 toRefs
+
+```vue
+<script setup lang="ts">
+import { computed, toRefs, watch } from "vue";
+const props = defineProps<{ num: number }>();
+const { num } = toRefs(props);
+const numBig = computed(() => num.value * 10);
+watch(num, () => {
+  console.log("change");
+});
+// 或者
+watch(
+  () => num.value,
+  () => {
+    console.log("change");
+  }
+);
+</script>
 ```

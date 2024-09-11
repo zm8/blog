@@ -1,4 +1,4 @@
-# 前端网络
+# 网络相关
 
 ## SSE(Server-Sent Events) 和 websocket 的区别
 
@@ -41,18 +41,18 @@ git 有 3 个目录:
 ### 示例代码
 
 ```js
-const express = require('express')
-const app = express()
+const express = require("express");
+const app = express();
 
 var options = {
   setHeaders: (res) => {
     res.set({
-      'Cache-Control': 'max-age=10'
-    })
+      "Cache-Control": "max-age=10"
+    });
   }
-}
-app.use(express.static(__dirname, options))
-app.listen(3000)
+};
+app.use(express.static(__dirname, options));
+app.listen(3000);
 ```
 
 ```html
@@ -94,10 +94,10 @@ https://www.zhihu.com/question/52493697
 2. 前端使用 RSA(非对称加密) 加密好之后，发送给客户端。
 
 ```js
-import JSEncrypt from 'jsencrypt'
-const encrypt = new JSEncrypt()
-encrypt.setPublicKey('公钥')
-encrypt.encrypt('登录密码')
+import JSEncrypt from "jsencrypt";
+const encrypt = new JSEncrypt();
+encrypt.setPublicKey("公钥");
+encrypt.encrypt("登录密码");
 // 发送 post 用户名和密码 给服务端
 ```
 

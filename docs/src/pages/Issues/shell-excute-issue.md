@@ -14,18 +14,18 @@ hello   # Syntax Correct
 
 报错如下:
 
-```
+```bash
 '/scope.sh: line 2: syntax error near unexpected token `{
 '/scope.sh: line 2: `function hello () {
 ```
 
-### 原因:
+## 原因
 
 因为 MS-DOS 及 Windows 是回车＋换行来表示换行，因此在 Linux 下用 Vim 查看在 Windows 下用 VC 写的代码，行尾后的“^M”符号，表示的是符。
 
-### 解决方案:
+## 解决方案
 
-把 ^M 替换为空字符串
+把 `^M` 替换为空字符串
 
 ```bash
 > vim -b scope.sh
@@ -43,9 +43,7 @@ hello   # Syntax Correct
 4. `g` = `do it globally`
 
 ::: tip 参考链接
-https://stackoverflow.com/questions/811193/
+<https://stackoverflow.com/questions/811193/>
 
-how-to-convert-the-m-linebreak-to-normal-linebreak-in-a-file-opened-in-vim
-
-https://blog.csdn.net/xyp84/article/details/4435899
+<https://blog.csdn.net/xyp84/article/details/4435899>
 :::

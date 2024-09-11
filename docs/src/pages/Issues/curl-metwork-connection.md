@@ -2,7 +2,7 @@
 
 curl 的时候如果出现下面的错误:
 
-```
+```bash
 curl: (7) Failed to connect to 127.0.0.1 port 4781 after 0 ms: Couldn't connect to server
 ```
 

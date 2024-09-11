@@ -4,7 +4,7 @@
 
 ```json
 {
-	"pages": ["pages/index/index", "pages/logs/logs"]
+  "pages": ["pages/index/index", "pages/logs/logs"]
 }
 ```
 
@@ -32,8 +32,8 @@
 
 ```html
 <block wx:if="{{true}}">
-	<view> view1 </view>
-	<view> view2 </view>
+  <view> view1 </view>
+  <view> view2 </view>
 </block>
 ```
 
@@ -50,16 +50,16 @@
 
 ```javascript
 Page({
-	data: {
-		array: [
-			{
-				message: "foo",
-			},
-			{
-				message: "bar",
-			},
-		],
-	},
+  data: {
+    array: [
+      {
+        message: "foo"
+      },
+      {
+        message: "bar"
+      }
+    ]
+  }
 });
 ```
 
@@ -100,7 +100,7 @@ import 可以引用模版
 ```html
 <!-- item.wxml -->
 <template name="item">
-	<text>{{text}}</text>
+  <text>{{text}}</text>
 </template>
 
 <import src="item.wxml" />
@@ -181,13 +181,13 @@ App 的生命周期是由微信客户端根据用户操作主动触发的。为�
 ```json
 // app.json定义小程序底部tab
 {
-	"tabBar": {
-		"list": [
-			{ "text": "Tab1", "pagePath": "pageA" },
-			{ "text": "Tab1", "pagePath": "pageF" },
-			{ "text": "Tab1", "pagePath": "pageG" }
-		]
-	}
+  "tabBar": {
+    "list": [
+      { "text": "Tab1", "pagePath": "pageA" },
+      { "text": "Tab1", "pagePath": "pageF" },
+      { "text": "Tab1", "pagePath": "pageG" }
+    ]
+  }
 }
 ```
 

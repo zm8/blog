@@ -1,6 +1,6 @@
 # Javascript 兼容性问题
 
-### 1. new Date
+## 1. new Date
 
 以下环境 的代码会报错
 

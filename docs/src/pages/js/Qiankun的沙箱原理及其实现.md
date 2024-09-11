@@ -11,57 +11,57 @@ js 沙箱其实没有完全的隔离，因为它仍然运行在同一浏览器�
 const iter = (window, callback) => {
   for (const prop in window) {
     if (window.hasOwnProperty(prop)) {
-      callback(prop)
+      callback(prop);
     }
   }
-}
+};
 class SnapshotSandbox {
   constructor() {
-    this.proxy = window
-    this.modifyPropsMap = {}
+    this.proxy = window;
+    this.modifyPropsMap = {};
   }
   // 激活沙箱
   active() {
     // 缓存active状态的window
-    this.windowSnapshot = {}
+    this.windowSnapshot = {};
     iter(window, (prop) => {
       // 把 window 的所有属性都拷贝，赋值给 windowSnapshot
-      this.windowSnapshot[prop] = window[prop]
-    })
+      this.windowSnapshot[prop] = window[prop];
+    });
     // 把之前修改过的属性重新赋值给  window
     Object.keys(this.modifyPropsMap).forEach((p) => {
-      window[p] = this.modifyPropsMap[p]
-    })
+      window[p] = this.modifyPropsMap[p];
+    });
   }
   // 退出沙箱
   inactive() {
     iter(window, (prop) => {
       if (this.windowSnapshot[prop] !== window[prop]) {
         // 对比 windowSnapshot 和 window 下的所有属性，发现不一样的地方，则把不一样的地方记录到 modifyPropsMap。
-        this.modifyPropsMap[prop] = window[prop]
+        this.modifyPropsMap[prop] = window[prop];
         // 还原 window 的属性。
-        window[prop] = this.windowSnapshot[prop]
+        window[prop] = this.windowSnapshot[prop];
       }
-    })
+    });
   }
 }
 ```
 
 ```js
-const sandbox = new SnapshotSandbox()
-;((window) => {
+const sandbox = new SnapshotSandbox();
+((window) => {
   // 激活沙箱
-  sandbox.active()
-  window.sex = '男'
-  window.age = '22'
-  console.log(window.sex, window.age) // 男, 22
+  sandbox.active();
+  window.sex = "男";
+  window.age = "22";
+  console.log(window.sex, window.age); // 男, 22
   // 退出沙箱
-  sandbox.inactive()
-  console.log(window.sex, window.age) // undefined, undefined
+  sandbox.inactive();
+  console.log(window.sex, window.age); // undefined, undefined
   // 激活沙箱
-  sandbox.active()
-  console.log(window.sex, window.age) // 男 22
-})(sandbox.proxy)
+  sandbox.active();
+  console.log(window.sex, window.age); // 男 22
+})(sandbox.proxy);
 ```
 
 ## legacySandbox(单例沙箱)
@@ -74,14 +74,14 @@ const sandbox = new SnapshotSandbox()
 class Legacy {
   constructor() {
     // 沙箱期间新增的全局变量
-    this.addedPropsMapInSandbox = {}
+    this.addedPropsMapInSandbox = {};
     // 沙箱期间更新的全局变量
-    this.modifiedPropsOriginalValueMapInSandbox = {}
+    this.modifiedPropsOriginalValueMapInSandbox = {};
     // 持续记录更新的(新增和修改的)全局变量的 map，用于在任意时刻做 snapshot
-    this.currentUpdatedPropsValueMap = {}
-    const rawWindow = window
-    const fakeWindow = Object.create(null)
-    this.sandboxRunning = true
+    this.currentUpdatedPropsValueMap = {};
+    const rawWindow = window;
+    const fakeWindow = Object.create(null);
+    this.sandboxRunning = true;
     const proxy = new Proxy(fakeWindow, {
       set: (target, prop, value) => {
         // 如果是激活状态
@@ -89,67 +89,67 @@ class Legacy {
           // 判断当前window上存不存在该属性
           if (!rawWindow.hasOwnProperty(prop)) {
             // 记录新增值
-            this.addedPropsMapInSandbox[prop] = value
+            this.addedPropsMapInSandbox[prop] = value;
           } else if (!this.modifiedPropsOriginalValueMapInSandbox[prop]) {
             // 记录更新值的初始值
-            const originValue = rawWindow[prop]
-            this.modifiedPropsOriginalValueMapInSandbox[prop] = originValue
+            const originValue = rawWindow[prop];
+            this.modifiedPropsOriginalValueMapInSandbox[prop] = originValue;
           }
           // 纪录此次修改的属性
-          this.currentUpdatedPropsValueMap[prop] = value
+          this.currentUpdatedPropsValueMap[prop] = value;
           // 将设置的属性和值赋给了当前window，还是污染了全局window变量
-          rawWindow[prop] = value
-          return true
+          rawWindow[prop] = value;
+          return true;
         }
-        return true
+        return true;
       },
       get: (target, prop) => {
-        return rawWindow[prop]
+        return rawWindow[prop];
       }
-    })
-    this.proxy = proxy
+    });
+    this.proxy = proxy;
   }
   active() {
     if (!this.sandboxRunning) {
       // 还原上次修改的值
       for (const key in this.currentUpdatedPropsValueMap) {
-        window[key] = this.currentUpdatedPropsValueMap[key]
+        window[key] = this.currentUpdatedPropsValueMap[key];
       }
     }
 
-    this.sandboxRunning = true
+    this.sandboxRunning = true;
   }
   inactive() {
     // 将更新值的初始值还原给window
     for (const key in this.modifiedPropsOriginalValueMapInSandbox) {
-      window[key] = this.modifiedPropsOriginalValueMapInSandbox[key]
+      window[key] = this.modifiedPropsOriginalValueMapInSandbox[key];
     }
     // 将新增的值删掉
     for (const key in this.addedPropsMapInSandbox) {
-      delete window[key]
+      delete window[key];
     }
 
-    this.sandboxRunning = false
+    this.sandboxRunning = false;
   }
 }
 
-window.sex = '男'
-let LegacySandbox = new Legacy()
-;((window) => {
+window.sex = "男";
+let LegacySandbox = new Legacy();
+((window) => {
   // 激活沙箱
-  LegacySandbox.active()
+  LegacySandbox.active();
   // window.sex = '女';
-  window.age = '22'
-  console.log(window.sex, window.age) // 女 22
+  window.age = "22";
+  console.log(window.sex, window.age); // 女 22
 
   // 退出沙箱
-  LegacySandbox.inactive()
-  console.log(window.sex, window.age) // 男 undefined
+  LegacySandbox.inactive();
+  console.log(window.sex, window.age); // 男 undefined
 
   // 激活沙箱
-  LegacySandbox.active()
-  console.log(window.sex, window.age) // 女 22
-})(LegacySandbox.proxy)
+  LegacySandbox.active();
+  console.log(window.sex, window.age); // 女 22
+})(LegacySandbox.proxy);
 ```
 
 ### proxySandbox(多例沙箱)
@@ -192,13 +192,14 @@ css 最终方案:
 
 ```js
 add = (a, b) => {
-  return a + b
-}
+  return a + b;
+};
 
-add(1, 2)
+add(1, 2);
 ```
 
 ::: 参考地址
-https://juejin.cn/post/7148075486403362846?searchId=20230926232146DB8316AE2AA7246E676E#heading-4
-https://juejin.cn/post/6920110573418086413#heading-7
+<https://juejin.cn/post/7148075486403362846?searchId=20230926232146DB8316AE2AA7246E676E#heading-4>
+
+<https://juejin.cn/post/6920110573418086413#heading-7>
 :::

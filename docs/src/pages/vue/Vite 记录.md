@@ -1,6 +1,6 @@
 # Vite 记录
 
-## vite 项目里的 `tsconfig.json` 的 target, module, lib 的作用
+## `tsconfig.json` 的 target, module, lib 的作用
 
 ### 1. 配置 lib
 
@@ -15,8 +15,8 @@
 上面的配置会让下面的 `.ts` 文件报红, 并且编译不过, 因为 `Object.hasOwn` 是 `ES2022` 的语法
 
 ```ts
-if (Object.hasOwn({ foo: 1 }, 'foo')) {
-  console.log('has property foo')
+if (Object.hasOwn({ foo: 1 }, "foo")) {
+  console.log("has property foo");
 }
 ```
 
@@ -34,12 +34,12 @@ if (Object.hasOwn({ foo: 1 }, 'foo')) {
 
 ```ts
 async function fn() {
-  return 1
+  return 1;
 }
-await fn() // 仅当 “module” 选项设置为 “es2022”、“esnext”、“system”、“node16” 或 “nodenext”，且 “target” 选项设置为 “es2017” 或更高版本时，才允许使用顶级 “await” 表达式。ts(1378)
+await fn(); // 仅当 “module” 选项设置为 “es2022”、“esnext”、“system”、“node16” 或 “nodenext”，且 “target” 选项设置为 “es2017” 或更高版本时，才允许使用顶级 “await” 表达式。ts(1378)
 ```
 
-3. 配置 target
+### 3. 配置 target
 
 ```json
 {
@@ -55,9 +55,9 @@ await fn() // 仅当 “module” 选项设置为 “es2022”、“esnext”、
 
 ```ts
 async function fn() {
-  return 1
+  return 1;
 }
-await fn() // 仅当 “module” 选项设置为 “es2022”、“esnext”、“system”、“node16” 或 “nodenext”，且 “target” 选项设置为 “es2017” 或更高版本时，才允许使用顶级 “await” 表达式。ts(1378)
+await fn(); // 仅当 “module” 选项设置为 “es2022”、“esnext”、“system”、“node16” 或 “nodenext”，且 “target” 选项设置为 “es2017” 或更高版本时，才允许使用顶级 “await” 表达式。ts(1378)
 ```
 
 所以**最终的完美**的配置如下，如果当前项目只支持 `ES2022`
@@ -75,14 +75,14 @@ await fn() // 仅当 “module” 选项设置为 “es2022”、“esnext”、
 `vite.config.ts` 配置如下:
 
 ```ts
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
+import { defineConfig } from "vite";
+import vue from "@vitejs/plugin-vue";
 export default defineConfig({
   plugins: [vue()],
   build: {
-    target: 'es2022'
+    target: "es2022"
   }
-})
+});
 ```
 
 ## vite 项目打包最终转换
@@ -119,9 +119,9 @@ export default defineConfig({
 
 ```js
 function fn() {
-  return Promise.resolve()
+  return Promise.resolve();
 }
-await fn()
+await fn();
 ```
 
 那么当设置 `vite.config.ts` 的 `build.target: es2021`，编译会报错:
@@ -139,23 +139,23 @@ assets/index-!~{001}~.js:5579:0: ERROR: Top-level await is not available in the 
 1. Vue3 修改 `vite.config.js`:
 
 ```js
-import { defineConfig } from 'vite'
+import { defineConfig } from "vite";
 
 export default defineConfig({
-  base: '/test/', // 设置基础路径
+  base: "/test/", // 设置基础路径
   build: {
-    outDir: 'dist/test'
+    outDir: "dist/test"
   }
-})
+});
 ```
 
 2. Vue2 修改 vue.config.js
 
 ```js
 module.exports = {
-  outputDir: 'dist/test', // 指定打包输出目录
-  publicPath: process.env.NODE_ENV === 'production' ? '/test/' : '/'
-}
+  outputDir: "dist/test", // 指定打包输出目录
+  publicPath: process.env.NODE_ENV === "production" ? "/test/" : "/"
+};
 ```
 
 ## Vite 报错: ?url is not supported with css modules
@@ -164,13 +164,12 @@ module.exports = {
 (PS: 这行代码的意思是获取动态的图片地址, 由于 vite 不支持 require 的形式获取图片地址)
 
 ```ts
-const getDynamicImgSrc = (src: string, prefix = 'assets') =>
-  new URL(`/src/${prefix}/${src}`, import.meta.url).href
+const getDynamicImgSrc = (src: string, prefix = "assets") =>
+  new URL(`/src/${prefix}/${src}`, import.meta.url).href;
 ```
 
 只要改成如下就不会报错了, `prefix` 不要动态的传入:
 
 ```ts
-const getDynamicImgSrc = (src: string) =>
-  new URL(`/src/assets/${src}`, import.meta.url).href
+const getDynamicImgSrc = (src: string) => new URL(`/src/assets/${src}`, import.meta.url).href;
 ```

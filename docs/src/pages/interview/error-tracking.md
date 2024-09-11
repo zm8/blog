@@ -1,4 +1,4 @@
-# 前端错误监控学习
+# 前端错误监控
 
 ## 捕获错误
 
@@ -13,10 +13,10 @@
 
 ```js
 // 全局统一处理Promise
-window.addEventListener('unhandledrejection', function (e) {
-  console.log('捕获到异常：', e)
-})
-fetch('https://tuia.cn/test')
+window.addEventListener("unhandledrejection", function (e) {
+  console.log("捕获到异常：", e);
+});
+fetch("https://tuia.cn/test");
 ```
 
 ### Vue 错误
@@ -29,9 +29,9 @@ Vue 里面出现的错误，并不会直接被 window.onerror 捕获，而是会
  */
 Vue.config.errorHandler = function (err) {
   setTimeout(() => {
-    throw err
-  })
-}
+    throw err;
+  });
+};
 ```
 
 ### React 错误
@@ -41,27 +41,27 @@ Vue.config.errorHandler = function (err) {
 ```jsx
 class ErrorBoundary extends React.Component {
   constructor(props) {
-    super(props)
-    this.state = { hasError: false }
+    super(props);
+    this.state = { hasError: false };
   }
 
   static getDerivedStateFromError(error) {
     // 更新 state 使下一次渲染能够显示降级后的 UI
-    return { hasError: true }
+    return { hasError: true };
   }
 
   componentDidCatch(error, errorInfo) {
     // 你同样可以将错误日志上报给服务器
-    logErrorToMyService(error, errorInfo)
+    logErrorToMyService(error, errorInfo);
   }
 
   render() {
     if (this.state.hasError) {
       // 你可以自定义降级后的 UI 并渲染
-      return <h1>Something went wrong.</h1>
+      return <h1>Something went wrong.</h1>;
     }
 
-    return this.props.children
+    return this.props.children;
   }
 }
 
@@ -71,7 +71,7 @@ class App extends React.Component {
       <ErrorBoundary>
         <MyWidget />
       </ErrorBoundary>
-    )
+    );
   }
 }
 ```
@@ -93,20 +93,20 @@ class App extends React.Component {
 生成单个错误的唯一标识，通过 date 和随机值生成一条对应的错误条目 id。
 
 ```js
-const errorKey = `${+new Date()}@${randomString(8)}`
+const errorKey = `${+new Date()}@${randomString(8)}`;
 
 function randomString(len) {
-  len = len || 32
-  let chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678'
-  let maxPos = chars.length
-  let pwd = ''
+  len = len || 32;
+  let chars = "ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678";
+  let maxPos = chars.length;
+  let pwd = "";
   for (let i = 0; i < len; i++) {
-    pwd += chars.charAt(Math.floor(Math.random() * maxPos))
+    pwd += chars.charAt(Math.floor(Math.random() * maxPos));
   }
-  return pwd
+  return pwd;
 }
 
-randomString(8) // 2NwDAJjA
+randomString(8); // 2NwDAJjA
 ```
 
 ### 2. 单个错误事件 errorKey
@@ -115,34 +115,26 @@ randomString(8) // 2NwDAJjA
 通过 message、colno 与 lineno 进行相加计算阿斯克码值，可以生成错误的 errorKey。
 
 ```js
-const eventKey = compressString(
-  String(e.message),
-  String(e.colno) + String(e.lineno)
-)
+const eventKey = compressString(String(e.message), String(e.colno) + String(e.lineno));
 
 function compressString(str, key) {
-  let chars = 'ABCDEFGHJKMNPQRSTWXYZ'
+  let chars = "ABCDEFGHJKMNPQRSTWXYZ";
   if (!str || !key) {
-    return 'null'
+    return "null";
   }
   let n = 0,
-    m = 0
+    m = 0;
   for (let i = 0; i < str.length; i++) {
-    n += str[i].charCodeAt()
+    n += str[i].charCodeAt();
   }
   for (let j = 0; j < key.length; j++) {
-    m += key[j].charCodeAt()
+    m += key[j].charCodeAt();
   }
-  let num =
-    n +
-    '' +
-    key[key.length - 1].charCodeAt() +
-    m +
-    str[str.length - 1].charCodeAt()
+  let num = n + "" + key[key.length - 1].charCodeAt() + m + str[str.length - 1].charCodeAt();
   if (num) {
-    num = num + chars[num[num.length - 1]]
+    num = num + chars[num[num.length - 1]];
   }
-  return num
+  return num;
 }
 ```
 
@@ -154,7 +146,7 @@ function compressString(str, key) {
 
 ```js
 // 伪代码
-if (!e.filename || !e.filename.match(/^(http|https):\/\/yun./)) return true
+if (!e.filename || !e.filename.match(/^(http|https):\/\/yun./)) return true;
 ```
 
 ### 重复上报
