@@ -1,5 +1,34 @@
 # CSS 知识点记录
 
+## css 宽度适应内容
+
+使用 `width: fit-content;`
+
+```html
+<div class="container">
+  <div class="item">Item</div>
+  <div class="item">Item with more text in it.</div>
+  <div class="item">
+    Item with more text in it, hopefully we have added enough text so the text will start to wrap.
+  </div>
+</div>
+<style>
+  .container {
+    border: 2px solid #ccc;
+    padding: 10px;
+    width: 20em;
+  }
+  .item {
+    width: fit-content;
+    background-color: #8ca0ff;
+    padding: 5px;
+    margin-bottom: 1em;
+  }
+</style>
+```
+
+![image](https://github.com/user-attachments/assets/0da54264-908e-4093-89bd-61b88d7cea80)
+
 ## position 有几种，区别是?
 
 - static: 默认值, 没有定位, 处在正常的文档流中
@@ -154,8 +183,8 @@ select {
 ```css
 .element {
   height: 1px; /* 元素高度 */
-  background: linear-gradient(to right, #658aaa 50%, transparent 50%),
-    linear-gradient(to right, #658aaa 50%, transparent 50%);
+  background: linear-gradient(to right, #658aaa 50%, transparent 50%), linear-gradient(to right, #658aaa
+        50%, transparent 50%);
   background-size: 6px 1px; /* 每条虚线的宽度为10px，高度为1px */
   background-position: 0 0, 0 100%; /* 第一条虚线从左上角开始，第二条虚线从右下角开始 */
   background-repeat: repeat-x; /* 沿X轴重复显示 */

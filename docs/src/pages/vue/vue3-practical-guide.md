@@ -1,5 +1,9 @@
 # Vue3 实践与问题集锦
 
+## Vue 组件命名规范
+
+尽量使用大驼峰的形式, 即 PascalCase, 比如 `StarRate`, 那么使用的时候可以是 `<StarRate />` 或者 `<star-rate></star-rate>`, 不要使用短横线，因为有的组件就一个名字, 比如 `<Button />`。
+
 ## wach 监听对象和数组
 
 下面的例子 `watch` 监听不到 arr 和 obj 的变化, 除非加上 `{ deep: true }`

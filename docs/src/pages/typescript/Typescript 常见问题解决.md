@@ -1,52 +1,66 @@
 # Typescript 常见问题解决
 
+## 获取组件的类型
+
+```ts
+import { ElForm } from "element-plus";
+const formRef = ref<InstanceType<typeof Elform>>();
+```
+
+可以做一个封装:
+
+```ts
+import { ref } from "vue";
+export function useComRef<T extends abstract new (...args: any) => any>(_comp: T) {
+  return ref<InstanceType<T>>();
+}
+```
+
 ## 提取 二维数组类型 到一维数组
 
 ```ts
-type Matrix = string[][] // 二维数组
-type Row = Matrix[number] // 提取变成一维数组
-const arr: Row = ['1', '2']
+type Matrix = string[][]; // 二维数组
+type Row = Matrix[number]; // 提取变成一维数组
+const arr: Row = ["1", "2"];
 ```
 
 ## 判断类型中有 null 或者 undefined 则为 true, 否则为 false
 
 ```ts
-type HasNullOrUndefined<T> = T & (null | undefined) extends never ? false : true
+type HasNullOrUndefined<T> = T & (null | undefined) extends never ? false : true;
 
 // 或者
-type HasNullOrUndefined<T> = Extract<T, null | undefined> extends never
-  ? false
-  : true
+type HasNullOrUndefined<T> = Extract<T, null | undefined> extends never ? false : true;
 
 // 或者
-type HasNullOrUndefined<T> = (null | undefined) & T extends never ? false : true
+type HasNullOrUndefined<T> = (null | undefined) & T extends never ? false : true;
 
 // 或者   NonNullable 的作用是: Exclude null and undefined from T
-type HasNullOrUndefined<T> = [T] extends [NonNullable<T>] ? false : true
+type HasNullOrUndefined<T> = [T] extends [NonNullable<T>] ? false : true;
 
 // PS: NonNullable 相当于如下:
-type NonNullable<T> = T extends null | undefined ? never : T
+type NonNullable<T> = T extends null | undefined ? never : T;
 
 // 测试用例
-type A = HasNullOrUndefined<number | undefined> // true
-type B = HasNullOrUndefined<string | null> // true
-type C = HasNullOrUndefined<undefined> // true
-type D = HasNullOrUndefined<null> // true
-type E = HasNullOrUndefined<number> // false
+type A = HasNullOrUndefined<number | undefined>; // true
+type B = HasNullOrUndefined<string | null>; // true
+type C = HasNullOrUndefined<undefined>; // true
+type D = HasNullOrUndefined<null>; // true
+type E = HasNullOrUndefined<number>; // false
 ```
 
 ## TS 奇怪的地方
 
 ```ts
-type HasNullOrUndefined<T> = T extends null | undefined ? true : false
+type HasNullOrUndefined<T> = T extends null | undefined ? true : false;
 
 // 使用例子
-type A = HasNullOrUndefined<null> // true
-type B = HasNullOrUndefined<undefined> // true
-type C = HasNullOrUndefined<boolean> // false
+type A = HasNullOrUndefined<null>; // true
+type B = HasNullOrUndefined<undefined>; // true
+type C = HasNullOrUndefined<boolean>; // false
 
-type D = HasNullOrUndefined<boolean | null> // boolean
-type E = HasNullOrUndefined<number | undefined> // boolean
+type D = HasNullOrUndefined<boolean | null>; // boolean
+type E = HasNullOrUndefined<number | undefined>; // boolean
 ```
 
 D 和 E 竟然都是 boolean, 但是下面不用泛型传入的方式却为 false。
@@ -55,17 +69,13 @@ D 和 E 竟然都是 boolean, 但是下面不用泛型传入的方式却为 fals
 ## 判断 2 个类型是否一致
 
 ```ts
-type IsSameType<T, U> = [T] extends [U]
-  ? [U] extends [T]
-    ? true
-    : false
-  : false
+type IsSameType<T, U> = [T] extends [U] ? ([U] extends [T] ? true : false) : false;
 
 // 测试
-type Test1 = IsSameType<string, string> // true
-type Test2 = IsSameType<string, number> // false
-type Test3 = IsSameType<{ a: number }, { a: number }> // true
-type Test4 = IsSameType<{ a: number }, { b: number }> // false
+type Test1 = IsSameType<string, string>; // true
+type Test2 = IsSameType<string, number>; // false
+type Test3 = IsSameType<{ a: number }, { a: number }>; // true
+type Test4 = IsSameType<{ a: number }, { b: number }>; // false
 ```
 
 ## 对象赋值给另外一个对象报错
@@ -80,17 +90,17 @@ Element implicitly has an 'any' type because expression of type 'string' can't b
 
 ```ts
 const one = {
-  text: 'a',
+  text: "a",
   num: 1
-}
+};
 
 const two = {
-  text: 'b',
+  text: "b",
   num: 2
-}
+};
 
 for (const key of Object.keys(one)) {
-  two[key] = one[key as keyof typeof one]
+  two[key] = one[key as keyof typeof one];
 }
 ```
 
@@ -100,43 +110,43 @@ for (const key of Object.keys(one)) {
 
 ```ts
 const one = {
-  text: 'a',
+  text: "a",
   num: 1
-}
+};
 
 const two = {
-  text: 'b',
+  text: "b",
   num: 2
-}
+};
 
 function updateObject<T>(target: T, source: Partial<T>): void {
   for (const key of Object.keys(source) as (keyof T)[]) {
-    target[key] = source[key] as T[keyof T]
+    target[key] = source[key] as T[keyof T];
   }
 }
 
-updateObject(two, one)
+updateObject(two, one);
 ```
 
 ### 2. 使用非空断言
 
 ```ts
 interface IObj {
-  a: number
-  b: number
+  a: number;
+  b: number;
 }
 
 const obj: Partial<IObj> = {
   a: 1
-}
+};
 
 const obj2: IObj = {
   a: 1,
   b: 2
-}
+};
 
 for (const key of Object.keys(obj) as (keyof IObj)[]) {
-  obj2[key] = obj[key]!
+  obj2[key] = obj[key]!;
 }
 ```
 
@@ -144,21 +154,21 @@ for (const key of Object.keys(obj) as (keyof IObj)[]) {
 
 ```ts
 interface IObj {
-  a: number
-  b: number
+  a: number;
+  b: number;
 }
 
 const obj: Partial<IObj> = {
   a: 1
-}
+};
 
 const obj2: IObj = {
   a: 1,
   b: 2
-}
+};
 
 for (const [key, value] of Object.entries(obj) as [keyof IObj, number][]) {
-  obj2[key] = value
+  obj2[key] = value;
 }
 ```
 
@@ -166,19 +176,19 @@ for (const [key, value] of Object.entries(obj) as [keyof IObj, number][]) {
 
 ```ts
 const one = {
-  text: 'a',
+  text: "a",
   num: 1
-}
+};
 
 const two = {
-  text: 'b',
+  text: "b",
   num: 2
-}
+};
 
-type ITwoValue = (typeof two)[keyof typeof two]
+type ITwoValue = (typeof two)[keyof typeof two];
 
 for (const key of Object.keys(one) as (keyof typeof one)[]) {
-  ;(two[key] as ITwoValue) = one[key as keyof typeof one]
+  (two[key] as ITwoValue) = one[key as keyof typeof one];
 }
 ```
 
@@ -186,20 +196,20 @@ for (const key of Object.keys(one) as (keyof typeof one)[]) {
 
 ```ts
 interface IObj {
-  a: number
-  b: number
+  a: number;
+  b: number;
 }
 
 const obj: Partial<IObj> = {
   a: 1
-}
+};
 
 const obj2: IObj = {
   a: 1,
   b: 2
-}
+};
 
-Object.assign(obj2, obj)
+Object.assign(obj2, obj);
 ```
 
 ## for...in 遍历对象报错
@@ -215,9 +225,9 @@ Element implicitly has an 'any' type because expression of type 'string' can't b
 const obj = {
   a: 1,
   b: 2
-}
+};
 for (const key in obj) {
-  console.log(obj[key])
+  console.log(obj[key]);
 }
 ```
 
@@ -229,10 +239,10 @@ for (const key in obj) {
 const obj = {
   a: 1,
   b: 2
-}
+};
 
 for (const key in obj) {
-  console.log(obj[key as keyof typeof obj])
+  console.log(obj[key as keyof typeof obj]);
 }
 ```
 
@@ -242,10 +252,10 @@ for (const key in obj) {
 const obj = {
   a: 1,
   b: 2
-}
+};
 
 for (const key of Object.keys(obj)) {
-  console.log(obj[key as keyof typeof obj])
+  console.log(obj[key as keyof typeof obj]);
 }
 ```
 
@@ -255,17 +265,17 @@ for (const key of Object.keys(obj)) {
 const obj = {
   a: 1,
   b: 2
-}
+};
 
 for (const [key, value] of Object.entries(obj)) {
-  console.log(value)
+  console.log(value);
 }
 ```
 
 ## 空对象定义
 
 ```ts
-type EmptyObject = Record<string, never>
+type EmptyObject = Record<string, never>;
 ```
 
 `Record<string, never>` 和 `{}` 的区别:
@@ -275,17 +285,17 @@ type EmptyObject = Record<string, never>
 
 ```ts
 // Record<string, never>
-const obj1: Record<string, never> = {}
-obj1.someKey = 'someValue' // 错误：Type 'string' is not assignable to type 'never'.
+const obj1: Record<string, never> = {};
+obj1.someKey = "someValue"; // 错误：Type 'string' is not assignable to type 'never'.
 
 // {}
-const obj2: {} = {}
-obj2.someKey = 'someValue' // 没有错误
+const obj2: {} = {};
+obj2.someKey = "someValue"; // 没有错误
 
-const obj3: {} = [] // 正确
-const obj4: {} = '1' // 正确
-const obj5: {} = 1 // 正确
-const obj6: {} = Symbol // 正确
+const obj3: {} = []; // 正确
+const obj4: {} = "1"; // 正确
+const obj5: {} = 1; // 正确
+const obj6: {} = Symbol; // 正确
 ```
 
 ## Paticial
@@ -294,13 +304,13 @@ const obj6: {} = Symbol // 正确
 
 ```ts
 interface IObj {
-  a: number
-  b: number
+  a: number;
+  b: number;
 }
 
-const obj: Partial<IObj> = { a: 1 } // 正确
-const obj2: Partial<IObj> = { b: 1 } // 正确
-const obj3: Partial<IObj> = { a: 1, b: 1 } // 正确
+const obj: Partial<IObj> = { a: 1 }; // 正确
+const obj2: Partial<IObj> = { b: 1 }; // 正确
+const obj3: Partial<IObj> = { a: 1, b: 1 }; // 正确
 ```
 
 ## Pick
@@ -309,34 +319,34 @@ const obj3: Partial<IObj> = { a: 1, b: 1 } // 正确
 
 ```ts
 interface Todo {
-  title: string
-  description: string
-  completed: boolean
+  title: string;
+  description: string;
+  completed: boolean;
 }
 
-type TodoPreview = Pick<Todo, 'title'>
+type TodoPreview = Pick<Todo, "title">;
 
 const todo: TodoPreview = {
-  title: 'Clean room'
-} // 正确
+  title: "Clean room"
+}; // 正确
 
 const todo: TodoPreview = {
   completed: false
-} // 错误
+}; // 错误
 ```
 
 注意 Pick 返回的是一个新的 interface，注意下面的写法区别:
 
 ```ts
 interface Todo {
-  title: string
-  description: string
-  completed: boolean
+  title: string;
+  description: string;
+  completed: boolean;
 }
 
-type TodoPreview = Pick<Todo, 'title'> // 相当于 {title: string}
+type TodoPreview = Pick<Todo, "title">; // 相当于 {title: string}
 
-type Title = Todo['title'] // 相当于 string
+type Title = Todo["title"]; // 相当于 string
 ```
 
 ## Omit
@@ -345,59 +355,59 @@ type Title = Todo['title'] // 相当于 string
 
 ```ts
 interface Todo {
-  title: string
-  description: string
+  title: string;
+  description: string;
 }
 
-type TodoPreview = Omit<Todo, 'description'>
+type TodoPreview = Omit<Todo, "description">;
 
 const todo: TodoPreview = {
-  title: 'Clean room'
-} // 正确
+  title: "Clean room"
+}; // 正确
 
 const todo2: TodoPreview = {
-  title: 'Clean room',
-  description: 'Kindergarten closes at 5pm'
-} // 错误
+  title: "Clean room",
+  description: "Kindergarten closes at 5pm"
+}; // 错误
 ```
 
 ## 分别获取对象的 key 和 value 的类型
 
 ```ts
 const todo = {
-  title: 'Clean room',
+  title: "Clean room",
   completed: false,
   count: 10
-}
+};
 
-type TodoKeys = keyof typeof todo // "title" | "completed" | "description";
+type TodoKeys = keyof typeof todo; // "title" | "completed" | "description";
 
-type TodoValues = (typeof todo)[TodoKeys] // string | boolean | number
+type TodoValues = (typeof todo)[TodoKeys]; // string | boolean | number
 ```
 
 ## 获取获取枚举的 key 和 value 的类型
 
 ```ts
 enum ETodo {
-  title = 'Clean room',
+  title = "Clean room",
   description = 1
 }
 
 // 获取枚举键的类型
-type EnumKeys = keyof typeof ETodo // "title" | "description"
-const key1: EnumKeys = 'title' // true
-const key2: EnumKeys = 'description' // true
+type EnumKeys = keyof typeof ETodo; // "title" | "description"
+const key1: EnumKeys = "title"; // true
+const key2: EnumKeys = "description"; // true
 
 // 获取枚举值当作类型
-type EnumValues = (typeof ETodo)[EnumKeys] // ETodo.title | ETodo.description
+type EnumValues = (typeof ETodo)[EnumKeys]; // ETodo.title | ETodo.description
 // 更简单的写法: type EnumValues = ETodo;
 // 不建议这样写: type EnumValues = `${ETodo}`;
 
-const val: EnumValues = ETodo.title // true
-const val2: EnumValues = ETodo.description // true
+const val: EnumValues = ETodo.title; // true
+const val2: EnumValues = ETodo.description; // true
 
-const val3: ETodo = 'Clean room' // 错误
-const val4: ETodo = 1 // 正确, 不建议这么写，这是一个特例。数字枚举成员在某些情况下可以被视为常量，因此编译器不会报错。
+const val3: ETodo = "Clean room"; // 错误
+const val4: ETodo = 1; // 正确, 不建议这么写，这是一个特例。数字枚举成员在某些情况下可以被视为常量，因此编译器不会报错。
 ```
 
 ## Object 赋值的时候情况
@@ -406,43 +416,43 @@ const val4: ETodo = 1 // 正确, 不建议这么写，这是一个特例。数�
 
 ```ts
 interface IObj {
-  a: number
-  b: number
+  a: number;
+  b: number;
 }
-const obj: IObj = { a: 1, b: 2 }
-const obj2: Partial<IObj> = {}
+const obj: IObj = { a: 1, b: 2 };
+const obj2: Partial<IObj> = {};
 Object.keys(obj).forEach((keyName) => {
-  obj2[keyName] = obj[keyName]
-})
+  obj2[keyName] = obj[keyName];
+});
 ```
 
 解决方法一：类型断言
 
 ```ts
 interface IObj {
-  a: number
-  b: number
+  a: number;
+  b: number;
 }
-const obj: IObj = { a: 1, b: 2 }
-const obj2: Partial<IObj> = {}
-;(Object.keys(obj) as Array<keyof IObj>).forEach((keyName) => {
-  obj2[keyName] = obj[keyName]
-})
+const obj: IObj = { a: 1, b: 2 };
+const obj2: Partial<IObj> = {};
+(Object.keys(obj) as Array<keyof IObj>).forEach((keyName) => {
+  obj2[keyName] = obj[keyName];
+});
 ```
 
 或者:
 
 ```ts
 Object.keys(obj).forEach((keyName) => {
-  obj2[keyName as keyof IObj] = obj[keyName as keyof IObj]
-})
+  obj2[keyName as keyof IObj] = obj[keyName as keyof IObj];
+});
 ```
 
 解决方法二：`for...of` 循环
 
 ```ts
 for (const [keyName, value] of Object.entries(obj)) {
-  obj2[keyName as keyof IObj] = value
+  obj2[keyName as keyof IObj] = value;
 }
 ```
 
@@ -450,11 +460,11 @@ for (const [keyName, value] of Object.entries(obj)) {
 
 ```ts
 interface IObj {
-  a: number
-  b: number
+  a: number;
+  b: number;
 }
-const obj: IObj = { a: 1, b: 2 }
-const obj2: Partial<IObj> = Object.fromEntries(Object.entries(obj))
+const obj: IObj = { a: 1, b: 2 };
+const obj2: Partial<IObj> = Object.fromEntries(Object.entries(obj));
 ```
 
 不建议使用: `Object.assign(obj2, obj);`, 因为没有类型安全检查。
@@ -463,14 +473,14 @@ const obj2: Partial<IObj> = Object.fromEntries(Object.entries(obj))
 
 ```ts
 let obj: {
-  a: number
-}
+  a: number;
+};
 const fn = () => {
-  obj = { a: 1 }
-}
-fn()
+  obj = { a: 1 };
+};
+fn();
 
-obj.a // error, Variable 'obj' is used before being assigned.
+obj.a; // error, Variable 'obj' is used before being assigned.
 // 需改成
-obj!.a
+obj!.a;
 ```
