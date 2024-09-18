@@ -199,7 +199,7 @@ resolved 是包的缓存地址。
 		tinycolor2 "^1.4.1"
 ```
 
-::: 参考地址
+:::tip 参考地址
 
 <https://stackoverflow.com/questions/22343224/whats-the-difference-between-tilde-and-caret-in-package-json>
 

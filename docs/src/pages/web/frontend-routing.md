@@ -1,3 +1,5 @@
+# 前端路由
+
 ## 1: Hash
 
 - 把当前的 `hash` 和回调函数 注册到一个对象里面。
@@ -7,82 +9,82 @@
 ```html
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
-		<title>hash router</title>
-	</head>
-	<body>
-		<ul>
-			<li><a href="#/">/</a></li>
-			<li><a href="#/page1">page1</a></li>
-			<li><a href="#/page2">page2</a></li>
-		</ul>
-		<div class="content-div"></div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>hash router</title>
+  </head>
+  <body>
+    <ul>
+      <li><a href="#/">/</a></li>
+      <li><a href="#/page1">page1</a></li>
+      <li><a href="#/page2">page2</a></li>
+    </ul>
+    <div class="content-div"></div>
 
-		<button>back</button>
+    <button>back</button>
 
-		<script src="index.js"></script>
-	</body>
+    <script src="index.js"></script>
+  </body>
 </html>
 ```
 
 ```javascript
 class RouterClass {
-	constructor() {
-		this.routes = {}; // 记录路径标识符对应的cb
-		this.currentUrl = ""; // 记录hash只为方便执行cb
-		this.isBack = false;
-		window.addEventListener("load", () => this.render());
-		window.addEventListener("hashchange", () => this.render());
+  constructor() {
+    this.routes = {}; // 记录路径标识符对应的cb
+    this.currentUrl = ""; // 记录hash只为方便执行cb
+    this.isBack = false;
+    window.addEventListener("load", () => this.render());
+    window.addEventListener("hashchange", () => this.render());
 
-		this.historyStack = [];
-	}
+    this.historyStack = [];
+  }
 
-	/**
-	 * 初始化
-	 */
-	static init() {
-		window.Router = new RouterClass();
-	}
+  /**
+   * 初始化
+   */
+  static init() {
+    window.Router = new RouterClass();
+  }
 
-	/**
-	 * 注册路由和回调
-	 * @param path
-	 * @param cb 回调
-	 */
-	route(path, cb) {
-		this.routes[path] = cb || function () {};
-	}
+  /**
+   * 注册路由和回调
+   * @param path
+   * @param cb 回调
+   */
+  route(path, cb) {
+    this.routes[path] = cb || function () {};
+  }
 
-	/**
-	 * 记录当前hash，执行cb
-	 */
-	render() {
-		let hash = this.getHash();
+  /**
+   * 记录当前hash，执行cb
+   */
+  render() {
+    let hash = this.getHash();
 
-		if (this.isBack) {
-			// 若当前是用户点了back, 则不存储 hash
-			this.isBack = false;
-		} else {
-			this.historyStack.push(hash);
-		}
+    if (this.isBack) {
+      // 若当前是用户点了back, 则不存储 hash
+      this.isBack = false;
+    } else {
+      this.historyStack.push(hash);
+    }
 
-		this.routes[hash]();
-	}
-	getHash() {
-		return location.hash.slice(1) || "/";
-	}
-	back() {
-		this.isBack = true;
-		this.historyStack.pop();
-		if (this.historyStack.length === 0) {
-			return;
-		}
-		let hash = this.historyStack[this.historyStack.length - 1];
-		location.hash = hash;
-	}
+    this.routes[hash]();
+  }
+  getHash() {
+    return location.hash.slice(1) || "/";
+  }
+  back() {
+    this.isBack = true;
+    this.historyStack.pop();
+    if (this.historyStack.length === 0) {
+      return;
+    }
+    let hash = this.historyStack[this.historyStack.length - 1];
+    location.hash = hash;
+  }
 }
 
 RouterClass.init();
@@ -107,61 +109,61 @@ BtnDom.addEventListener("click", Router.back.bind(Router), false);
 ```html
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
-		<title>h5 router</title>
-	</head>
-	<body>
-		<ul>
-			<li><a href="/">/</a></li>
-			<li><a href="/page1">page1</a></li>
-			<li><a href="/page2">page2</a></li>
-		</ul>
-		<div class="content-div"></div>
-		<script src="./index.js"></script>
-	</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>h5 router</title>
+  </head>
+  <body>
+    <ul>
+      <li><a href="/">/</a></li>
+      <li><a href="/page1">page1</a></li>
+      <li><a href="/page2">page2</a></li>
+    </ul>
+    <div class="content-div"></div>
+    <script src="./index.js"></script>
+  </body>
 </html>
 ```
 
 ```javascript
 class RouterClass {
-	constructor(path) {
-		this.routes = {}; // 记录路径标识符对应的cb
-		history.replaceState({ path }, null, path);
-		this.routes[path] && this.routes[path]();
-		window.addEventListener("popstate", (e) => {
-			console.log(e, " --- e");
-			const path = e.state && e.state.path;
-			this.routes[path] && this.routes[path]();
-		});
-	}
+  constructor(path) {
+    this.routes = {}; // 记录路径标识符对应的cb
+    history.replaceState({ path }, null, path);
+    this.routes[path] && this.routes[path]();
+    window.addEventListener("popstate", (e) => {
+      console.log(e, " --- e");
+      const path = e.state && e.state.path;
+      this.routes[path] && this.routes[path]();
+    });
+  }
 
-	/**
-	 * 初始化
-	 */
-	static init() {
-		window.Router = new RouterClass(location.pathname);
-	}
+  /**
+   * 初始化
+   */
+  static init() {
+    window.Router = new RouterClass(location.pathname);
+  }
 
-	/**
-	 * 记录path对应cb
-	 * @param path 路径
-	 * @param cb 回调
-	 */
-	route(path, cb) {
-		this.routes[path] = cb || function () {};
-	}
+  /**
+   * 记录path对应cb
+   * @param path 路径
+   * @param cb 回调
+   */
+  route(path, cb) {
+    this.routes[path] = cb || function () {};
+  }
 
-	/**
-	 * 触发路由对应回调
-	 * @param path
-	 */
-	go(path) {
-		history.pushState({ path }, null, path);
-		this.routes[path] && this.routes[path]();
-	}
+  /**
+   * 触发路由对应回调
+   * @param path
+   */
+  go(path) {
+    history.pushState({ path }, null, path);
+    this.routes[path] && this.routes[path]();
+  }
 }
 
 RouterClass.init();
@@ -174,9 +176,9 @@ Router.route("/page1", () => changeContent("page1页面"));
 Router.route("/page2", () => changeContent("page2页面"));
 
 ul.addEventListener("click", (e) => {
-	if (e.target.tagName === "A") {
-		e.preventDefault();
-		Router.go(e.target.getAttribute("href"));
-	}
+  if (e.target.tagName === "A") {
+    e.preventDefault();
+    Router.go(e.target.getAttribute("href"));
+  }
 });
 ```

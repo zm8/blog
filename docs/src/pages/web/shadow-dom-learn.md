@@ -221,7 +221,7 @@ var shadowRoot = box.attachShadow({ mode: "open" });
 </body>
 ```
 
-::: 参考地址
+:::tip 参考地址
 <https://developer.aliyun.com/article/717933>
 <https://developer.mozilla.org/zh-CN/docs/Web/Web_Components/Using_shadow_DOM>
 :::

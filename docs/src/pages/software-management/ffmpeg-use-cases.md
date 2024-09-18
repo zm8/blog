@@ -12,7 +12,7 @@
 ./ffmpeg -ss 00:04:32 -t 00:00:01 -i 1.mp3  output_1.mp3
 ```
 
-::: 参考地址
+:::tip 参考地址
 <https://blog.p2hp.com/archives/5512>
 <https://cloud.tencent.com/developer/article/1566587>
 :::

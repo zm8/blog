@@ -1,4 +1,4 @@
-# css 元素居中
+# CSS 元素居中
 
 ## 1. flex
 
@@ -35,7 +35,7 @@
 }
 ```
 
-### 4. 子元素 `absolute` 撑满
+### 4. 子元素 `absolute` 撑满 + `margin auto`
 
 ```css
 .box .item {

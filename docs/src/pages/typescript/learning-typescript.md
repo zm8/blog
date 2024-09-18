@@ -1,6 +1,8 @@
+# 学习 Typescript
+
 ## 前言
 
-1. 在线编辑地址: https://www.typescriptlang.org/play
+1. 在线编辑地址: <https://www.typescriptlang.org/play>
 2. 《Learning TypeScript》这本书不错, 而《深入理解 TypeScript》不行。
 
 ## TypeScript 简介
@@ -27,29 +29,29 @@ var Color;
 })(Color || (Color = {}));
 // 相当于
 var Color = {
-	0: "Red"
-	1: "Green"
-	2: "Blue"
-	Blue: 2
-	Green: 1
-	Red: 0
+ 0: "Red"
+ 1: "Green"
+ 2: "Blue"
+ Blue: 2
+ Green: 1
+ Red: 0
 }
 ```
 
 ### 2. 联合类型
 
 ```js
-var path: string | number[]
-path = '1'
-path = [1, 2]
+var path: string | number[];
+path = "1";
+path = [1, 2];
 ```
 
 ### 3. 类型守护
 
 ```ts
-var str = ''
-if (typeof str === 'string') {
-  str.join // 报错, 因为 string 没有 join 方法
+var str = "";
+if (typeof str === "string") {
+  str.join; // 报错, 因为 string 没有 join 方法
 }
 ```
 
@@ -60,22 +62,22 @@ if (typeof str === 'string') {
 
 ```ts
 // 目前测试看来, P也不一定要大写
-type PArr = Array<string | number>
-var arr: PArr = ['1', 2]
+type PArr = Array<string | number>;
+var arr: PArr = ["1", 2];
 
 // 错误: Type '() => void' is not assignable to type 'Callback'. Type 'void' is not assignable to type '{}'.
 // fn 必须有返回
-type Callback = () => {}
+type Callback = () => {};
 var fn: Callback = function () {
-  console.log(1)
-}
+  console.log(1);
+};
 
 // 正确
-type Callback = () => {}
+type Callback = () => {};
 var fn: Callback = function () {
-  console.log(1)
-  return 1
-}
+  console.log(1);
+  return 1;
+};
 ```
 
 ### 5. 环境声明
@@ -85,11 +87,11 @@ var fn: Callback = function () {
 ```ts
 // 创建一个接口 interface
 interface ICustomConsole {
-  log(...arg: number[]): void
+  log(...arg: number[]): void;
 }
 // declare 操作符创建一个环境声明
-declare var cConsole: ICustomConsole
-cConsole.log(2, 3)
+declare var cConsole: ICustomConsole;
+cConsole.log(2, 3);
 ```
 
 ### 6. 函数
@@ -98,30 +100,27 @@ cConsole.log(2, 3)
 
 ```ts
 function sum(x: number, y: number): number {
-  return x + y
+  return x + y;
 }
 ```
 
 函数表达式
 
 ```ts
-const sum: (x: number, y: number) => number = function (
-  x: number,
-  y: number
-): number {
-  return x + y
-}
+const sum: (x: number, y: number) => number = function (x: number, y: number): number {
+  return x + y;
+};
 ```
 
 用接口定义函数的形状
 
 ```ts
 interface ISum {
-  (x: number, y: number): number
+  (x: number, y: number): number;
 }
 const sum: ISum = function (x: number, y: number): number {
-  return x + y
-}
+  return x + y;
+};
 ```
 
 可选参数后面不允许再出现必需参数了：
@@ -129,7 +128,7 @@ const sum: ISum = function (x: number, y: number): number {
 ```ts
 // 报错
 function sum(x?: number, y: number): number {
-  return x + y
+  return x + y;
 }
 ```
 
@@ -137,7 +136,7 @@ function sum(x?: number, y: number): number {
 
 ```ts
 function sum(x?: number, y: number = 1): number {
-  return x || 2 + y
+  return x || 2 + y;
 }
 ```
 
@@ -146,10 +145,10 @@ function sum(x?: number, y: number = 1): number {
 ```ts
 function f(arr: any[], ...items: any[]) {
   items.forEach((item) => {
-    arr.push(item)
-  })
+    arr.push(item);
+  });
 }
-f([], 1, 2, 3)
+f([], 1, 2, 3);
 ```
 
 参数 str 用一个 '?', 代表这个参数可传可不传。
@@ -157,20 +156,20 @@ f([], 1, 2, 3)
 ```ts
 function greet(str?: string): string {
   if (str) {
-    return 'Hi' + str
+    return "Hi" + str;
   }
-  return 'Hi'
+  return "Hi";
 }
-greet()
-greet('2')
+greet();
+greet("2");
 
 // 也可以写成 匿名函数
 var greet = function (str?: string): string {
   if (str) {
-    return 'Hi' + str
+    return "Hi" + str;
   }
-  return 'Hi'
-}
+  return "Hi";
+};
 ```
 
 箭头函数
@@ -178,10 +177,10 @@ var greet = function (str?: string): string {
 ```ts
 var greet = (str?: string): string => {
   if (str) {
-    return 'Hi' + str
+    return "Hi" + str;
   }
-  return 'Hi'
-}
+  return "Hi";
+};
 ```
 
 添加匿名函数的类型
@@ -189,41 +188,41 @@ var greet = (str?: string): string => {
 ```ts
 var greet: (name: string) => string = function (name: string): string {
   if (name) {
-    return 'Hi' + name
+    return "Hi" + name;
   }
-  return name
-}
+  return name;
+};
 // 等价于
-var greet: (name: string) => string
+var greet: (name: string) => string;
 greet = function (name: string): string {
   if (name) {
-    return 'Hi' + name
+    return "Hi" + name;
   }
-  return name
-}
+  return name;
+};
 
 // callback 的参数只接受一个 number 类型参数, 且无任何返回值的函数。
 // void 这里有歧义, 如果我 callback 有返回值, 貌似也不会报错
 var sum = (a: number, b: number, callback: (res: number) => void) => {
-  callback(a + b)
-}
-sum(1, 2, (res) => console.log(res))
+  callback(a + b);
+};
+sum(1, 2, (res) => console.log(res));
 
 // 但是 void 这种写法就报错了
-var foo: () => void = () => {}
-var f: number = foo()
+var foo: () => void = () => {};
+var f: number = foo();
 ```
 
 ### 6. 定义类
 
 ```ts
 class Char {
-  num: number
+  num: number;
   constructor() {
-    this.num = 2
+    this.num = 2;
   }
 }
-var q = new Char()
+var q = new Char();
 ```
 
 ### 7. 接口
@@ -249,49 +248,49 @@ const p:Person{
 
 ```ts
 interface Window {
-  a: number
+  a: number;
 }
-window.a = 2
+window.a = 2;
 ```
 
 ```ts
 interface Ifoo {
-  log(arg: number): string
+  log(arg: number): string;
 }
 
 class Foo implements Ifoo {
   log(num: number) {
-    return String(num)
+    return String(num);
   }
 }
 
 interface Iobj {
-  num: number
-  str: string
+  num: number;
+  str: string;
 }
 var o: Iobj = {
   num: 1,
-  str: '2'
-}
+  str: "2"
+};
 ```
 
 ### 8. 命名空间
 
 ```ts
 namespace np {
-  export const a = 1
+  export const a = 1;
   export function foo() {}
 }
 
 // 会被编译成
-;('use strict')
-var np
-;(function (np) {
-  np.a = 1
+("use strict");
+var np;
+(function (np) {
+  np.a = 1;
   function foo() {}
-  np.foo = foo
-})(np || (np = {}))
-np.foo
+  np.foo = foo;
+})(np || (np = {}));
+np.foo;
 ```
 
 ### 9. 综合应用
@@ -299,32 +298,32 @@ np.foo
 ```ts
 namespace Geo {
   export interface Vec {
-    length(): number
-    nomarlize(): void
-    toArray(callback: (num: number[]) => void): void
+    length(): number;
+    nomarlize(): void;
+    toArray(callback: (num: number[]) => void): void;
   }
   export class Vec2d implements Vec {
-    private _x: number
-    private _y: number
+    private _x: number;
+    private _y: number;
     constructor(x: number, y: number) {
-      this._x = x
-      this._y = y
+      this._x = x;
+      this._y = y;
     }
     length(): number {
-      return 1
+      return 1;
     }
     nomarlize(): void {}
     toArray(callback: (num: number[]) => void) {
-      callback([this._x, this._y])
+      callback([this._x, this._y]);
     }
   }
 }
 
-var vector: Geo.Vec = new Geo.Vec2d(2, 3)
-vector.nomarlize()
+var vector: Geo.Vec = new Geo.Vec2d(2, 3);
+vector.nomarlize();
 vector.toArray(function (num: number[]) {
-  alert(num)
-})
+  alert(num);
+});
 ```
 
 ### 10 类型断言
@@ -333,35 +332,35 @@ vector.toArray(function (num: number[]) {
 
 ```ts
 interface Cat {
-  name: string
-  run(): void
+  name: string;
+  run(): void;
 }
 interface Fish {
-  name: string
-  swim(): void
+  name: string;
+  swim(): void;
 }
 
 // error
 function isFish(animal: Cat | Fish) {
-  if (typeof animal.swim === 'function') {
-    return true
+  if (typeof animal.swim === "function") {
+    return true;
   }
-  return false
+  return false;
 }
 
 // correct
 function isFish(animal: Cat | Fish) {
-  if (typeof (animal as Fish).swim === 'function') {
-    return true
+  if (typeof (animal as Fish).swim === "function") {
+    return true;
   }
-  return false
+  return false;
 }
 
 function isFish(animal: Cat | Fish) {
-  if (typeof (animal as Fish).swim === 'function') {
-    return (animal as Fish).swim()
+  if (typeof (animal as Fish).swim === "function") {
+    return (animal as Fish).swim();
   }
-  return false
+  return false;
 }
 ```
 
@@ -369,40 +368,40 @@ function isFish(animal: Cat | Fish) {
 
 ```ts
 interface Cat {
-  name: string
-  run(): void
+  name: string;
+  run(): void;
 }
 interface Fish {
-  name: string
-  swim(): void
+  name: string;
+  swim(): void;
 }
 
 function swim(animal: Cat | Fish) {
-  ;(animal as Fish).swim()
+  (animal as Fish).swim();
 }
 
 const tom: Cat = {
-  name: 'Tom',
+  name: "Tom",
   run() {
-    console.log('run')
+    console.log("run");
   }
-}
-swim(tom)
+};
+swim(tom);
 ```
 
 编译成了, 我们断言了 animal 为 Fish, 所以导致运行时报错;
 
 ```js
 function swim(animal) {
-  animal.swim()
+  animal.swim();
 }
 const tom = {
-  name: 'Tom',
+  name: "Tom",
   run() {
-    console.log('run')
+    console.log("run");
   }
-}
-swim(tom)
+};
+swim(tom);
 ```
 
 将一个父类断言为更加具体的子类,
@@ -410,70 +409,70 @@ swim(tom)
 
 ```ts
 class ApiError extends Error {
-  code: number = 0
+  code: number = 0;
 }
 function isApiError(error: Error) {
-  if (typeof (error as ApiError).code === 'number') {
-    return 1
+  if (typeof (error as ApiError).code === "number") {
+    return 1;
   }
-  return false
+  return false;
 }
 ```
 
 将任何一个类型断言为 any;
 
 ```ts
-;(window as any).foo = 1
+(window as any).foo = 1;
 ```
 
 但是有时这样不太好;
 比如下面代码编译报错,
 
 ```ts
-let foo
-foo.a = 1
+let foo;
+foo.a = 1;
 ```
 
 改成如下, 但是运行时就会报错了
 
 ```ts
-let foo
-;(foo as any).a = 1
+let foo;
+(foo as any).a = 1;
 ```
 
 将 any 断言为一个具体的类型:
 
 ```ts
 function getCacheData(key: string): any {
-  return (window as any).cache[key]
+  return (window as any).cache[key];
 }
 
 interface Cat {
-  name: string
-  run(): void
+  name: string;
+  run(): void;
 }
 
-const tom = getCacheData('tom') as Cat
-tom.run()
+const tom = getCacheData("tom") as Cat;
+tom.run();
 ```
 
 要使得 A 能够被断言为 B，只需要 A 兼容 B 或 B 兼容 A 即可
 
 ```ts
 interface Animal {
-  name: string
+  name: string;
 }
 interface Cat {
-  name: string
-  run(): void
+  name: string;
+  run(): void;
 }
 
 function testAnimal(animal: Animal) {
-  return animal as Cat
+  return animal as Cat;
 }
 
 function testCat(cat: Cat) {
-  return cat as Animal
+  return cat as Animal;
 }
 ```
 
@@ -486,14 +485,14 @@ function testCat(cat: Cat) {
 
 ```ts
 interface Cat {
-  run(): void
+  run(): void;
 }
 interface Fish {
-  swim(): void
+  swim(): void;
 }
 
 function testCat(cat: Cat) {
-  return cat as any as Fish
+  return cat as any as Fish;
 }
 ```
 
@@ -503,20 +502,20 @@ function testCat(cat: Cat) {
 
 ```ts
 function toBoolean(something: any): boolean {
-  return something as boolean
+  return something as boolean;
 }
 
-toBoolean(1)
+toBoolean(1);
 ```
 
 编译后会变成:
 
 ```ts
 function toBoolean(something) {
-  return something
+  return something;
 }
 
-toBoolean(1)
+toBoolean(1);
 // 返回值为 1
 ```
 
@@ -526,48 +525,48 @@ toBoolean(1)
 
 ```ts
 function getCacheData(key: string): any {
-  return (window as any).cache[key]
+  return (window as any).cache[key];
 }
 
 interface Cat {
-  name: string
-  run(): void
+  name: string;
+  run(): void;
 }
 
-const tom = getCacheData('tom') as Cat
-tom.run()
+const tom = getCacheData("tom") as Cat;
+tom.run();
 ```
 
 类型声明
 
 ```ts
 function getCacheData(key: string): any {
-  return (window as any).cache[key]
+  return (window as any).cache[key];
 }
 
 interface Cat {
-  name: string
-  run(): void
+  name: string;
+  run(): void;
 }
 
-const tom: Cat = getCacheData('tom')
-tom.run()
+const tom: Cat = getCacheData("tom");
+tom.run();
 ```
 
 泛型
 
 ```ts
 function getCacheData<T>(key: string): T {
-  return (window as any).cache[key]
+  return (window as any).cache[key];
 }
 
 interface Cat {
-  name: string
-  run(): void
+  name: string;
+  run(): void;
 }
 
-const tom = getCacheData<Cat>('tom')
-tom.run()
+const tom = getCacheData<Cat>("tom");
+tom.run();
 ```
 
 ### 什么是声明语句
@@ -577,7 +576,7 @@ tom.run()
 `declare var` 并没有真正定义一个变量, 只是定义了一个全局变量 jQuery 的类型, 仅仅用于编译时的检查, 编译以后会删除;
 
 ```ts
-declare var jQuery: (selector: string) => any
+declare var jQuery: (selector: string) => any;
 ```
 
 ### 什么是声明文件
@@ -592,11 +591,11 @@ declare var jQuery: (selector: string) => any
 所以全局变量通常是使用 const
 
 ```ts
-declare const jQuery: (selector: string) => any
+declare const jQuery: (selector: string) => any;
 // error
 jQuery = function (selector) {
-  return document.querySelector(selector)
-}
+  return document.querySelector(selector);
+};
 ```
 
 ### declare function§
@@ -604,14 +603,14 @@ jQuery = function (selector) {
 declare function 用来定义全局函数的类型。jQuery 其实就是一个函数，所以也可以用 function 来定义
 
 ```ts
-declare function jQuery(selector: string): any
+declare function jQuery(selector: string): any;
 ```
 
 在函数类型的声明语句中，函数重载也是支持的
 
 ```ts
-declare function jQuery(selector: string): any
-declare function jQuery(domReadyCallback: () => any): any
+declare function jQuery(selector: string): any;
+declare function jQuery(domReadyCallback: () => any): any;
 ```
 
 ### declare namespace
@@ -620,10 +619,10 @@ namespace 被淘汰了，但是在声明文件中，declare namespace 还是比�
 
 ```ts
 declare namespace jQuery {
-  function ajax(url: string, settings?: any): void
+  function ajax(url: string, settings?: any): void;
 }
 
-jQuery.ajax('a')
+jQuery.ajax("a");
 ```
 
 ### interface 和 type
@@ -633,17 +632,17 @@ jQuery.ajax('a')
 ```ts
 // src/jQuery.d.ts
 interface AjaxSettings {
-  method?: 'GET' | 'POST'
-  data?: any
+  method?: "GET" | "POST";
+  data?: any;
 }
 
 // src/index.ts
 let settings: AjaxSettings = {
-  method: 'POST',
+  method: "POST",
   data: {
-    name: 'foo'
+    name: "foo"
   }
-}
+};
 ```
 
 // 防止命名冲突
@@ -653,45 +652,45 @@ let settings: AjaxSettings = {
 // src/jQuery.d.ts
 declare namespace jQuery {
   interface AjaxSettings {
-    method?: 'GET' | 'POST'
-    data?: any
+    method?: "GET" | "POST";
+    data?: any;
   }
-  function ajax(url: string, settings?: AjaxSettings): void
+  function ajax(url: string, settings?: AjaxSettings): void;
 }
 
 // src/index.ts
 let settings: jQuery.AjaxSettings = {
-  method: 'POST',
+  method: "POST",
   data: {
-    name: 'foo'
+    name: "foo"
   }
-}
+};
 ```
 
 ### 声明合并
 
 ```ts
 // src/jQuery.d.ts
-declare function jQuery(selector: string): any
+declare function jQuery(selector: string): any;
 declare namespace jQuery {
-  function ajax(url: string, settings?: any): void
+  function ajax(url: string, settings?: any): void;
 }
 
 // src/index.ts
-jQuery('#foo')
-jQuery.ajax('/api/get_something')
+jQuery("#foo");
+jQuery.ajax("/api/get_something");
 ```
 
 ### 获取 enum 的 key
 
 ```ts
 enum Gender {
-  'M' = '男',
-  'F' = '女',
-  'U' = '未知'
+  "M" = "男",
+  "F" = "女",
+  "U" = "未知"
 }
-type keyEnum = keyof typeof Gender
-const keyName: keyEnum = 'M'
+type keyEnum = keyof typeof Gender;
+const keyName: keyEnum = "M";
 ```
 
 ### 其它 API
@@ -700,23 +699,23 @@ const keyName: keyEnum = 'M'
 
 ```ts
 interface Person {
-  name: string
-  age: number
+  name: string;
+  age: number;
 }
 
-type P = Partial<Person>
+type P = Partial<Person>;
 
-type P2 = { [key in keyof Person]?: Person[key] | undefined }
+type P2 = { [key in keyof Person]?: Person[key] | undefined };
 
 var persion: P = {
-  name: '1'
-}
+  name: "1"
+};
 
 var persion: P2 = {
-  name: '1'
-}
+  name: "1"
+};
 ```
 
-::: 参考地址
-https://ts.xcatliu.com/
+:::tip 参考地址
+<https://ts.xcatliu.com/>
 :::

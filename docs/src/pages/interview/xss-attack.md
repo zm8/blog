@@ -169,6 +169,6 @@ console.log("Server is running at: http://localhost.meetsocial.cn:8888");
 2. 为什么银行网站需要 2 次输入密码 来查看相关余额，也是为了安全, 防止之前受到了 xss 攻击。
 3. [香港书城网上商店 XSS 攻击](https://www.hkbookcity.com/searchbook3.php?startnum=1&txtkeyword=%22%3E%3Cscript%3Ealert%28document.cookie%29%3B%3C%2Fscript%3E%28%AE%D1%A6W%A9%CEISBN%29&btnK=%26%23160%3B%26%23160%3B%A7%E4%AE%D1%26%23160%3B%26%23160%3B&key=smart)(请勿做违法的事)
 
-::: 参考地址
-https://cloud.tencent.com/developer/article/1410405
+:::tip 参考地址
+<https://cloud.tencent.com/developer/article/1410405>
 :::

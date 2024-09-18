@@ -38,7 +38,7 @@
 4. 服务器推送功能
    比如请求 html 文件, 服务器在返回 HTML 的基础上, 将 HTML 引用的其它资源文件一起返回给客户端, 减少客户端等待;
 
-::: 参考地址
+:::tip 参考地址
 <https://www.debugger.wiki/article/html/1565502376358922>
 <https://juejin.cn/post/6844904100035821575#heading-43>
 :::

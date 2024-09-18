@@ -5,8 +5,8 @@
 `getBoundingClientRect` 比 `offsetHeight` 获取的值更准确
 
 ```js
-document.querySelector('div').offsetHeight // 55.1953125
-document.querySelector('div').getBoundingClientRect().height // 55
+document.querySelector("div").offsetHeight; // 55.1953125
+document.querySelector("div").getBoundingClientRect().height; // 55
 ```
 
 <img width="800" alt="image" src="https://user-images.githubusercontent.com/32337542/154235622-1d7674d4-c7b0-482b-af35-311f67b9f372.png">
@@ -16,14 +16,14 @@ document.querySelector('div').getBoundingClientRect().height // 55
 而 Android 可以
 
 ```js
-const ref = useRef()
+const ref = useRef();
 useEffect(() => {
   setTimeout(() => {
-    ref.current.focus()
-  }, 1000)
-}, [])
+    ref.current.focus();
+  }, 1000);
+}, []);
 
-return <input ref={ref} />
+return <input ref={ref} />;
 ```
 
 ### 3. Promise.prototype.finally() 有的 Android 机不支持
@@ -38,8 +38,8 @@ return <input ref={ref} />
 ```
 
 ```js
-const promiseFinally = require('promise.prototype.finally')
-promiseFinally.shim()
+const promiseFinally = require("promise.prototype.finally");
+promiseFinally.shim();
 ```
 
 ### 4. Proxy
@@ -61,7 +61,7 @@ promiseFinally.shim()
 | 14.0 | 2020 年 9 月 17 日 | iPhone 12、12 Pro、12 Pro Max、12 mini
 | 15.0 | 2021 年 9 月 21 日 | iPhone 13
 
-::: 参考地址
+:::tip 参考地址
 https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/finally
 https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy
 :::

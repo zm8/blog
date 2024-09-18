@@ -90,6 +90,6 @@ const Details = () => {
 };
 ```
 
-:::参考链接
+:::tip 参考地址
 <https://mp.weixin.qq.com/s/TA7bvL3N_HbOqbT0MPrs8w>
 :::

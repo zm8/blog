@@ -1,5 +1,9 @@
 {
-	"$schema": "https://json.schemastore.org/tsconfig",
-	"include": [".vitepress/*.mts", ".vitepress/**/*.ts", ".vitepress/**/*.vue"],
-	"exclude": ["node_modules"]
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "include": [".vitepress/*.mts", ".vitepress/**/*.ts", ".vitepress/**/*.vue"],
+  "exclude": ["node_modules"],
+  "compilerOptions": {
+    // 其他配置项
+    "esModuleInterop": true
+  }
 }

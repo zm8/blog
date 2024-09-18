@@ -250,6 +250,6 @@ ES Modules 的特性如下:
 相同点:
 ES Modules 和 CommonJS 引入同一个模块多次，也只执行 1 次。不同点是 ES Modules 的 `import a from './a.mjs';` 会动态提升到头部。
 
-::: 参考地址:
+:::tip 参考地址
 <https://juejin.cn/post/6994224541312483336>
 :::

@@ -442,6 +442,6 @@ function tag(strings) {
 tag`\unicode`;
 ```
 
-::: 参考地址
+:::tip 参考地址
 <https://es6.ruanyifeng.com/#docs/string#%E6%A8%A1%E6%9D%BF%E5%AD%97%E7%AC%A6%E4%B8%B2>
 :::

@@ -27,9 +27,9 @@
 代码如下:
 
 ```javascript
-'use strict'
+"use strict";
 
-const fs = require('fs')
+const fs = require("fs");
 
 const html = `
 <!DOCTYPE html>
@@ -41,36 +41,36 @@ const html = `
     <body>
       <h1>Test</h1>
     </body>
-</html>`
+</html>`;
 
 var options = {
-  key: fs.readFileSync('./cert/local.key'),
-  cert: fs.readFileSync('./cert/local.crt')
-}
+  key: fs.readFileSync("./cert/local.key"),
+  cert: fs.readFileSync("./cert/local.crt")
+};
 
-const https = require('https')
+const https = require("https");
 https
   .createServer(options)
-  .on('request', (req, res) => {
-    const { url } = req
+  .on("request", (req, res) => {
+    const { url } = req;
 
-    if (url === '/') {
-      let d = new Date()
-      d.setSeconds(d.getSeconds() + 10)
+    if (url === "/") {
+      let d = new Date();
+      d.setSeconds(d.getSeconds() + 10);
       res.writeHead(200, {
         expires: d.toUTCString(),
         // 'cache-control': 'max-age=10',
-        'content-type': ' text/html; charset=utf-8'
-      })
-      res.end(html)
-      return
+        "content-type": " text/html; charset=utf-8"
+      });
+      res.end(html);
+      return;
     }
-    res.statusCode = 404
-    res.end('')
+    res.statusCode = 404;
+    res.end("");
   })
   .listen(9990, () => {
-    console.log('打开 https://localhost.meetsocial.cn:9990')
-  })
+    console.log("打开 https://localhost.meetsocial.cn:9990");
+  });
 ```
 
 1. 首次打开首页
@@ -147,19 +147,19 @@ cache-control 的值影响返回 200 或 304。
 代码:
 
 ```javascript
-const express = require('express')
-const app = express()
+const express = require("express");
+const app = express();
 
 var options = {
   lastModified: false,
   setHeaders: (res, path, stat) => {
     res.set({
-      'Cache-Control': 'max-age=10'
-    })
+      "Cache-Control": "max-age=10"
+    });
   }
-}
-app.use(express.static(__dirname + '/public', options))
-app.listen(3000)
+};
+app.use(express.static(__dirname + "/public", options));
+app.listen(3000);
 ```
 
 截图:
@@ -231,16 +231,16 @@ app.listen(3000)
 打开控制台, 执行下面代码:
 
 ```javascript
-fetch('/umi.8d0a67d0.js', {
-  cache: 'no-cache'
-}).then((res) => res.text())
+fetch("/umi.8d0a67d0.js", {
+  cache: "no-cache"
+}).then((res) => res.text());
 
 // 等价于
-fetch('/umi.8d0a67d0.js', {
+fetch("/umi.8d0a67d0.js", {
   headers: {
-    'Cache-Control': 'max-age=0'
+    "Cache-Control": "max-age=0"
   }
-}).then((res) => res.text())
+}).then((res) => res.text());
 ```
 
 截图:
@@ -256,23 +256,23 @@ fetch('/umi.8d0a67d0.js', {
 代码:
 
 ```javascript
-fetch('/umi.8d0a67d0.js', {
+fetch("/umi.8d0a67d0.js", {
   headers: {
-    'Cache-Control': 'no-cache'
+    "Cache-Control": "no-cache"
   }
-}).then((res) => res.text())
+}).then((res) => res.text());
 
 // 或
-fetch('/umi.8d0a67d0.js', {
+fetch("/umi.8d0a67d0.js", {
   headers: {
-    Pragma: 'no-cache'
+    Pragma: "no-cache"
   }
-}).then((res) => res.text())
+}).then((res) => res.text());
 
 // 或, reload 会同时添加 Pragma 和 Cache-Control
-fetch('/umi.8d0a67d0.js', {
-  cache: 'reload'
-}).then((res) => res.text())
+fetch("/umi.8d0a67d0.js", {
+  cache: "reload"
+}).then((res) => res.text());
 ```
 
 截图(reload):
@@ -286,9 +286,9 @@ fetch('/umi.8d0a67d0.js', {
 代码:
 
 ```javascript
-fetch('/umi.8d0a67d0.js', {
-  cache: 'no-store'
-}).then((res) => res.text())
+fetch("/umi.8d0a67d0.js", {
+  cache: "no-store"
+}).then((res) => res.text());
 ```
 
 结论:
@@ -300,21 +300,21 @@ fetch('/umi.8d0a67d0.js', {
 代码如下:
 
 ```javascript
-fetch('/umi.8d0a67d0.js', {
+fetch("/umi.8d0a67d0.js", {
   headers: {
-    'Cache-Control': 'max-age=1'
+    "Cache-Control": "max-age=1"
   }
-}).then((res) => res.text())
+}).then((res) => res.text());
 
 // 等价于
-fetch('/umi.8d0a67d0.js', {
+fetch("/umi.8d0a67d0.js", {
   headers: {
-    'Cache-Control': 'max-age=999999999'
+    "Cache-Control": "max-age=999999999"
   }
-}).then((res) => res.text())
+}).then((res) => res.text());
 
 // 等价于, 什么都没设置
-fetch('/umi.8d0a67d0.js').then((res) => res.text())
+fetch("/umi.8d0a67d0.js").then((res) => res.text());
 ```
 
 结论:
@@ -348,7 +348,7 @@ fetch('/umi.8d0a67d0.js').then((res) => res.text())
 
 ![image](https://user-images.githubusercontent.com/32337542/82033232-0258eb80-96cf-11ea-83c9-844e731d9561.png)
 
-::: 参考地址
+:::tip 参考地址
 https://zhuanlan.zhihu.com/p/55623075
 https://mp.weixin.qq.com/s/aY2JaX9q1VABNMLRdMw3EA
 https://www.cnblogs.com/chenqf/p/6386163.html

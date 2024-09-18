@@ -63,6 +63,6 @@ characterData 设置, 依赖 subtree 为 true
 document.querySelector(".decendent").innerHTML = "abc";
 ```
 
-::: 参考地址
+:::tip 参考地址
 <https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver/observe>
 :::

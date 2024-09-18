@@ -68,7 +68,7 @@ res.a();
 
 ### 返回 void 不报错的原因
 
-#https://github.com/microsoft/TypeScript/issues/38758
+<https://github.com/microsoft/TypeScript/issues/38758>
 
 > A return type of void does not mean the function returns nothing. It means the functions return type should not be used for anything meaningful.
 

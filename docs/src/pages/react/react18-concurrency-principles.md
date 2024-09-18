@@ -122,6 +122,6 @@ useDeferredValue 将紧急的事变成不紧急的。
 
 当并发更新发生变化的时候，useSyncExternalStore 会让它进行强制渲染。
 
-::: 参考地址
+:::tip 参考地址
 https://juejin.cn/post/7087747915950604318
 :::

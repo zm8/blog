@@ -1,4 +1,5 @@
 import type { DefaultTheme, HeadConfig } from 'vitepress';
+import { generateStructure } from './generateStructure.mjs';
 
 export default {
   base: '/blog/',
@@ -70,7 +71,7 @@ export default {
 function nav(): DefaultTheme.NavItem[] {
   return [
     {
-      link: 'https://cn.vuejs.org/',
+      link: 'https://vueuse.org/',
       text: 'Vue',
     },
     {
@@ -88,134 +89,17 @@ function nav(): DefaultTheme.NavItem[] {
           link: 'https://github.com/',
           text: 'Github',
         },
+        {
+          link: 'https://www.typescriptlang.org/play/',
+          text: 'TS Playground',
+        },
       ],
     },
   ];
 }
 
 function sidebarPages(): DefaultTheme.SidebarItem[] {
-  return [
-    {
-      collapsed: false,
-      text: 'Vue',
-      items: [
-        {
-          link: 'vue/vue3-practical-guide',
-          text: 'Vue3 实践与问题集锦',
-        },
-        {
-          link: 'vue/vue2-practical-guide',
-          text: 'Vue2 实践与问题集锦',
-        },
-      ],
-    },
-    {
-      collapsed: false,
-      text: 'React',
-      items: [
-        {
-          link: 'react/react-fiber',
-          text: 'React Fiber 学习',
-        },
-      ],
-    },
-    {
-      collapsed: false,
-      text: 'Typescript',
-      items: [
-        {
-          link: 'typescript/typescript-guide',
-          text: 'Typescript 进阶指南',
-        },
-      ],
-    },
-    {
-      collapsed: false,
-      text: 'Algorithm',
-      items: [
-        {
-          link: 'algorithm/array-deduplication',
-          text: '数组去重',
-        },
-        {
-          link: 'algorithm/hanoi-tower',
-          text: '汉诺塔问题',
-        },
-        {
-          link: 'algorithm/js-string-template',
-          text: 'Javascript 字符串模板',
-        },
-        {
-          link: 'algorithm/leetcode-algorithm',
-          text: 'Leetcode 算法题',
-        },
-      ],
-    },
-    {
-      collapsed: false,
-      text: 'CSS',
-      items: [
-        {
-          link: 'css/css-center',
-          text: 'CSS 元素居中',
-        },
-        {
-          link: 'css/css-grid-width-allocation',
-          text: 'Grid 中元素的实际宽度问题',
-        },
-        {
-          link: 'css/css-notes',
-          text: 'CSS 知识点记录',
-        },
-        {
-          link: 'css/css-selector',
-          text: 'CSS 选择器',
-        },
-        {
-          link: 'css/flex-basic-learn',
-          text: 'Flex 基础学习',
-        },
-        {
-          link: 'css/flex-notes',
-          text: 'Flex 知识点记录',
-        },
-        {
-          link: 'css/scss-learn',
-          text: 'SCSS 学习',
-        },
-      ],
-    },
-    {
-      collapsed: false,
-      text: 'Node.js',
-      items: [
-        {
-          link: 'nodejs/eggjs-logging',
-          text: 'Eggjs的日志功能',
-        },
-        {
-          link: 'nodejs/http-get-serve',
-          text: 'Node.js处理GET请求的HTTP服务器',
-        },
-        {
-          link: 'nodejs/http-post-form',
-          text: 'Node.js处理表单提交的POST请求',
-        },
-        {
-          link: 'nodejs/http-post-serve',
-          text: 'Node.js创建POST请求的HTTP服务器',
-        },
-        {
-          link: 'nodejs/nodejs-path-difference',
-          text: 'Node.js里的__dirname, __filename, process.cwd(), path.resolve()区别',
-        },
-        {
-          link: 'nodejs/path-join-vs-resolve',
-          text: 'path.join和path.resolve的区别',
-        },
-      ],
-    },
-  ];
+  return generateStructure();
 }
 
 function head(): HeadConfig[] {

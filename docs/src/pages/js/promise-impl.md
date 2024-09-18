@@ -161,10 +161,8 @@ if (typeof process !== "undefined" && process.nextTick) {
 }
 ```
 
-::: tip 参考链接
-https://www.promisejs.org/implementing/
-
-https://github.com/then/promise/
-
-https://www.promisejs.org/polyfills/promise-6.1.0.js
+:::tip 参考地址
+<https://www.promisejs.org/implementing/>
+<https://github.com/then/promise/>
+<https://www.promisejs.org/polyfills/promise-6.1.0.js>
 :::

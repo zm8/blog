@@ -432,6 +432,6 @@ for (let [, value] of map) {
 const { SourceMapConsumer, SourceNode } = require("source-map");
 ```
 
-:::参考地址
+:::tip 参考地址
 <https://es6.ruanyifeng.com/#docs/destructuring#%E5%9C%86%E6%8B%AC%E5%8F%B7%E9%97%AE%E9%A2%98>
 :::

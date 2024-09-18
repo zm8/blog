@@ -56,7 +56,7 @@ if (condition) {
 }
 ```
 
-::: 参考地址
+:::tip 参考地址
 <https://www.bookstack.cn/read/es6-3rd/spilt.2.docs-module-loader.md>
 <https://www.bookstack.cn/read/es6-3rd/spilt.2.docs-module-loader.md>
 :::

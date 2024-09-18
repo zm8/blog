@@ -26,15 +26,15 @@ currentTarget: document 对象
 ```js
 class Test extends React.Component {
   clickEl = (e) => {
-    console.log('target:', e.nativeEvent.target)
-    console.log('currentTarget:', e.nativeEvent.currentTarget)
-  }
+    console.log("target:", e.nativeEvent.target);
+    console.log("currentTarget:", e.nativeEvent.currentTarget);
+  };
   render() {
     return (
       <div>
         <p onClick={this.clickEl}>Test</p>
       </div>
-    )
+    );
   }
 }
 ```
@@ -60,27 +60,27 @@ React 事件：父元素事件监听！
 ```js
 class Test extends React.Component {
   constructor() {
-    super()
-    this.parentRef = React.createRef()
-    this.childRef = React.createRef()
+    super();
+    this.parentRef = React.createRef();
+    this.childRef = React.createRef();
   }
   componentDidMount() {
-    this.parentRef.current?.addEventListener('click', () => {
-      console.log('原生事件：父元素 DOM 事件监听！')
-    })
-    this.childRef.current?.addEventListener('click', () => {
-      console.log('原生事件：子元素 DOM 事件监听！')
-    })
-    document.addEventListener('click', (e) => {
-      console.log('原生事件：document DOM 事件监听！')
-    })
+    this.parentRef.current?.addEventListener("click", () => {
+      console.log("原生事件：父元素 DOM 事件监听！");
+    });
+    this.childRef.current?.addEventListener("click", () => {
+      console.log("原生事件：子元素 DOM 事件监听！");
+    });
+    document.addEventListener("click", (e) => {
+      console.log("原生事件：document DOM 事件监听！");
+    });
   }
   parentClickFun = () => {
-    console.log('React 事件：父元素事件监听！')
-  }
+    console.log("React 事件：父元素事件监听！");
+  };
   childClickFun = () => {
-    console.log('React 事件：子元素事件监听！')
-  }
+    console.log("React 事件：子元素事件监听！");
+  };
   render() {
     return (
       <div ref={this.parentRef} onClick={this.parentClickFun}>
@@ -88,7 +88,7 @@ class Test extends React.Component {
           分析事件执行顺序
         </div>
       </div>
-    )
+    );
   }
 }
 ```
@@ -106,27 +106,27 @@ PS: React 16.4 的版本打印内容一样。
 ```js
 class Test extends React.Component {
   constructor() {
-    super()
-    this.ref = React.createRef()
+    super();
+    this.ref = React.createRef();
   }
   componentDidMount() {
-    this.ref.current?.addEventListener('click', (e) => {
-      e.stopPropagation()
-      console.log('原生事件DOM')
-    })
-    document.addEventListener('click', () => {
-      console.log('原生事件document')
-    })
+    this.ref.current?.addEventListener("click", (e) => {
+      e.stopPropagation();
+      console.log("原生事件DOM");
+    });
+    document.addEventListener("click", () => {
+      console.log("原生事件document");
+    });
   }
   clickFun = () => {
-    console.log('React事件DOM')
-  }
+    console.log("React事件DOM");
+  };
   render() {
     return (
       <div ref={this.ref} onClick={this.clickFun}>
         分析事件执行顺序
       </div>
-    )
+    );
   }
 }
 ```
@@ -153,32 +153,32 @@ React事件DOM
 ```js
 class Test extends React.Component {
   constructor() {
-    super()
-    this.ref = React.createRef()
+    super();
+    this.ref = React.createRef();
   }
   componentDidMount() {
-    this.ref.current?.addEventListener('click', () => {
-      console.log('原生事件DOM')
-    })
-    document.addEventListener('click', () => {
-      console.log('原生事件document')
-    })
+    this.ref.current?.addEventListener("click", () => {
+      console.log("原生事件DOM");
+    });
+    document.addEventListener("click", () => {
+      console.log("原生事件document");
+    });
   }
   clickFun = (e) => {
-    e.stopPropagation()
-    console.log('React事件DOM')
-  }
+    e.stopPropagation();
+    console.log("React事件DOM");
+  };
   render() {
     return (
       <div ref={this.ref} onClick={this.clickFun}>
         分析事件执行顺序
       </div>
-    )
+    );
   }
 }
 ```
 
-::: 参考地址
+:::tip 参考地址
 https://segmentfault.com/a/1190000038251163
 https://zh-hans.reactjs.org/blog/2020/08/10/react-v17-rc.html
 :::

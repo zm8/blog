@@ -1,4 +1,4 @@
-# `var` `let` `const` 区别
+# var, let, const 区别
 
 ## 先说结论
 
@@ -96,6 +96,6 @@ const foo;
 console.log(foo);
 ```
 
-::: 参考地址
+:::tip 参考地址
 <https://chinese.freecodecamp.org/news/javascript-var-let-and-const/>
 :::

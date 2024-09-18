@@ -161,9 +161,7 @@ app.use(async (ctx, next) => {
 });
 ```
 
-::: 参考地址
-
+:::tip 参考地址
 <https://hijiangtao.github.io/2017/11/10/Mastering-Koa-Middleware/>
 <https://github.com/0326/super-mini-koa/blob/master/super-mini-koa.js>
-
 :::

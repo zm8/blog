@@ -239,7 +239,7 @@ document.cookie = "bbb=2222;SameSite=None; Secure";
 2. CSRF 主动防御措施：**Token 验证 或者 双重 Cookie 验证 以及配合 Samesite Cookie**。
 3. 保证页面的幂等性，**后端接口不要在 GET 页面中做用户操作**。
 
-::: 参考地址
+:::tip 参考地址
 <https://cloud.tencent.com/developer/article/1406118>
 <https://www.ruanyifeng.com/blog/2019/09/cookie-samesite.html>
 :::

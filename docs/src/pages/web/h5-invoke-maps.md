@@ -70,6 +70,6 @@ IOS 和 Android 一样
 >
 ```
 
-::: 参考地址
+:::tip 参考地址
 https://lbs.qq.com/webApi/uriV1/uriGuide/uriMobileRoute
 :::

@@ -8,34 +8,34 @@
 ### 1. 从一次最简单的 React 渲染说起
 
 ```javascript
-const element = <h1 title="hello">Hello World!</h1>
-const container = document.getElementById('root')
-ReactDOM.render(element, container)
+const element = <h1 title="hello">Hello World!</h1>;
+const container = document.getElementById("root");
+ReactDOM.render(element, container);
 ```
 
 上面的代码 element 是 JSX 语法, JSX 本质上还是 JS, 配合 [@babel/plugin-transform-react-jsx](https://babeljs.io/docs/en/babel-plugin-transform-react-jsx), 会转换成如下:
 
 ```js
 var element = /*#__PURE__*/ React.createElement(
-  'h1',
+  "h1",
   {
-    title: 'hello'
+    title: "hello"
   },
-  'Hello World!'
-)
+  "Hello World!"
+);
 ```
 
 为了返回如下的格式，后面将说如何实现 `React.createElement`
 
 ```javascript
 const element = {
-  type: 'h1',
+  type: "h1",
   props: {
-    title: 'hello',
+    title: "hello",
     // createElement 第三个及之后参数移到 props.children
-    children: 'Hello World!'
+    children: "Hello World!"
   }
-}
+};
 ```
 
 ### 2. `React.createElement` 实现
@@ -49,24 +49,24 @@ const element = (
     <a href="http://www.baidu.com">bar</a>
     <b />
   </div>
-)
+);
 
 // jsx 会转换成:
 var element = /*#__PURE__*/ React.createElement(
-  'div',
+  "div",
   {
-    id: 'foo'
+    id: "foo"
   },
-  'Hello World',
+  "Hello World",
   /*#__PURE__*/ React.createElement(
-    'a',
+    "a",
     {
-      href: 'http://www.baidu.com'
+      href: "http://www.baidu.com"
     },
-    'bar'
+    "bar"
   ),
-  /*#__PURE__*/ React.createElement('b', null)
-)
+  /*#__PURE__*/ React.createElement("b", null)
+);
 ```
 
 最终我们希望 element 为, type 是它的元素名, props 里面是它的属性, children 是它的子元素。
@@ -98,11 +98,9 @@ function createElement(type, props, ...children) {
     type,
     props: {
       ...props,
-      children: children.map((child) =>
-        typeof child === 'object' ? child : child
-      )
+      children: children.map((child) => (typeof child === "object" ? child : child))
     }
-  }
+  };
 }
 ```
 
@@ -115,20 +113,20 @@ function createElement(type, props, ...children) {
     props: {
       ...props,
       children: children.map((child) =>
-        typeof child === 'object' ? child : createTextElement(child)
+        typeof child === "object" ? child : createTextElement(child)
       )
     }
-  }
+  };
 }
 
 function createTextElement(text) {
   return {
-    type: 'TEXT_ELEMENT',
+    type: "TEXT_ELEMENT",
     props: {
       nodeValue: text,
       children: []
     }
-  }
+  };
 }
 ```
 
@@ -138,21 +136,21 @@ function createTextElement(text) {
 function render(element, container) {
   // 创建节点
   const dom =
-    element.type === 'TEXT_ELEMENT'
-      ? document.createTextNode('')
-      : document.createElement(element.type)
+    element.type === "TEXT_ELEMENT"
+      ? document.createTextNode("")
+      : document.createElement(element.type);
 
-  const isProperty = (key) => key !== 'children'
+  const isProperty = (key) => key !== "children";
   Object.keys(element.props)
     .filter(isProperty)
     .forEach((name) => {
-      dom[name] = element.props[name]
-    })
+      dom[name] = element.props[name];
+    });
 
   // 递归遍历子节点
-  element.props.children.forEach((child) => render(child, dom))
+  element.props.children.forEach((child) => render(child, dom));
   // 插入父节点
-  container.appendChild(dom)
+  container.appendChild(dom);
 }
 ```
 
@@ -161,15 +159,15 @@ function render(element, container) {
 #### 1. 起因
 
 由于上面的 render 渲染子节点时递归遍历了整棵树，当页面非常复杂时很容易阻塞主线程。
-所以使用 requestIdleCallback 这个 API 来实现并发模式, React 目前已经不用这个 API 了，而是自己实现调度算法 [调度器/scheduler]。(https://github.com/facebook/react/tree/master/packages/scheduler)
+所以使用 requestIdleCallback 这个 API 来实现并发模式, React 目前已经不用这个 API 了，而是自己实现调度算法 [调度器/scheduler]。(<https://github.com/facebook/react/tree/master/packages/scheduler>)
 
 下面的代码输出 49 点多, 表示当前一帧还有多长时间结束的。
 
 ```js
 requestIdleCallback((deadline) => {
   // 输出 49 点多
-  console.log(deadline.timeRemaining())
-})
+  console.log(deadline.timeRemaining());
+});
 ```
 
 #### 2. 代码解读
@@ -251,22 +249,22 @@ Redact.render(
 function performUnitOfWork(fiber) {
   // 创建fiber的 dom 属性
   if (!fiber.dom) {
-    fiber.dom = createDom(fiber)
+    fiber.dom = createDom(fiber);
   }
 
   // 子节点插入到父节点里
   if (fiber.parent) {
-    fiber.parent.dom.appendChild(fiber.dom)
+    fiber.parent.dom.appendChild(fiber.dom);
   }
 
   // 为每个子元素创建新的 fiber
-  const children = fiber.props.children
-  let index = 0
-  let prevSibling = null
+  const children = fiber.props.children;
+  let index = 0;
+  let prevSibling = null;
 
   // 循环遍历子节点
   while (index < children.length) {
-    const element = children[index]
+    const element = children[index];
 
     // 创建新的 Fiber
     const newFiber = {
@@ -275,40 +273,40 @@ function performUnitOfWork(fiber) {
       // 子节点链接父节点
       parent: fiber,
       dom: null
-    }
+    };
     // 父节点只链接第一个子节点
     if (index === 0) {
-      fiber.child = newFiber
+      fiber.child = newFiber;
     } else {
       // 兄节点 互相链接
-      prevSibling.sibling = newFiber
+      prevSibling.sibling = newFiber;
     }
 
-    prevSibling = newFiber
-    index++
+    prevSibling = newFiber;
+    index++;
   }
 
   // 有子节点直接返回
   if (fiber.child) {
-    return fiber.child
+    return fiber.child;
   }
 
   // 如果有兄弟节点, 返回兄弟节点, 如果没有, 则找父节点的兄弟节点
-  let nextFiber = fiber
+  let nextFiber = fiber;
   while (nextFiber) {
     if (nextFiber.sibling) {
-      return nextFiber.sibling
+      return nextFiber.sibling;
     }
-    nextFiber = nextFiber.parent
+    nextFiber = nextFiber.parent;
   }
-  return null
+  return null;
 }
 ```
 
-::: 参考地址
-https://devrsi0n.com/articles/create-react-from-scratch#IV:%20Fibers%20%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84
+:::tip 参考地址
+<https://devrsi0n.com/articles/create-react-from-scratch#IV:%20Fibers%20%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84>
 
-https://pomb.us/build-your-own-react/
+<https://pomb.us/build-your-own-react/>
 
-https://babeljs.io/repl#?browsers=&build=&builtIns=false&spec=false&loose=false&code_lz=MYewdgzgLgBApgGzgWzmWBeGAKAUDGAHgBMBLANxlOIwCIAzEEWmaATyQwG8uZQEQAJwBcMWoLjEWAX2kA-fASIBDOQCNlgwgHpVigoTUxtCg9rLkFASgDcQA&debug=false&forceAllTransforms=false&shippedProposals=false&circleciRepo=&evaluate=true&fileSize=false&timeTravel=false&sourceType=module&lineWrap=true&presets=env%2Ces2017&prettier=false&targets=&version=7.12.3&externalPlugins=%40babel%2Fplugin-transform-react-jsx%407.12.5
+<https://babeljs.io/repl#?browsers=&build=&builtIns=false&spec=false&loose=false&code_lz=MYewdgzgLgBApgGzgWzmWBeGAKAUDGAHgBMBLANxlOIwCIAzEEWmaATyQwG8uZQEQAJwBcMWoLjEWAX2kA-fASIBDOQCNlgwgHpVigoTUxtCg9rLkFASgDcQA&debug=false&forceAllTransforms=false&shippedProposals=false&circleciRepo=&evaluate=true&fileSize=false&timeTravel=false&sourceType=module&lineWrap=true&presets=env%2Ces2017&prettier=false&targets=&version=7.12.3&externalPlugins=%40babel%2Fplugin-transform-react-jsx%407.12.5>
 :::

@@ -198,7 +198,7 @@ add = (a, b) => {
 add(1, 2);
 ```
 
-::: 参考地址
+:::tip 参考地址
 <https://juejin.cn/post/7148075486403362846?searchId=20230926232146DB8316AE2AA7246E676E#heading-4>
 
 <https://juejin.cn/post/6920110573418086413#heading-7>

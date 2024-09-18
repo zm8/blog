@@ -7,10 +7,10 @@ func1 与 func2 的返回值类型都会被隐式推导为 void，只有显式�
 ```js
 function func1() {}
 function func2() {
-	return;
+  return;
 }
 function func3() {
-	return undefined;
+  return undefined;
 }
 ```
 
@@ -21,9 +21,9 @@ A 文件:
 
 ```js
 export const PageUrl = {
-	Home_Page_Url: "url1",
-	Setting_Page_Url: "url2",
-	Share_Page_Url: "url3",
+  Home_Page_Url: "url1",
+  Setting_Page_Url: "url2",
+  Share_Page_Url: "url3"
 };
 ```
 
@@ -69,12 +69,12 @@ const homeUrl = PageUrl.Home_Page_Url;
 
 ```js
 function foo(name: string): number {
-	return name.length;
+  return name.length;
 }
 
 // 函数表达式（Function Expression）
 const foo2 = function (name: string): number {
-	return name.length;
+  return name.length;
 };
 
 // 箭头函数
@@ -87,7 +87,7 @@ const foo3 = (name: string): number => name.length;
 type FooFunc = (name: string) => number;
 // 或者
 interface FooFunc2 {
-	(name: string): number;
+  (name: string): number;
 }
 
 const foo3: FooFunc = (name) => name.length;
@@ -97,7 +97,7 @@ const foo3: FooFunc = (name) => name.length;
 
 ```js
 function foo(name: string, age?: number): number {
-	return name.length + (age || 18);
+  return name.length + (age || 18);
 }
 ```
 
@@ -105,7 +105,7 @@ function foo(name: string, age?: number): number {
 
 ```js
 function foo(name: string, age: number = 18): number {
-	return name.length + age;
+  return name.length + age;
 }
 ```
 
@@ -160,7 +160,7 @@ let foo4: string = foo;
 async function foo(): Promise<void> {}
 
 async function foo2(): Promise<number> {
-	return 1;
+  return 1;
 }
 
 const foo3 = async (num: number): Promise<string> => String(num);
@@ -215,7 +215,7 @@ v4 = v1;
 
 ```js
 function foo(): never {
-	throw new Error("wrong");
+  throw new Error("wrong");
 }
 ```
 
@@ -229,11 +229,11 @@ function foo(): never {
 
 ```js
 function foo(str: number | string) {
-	if (typeof str === "number") {
-	} else if (typeof str === "string") {
-	} else {
-		throw new Error("wrong");
-	}
+  if (typeof str === "number") {
+  } else if (typeof str === "string") {
+  } else {
+    throw new Error("wrong");
+  }
 }
 ```
 
@@ -241,11 +241,11 @@ function foo(str: number | string) {
 
 ```js
 function foo(str: number | string | boolean) {
-	if (typeof str === "number") {
-	} else if (typeof str === "string") {
-	} else {
-		throw new Error("wrong");
-	}
+  if (typeof str === "number") {
+  } else if (typeof str === "string") {
+  } else {
+    throw new Error("wrong");
+  }
 }
 ```
 
@@ -254,12 +254,12 @@ ts 会报错: **不能将类型“boolean”分配给类型“never”。**
 
 ```js
 function foo(str: number | string | boolean) {
-	if (typeof str === "number") {
-	} else if (typeof str === "string") {
-	} else {
-		const _exhaustiveCheck: never = str;
-		throw new Error("wrong" + _exhaustiveCheck);
-	}
+  if (typeof str === "number") {
+  } else if (typeof str === "string") {
+  } else {
+    const _exhaustiveCheck: never = str;
+    throw new Error("wrong" + _exhaustiveCheck);
+  }
 }
 ```
 
@@ -291,7 +291,7 @@ const { foo = {} as IFoo } = obj;
 
 ```ts
 declare const obj: {
-	foo: Partial<IFoo>;
+  foo: Partial<IFoo>;
 };
 ```
 
@@ -302,9 +302,9 @@ declare const obj: {
 
 ```ts
 declare const foo: {
-	func?: () => {
-		prop?: number | null;
-	};
+  func?: () => {
+    prop?: number | null;
+  };
 };
 
 foo.func!().prop!.toFixed();
@@ -327,18 +327,18 @@ const target = [1,2,3].find(item=>item===3)!;
 
 ```ts
 interface Age {
-	age: number;
+  age: number;
 }
 
 interface Name {
-	name: string;
+  name: string;
 }
 
 type Person = Age & Name;
 
 const person: Person = {
-	age: 11,
-	name: "David",
+  age: 11,
+  name: "David"
 };
 ```
 
@@ -348,7 +348,7 @@ const person: Person = {
 
 ```js
 interface AllStringTypes {
-	[key: string]: string;
+  [key: string]: string;
 }
 ```
 
@@ -356,7 +356,7 @@ interface AllStringTypes {
 
 ```ts
 interface Foo {
-	(key: number): string;
+  (key: number): string;
 }
 const foo: Foo = (num) => String(num);
 ```
@@ -368,8 +368,8 @@ const foo: Foo = (num) => String(num);
 
 ```ts
 interface Foo {
-	num: 1;
-	5555: 2;
+  num: 1;
+  5555: 2;
 }
 
 type foo = keyof Foo; // "num" | 5555
@@ -410,7 +410,7 @@ const foo: Foo = 111; // 正确
 
 ```js
 var obj = {
-	[Symbol()]: 1,
+  [Symbol()]: 1
 };
 Object.keys(obj); // []
 
@@ -425,7 +425,7 @@ obj[arrSymbol[0]]; // 1
 
 ```ts
 interface Foo {
-	[key: string]: number;
+  [key: string]: number;
 }
 
 type Prop = Foo[string]; // number
@@ -435,8 +435,8 @@ type Prop = Foo[string]; // number
 
 ```ts
 interface Foo {
-	propA: string;
-	propB: number;
+  propA: string;
+  propB: number;
 }
 
 type PropAType = Foo["propA"]; // string
@@ -455,23 +455,23 @@ type Props = Foo[keyof Foo]; // string | number
 
 ```ts
 interface Foo {
-	prop1: string;
-	prop2: number;
-	prop3: boolean;
-	prop4: () => void;
+  prop1: string;
+  prop2: number;
+  prop3: boolean;
+  prop4: () => void;
 }
 
 type Stringfy<T> = {
-	[K in keyof T]: string;
+  [K in keyof T]: string;
 };
 
 type FooString = Stringfy<Foo>;
 // 等价于
 interface StringifiedFoo {
-	prop1: string;
-	prop2: string;
-	prop3: string;
-	prop4: string;
+  prop1: string;
+  prop2: string;
+  prop3: string;
+  prop4: string;
 }
 ```
 
@@ -488,7 +488,7 @@ interface Stringfy<T> {
 ```js
 const FooString = {};
 for (const k of Object.keys(Foo)) {
-	FooString[k] = string;
+  FooString[k] = string;
 }
 ```
 
@@ -496,7 +496,7 @@ for (const k of Object.keys(Foo)) {
 
 ```ts
 type Clone<T> = {
-	[K in keyof T]: T[K];
+  [K in keyof T]: T[K];
 };
 ```
 
@@ -520,7 +520,7 @@ const nullVar = null;
 const undefinedVar = undefined;
 
 const func = (input: string) => {
-	return input.length > 10;
+  return input.length > 10;
 };
 
 type Str = typeof str; // "linbudu"
@@ -535,7 +535,7 @@ type Func = typeof func; // (input: string) => boolean
 
 ```ts
 const func = (input: string) => {
-	return input.length > 10;
+  return input.length > 10;
 };
 type FuncReturnType = ReturnType<typeof func>;
 ```
@@ -546,11 +546,11 @@ type FuncReturnType = ReturnType<typeof func>;
 
 ```ts
 function foo(input: string | number) {
-	if (typeof input === "string") {
-		input.charAt(0);
-	} else {
-		input.toFixed(1);
-	}
+  if (typeof input === "string") {
+    input.charAt(0);
+  } else {
+    input.toFixed(1);
+  }
 }
 ```
 
@@ -565,11 +565,11 @@ function foo(input: string | number) {
 const isString = (input: unknown) => typeof input === "string";
 
 function foo(input: string | number) {
-	if (isString(input)) {
-		input.charAt(0);
-	} else {
-		input.toFixed(1);
-	}
+  if (isString(input)) {
+    input.charAt(0);
+  } else {
+    input.toFixed(1);
+  }
 }
 ```
 
@@ -595,21 +595,21 @@ var obj = { a: 1 };
 
 ```ts
 interface Foo {
-	foo: string;
-	fooOnly: boolean;
+  foo: string;
+  fooOnly: boolean;
 }
 
 interface Bar {
-	bar: string;
-	barOnly: boolean;
+  bar: string;
+  barOnly: boolean;
 }
 
 function handle(input: Foo | Bar) {
-	if ("foo" in input) {
-		input.fooOnly;
-	} else {
-		input.barOnly;
-	}
+  if ("foo" in input) {
+    input.fooOnly;
+  } else {
+    input.barOnly;
+  }
 }
 ```
 
@@ -617,21 +617,21 @@ function handle(input: Foo | Bar) {
 
 ```ts
 interface Foo {
-	kind: "foo";
-	fooOnly: boolean;
+  kind: "foo";
+  fooOnly: boolean;
 }
 
 interface Bar {
-	kind: "bar";
-	barOnly: boolean;
+  kind: "bar";
+  barOnly: boolean;
 }
 
 function handle(input: Foo | Bar) {
-	if (input.kind === "foo") {
-		input.fooOnly;
-	} else {
-		input.barOnly;
-	}
+  if (input.kind === "foo") {
+    input.fooOnly;
+  } else {
+    input.barOnly;
+  }
 }
 ```
 
@@ -639,24 +639,24 @@ function handle(input: Foo | Bar) {
 
 ```ts
 interface Foo {
-	kind: "foo";
-	diffType: string;
-	fooOnly: boolean;
+  kind: "foo";
+  diffType: string;
+  fooOnly: boolean;
 }
 
 interface Bar {
-	kind: "bar";
-	diffType: number;
-	barOnly: boolean;
+  kind: "bar";
+  diffType: number;
+  barOnly: boolean;
 }
 
 function handle2(input: Foo | Bar) {
-	// 报错，并没有起到区分的作用，在两个代码块中都是 Foo | Bar
-	if (typeof input.diffType === "string") {
-		input.fooOnly;
-	} else {
-		input.barOnly;
-	}
+  // 报错，并没有起到区分的作用，在两个代码块中都是 Foo | Bar
+  if (typeof input.diffType === "string") {
+    input.fooOnly;
+  } else {
+    input.barOnly;
+  }
 }
 ```
 
@@ -689,18 +689,18 @@ class FooBase {}
 class BarBase {}
 
 class Foo extends FooBase {
-	fooOnly() {}
+  fooOnly() {}
 }
 class Bar extends BarBase {
-	barOnly() {}
+  barOnly() {}
 }
 
 function hanlde(input: Foo | Bar) {
-	if (input instanceof Foo) {
-		input.fooOnly();
-	} else {
-		input.barOnly();
-	}
+  if (input instanceof Foo) {
+    input.fooOnly();
+  } else {
+    input.barOnly();
+  }
 }
 
 const foo = new Foo();
@@ -721,16 +721,16 @@ const foo: Foo = new Foo();
 
 ```js
 interface A {
-	foo: string;
+  foo: string;
 }
 
 interface A {
-	bar: number;
+  bar: number;
 }
 
 const a: A = {
-	foo: "",
-	bar: 1,
+  foo: "",
+  bar: 1
 };
 ```
 
@@ -768,9 +768,7 @@ function Factory(arg=boolean){
 如下代码对 ResCode 进行约束，必须是 number 类型。
 
 ```ts
-type ResStatus<ResCode extends number> = ResCode extends 10000 | 10001
-	? "success"
-	: "failure";
+type ResStatus<ResCode extends number> = ResCode extends 10000 | 10001 ? "success" : "failure";
 
 type Res1 = ResStatus<10000>; // "success"
 type Res2 = ResStatus<20000>; // "failure"
@@ -790,15 +788,15 @@ type ResStatus<ResCode extends number = 10000> = type ResStatus<ResCode extends 
 
 ```ts
 interface IRes<TData = unknown> {
-	code: number;
-	error?: string;
-	data: TData;
+  code: number;
+  error?: string;
+  data: TData;
 }
 
 interface IUserProfileRes {
-	name: string;
-	homepage: string;
-	avatar: string;
+  name: string;
+  homepage: string;
+  avatar: string;
 }
 
 function fetchUserProfile(): Promise<IRes<IUserProfileRes>> {}
@@ -810,7 +808,7 @@ function fetchUserProfile(): Promise<IRes<IUserProfileRes>> {}
 
 ```ts
 function handle<T>(input: T) {
-	return input;
+  return input;
 }
 
 const handle2 = <T>(input: T) => input;
@@ -829,8 +827,5 @@ const swapped3 = swap([{ name: "linbudu" }, {}]); // [{}, {name: string}]
 如果我们要限制传入的参数是 **数字元祖** 的情况:
 
 ```ts
-const swap = <T extends number, U extends number>([start, end]: [T, U]): [
-	U,
-	T
-] => [end, start];
+const swap = <T extends number, U extends number>([start, end]: [T, U]): [U, T] => [end, start];
 ```

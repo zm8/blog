@@ -3,7 +3,7 @@
 - 支持 `promise` 和 `thunk` 函数
 - `it.throw` 会自动执行下 1 个 next
 
-::: tip
+:::tip 参考地址
 co 里的 `yield fn`, fn 必须 `function`, `promise`, `generator`, `array`, `object`
 :::
 

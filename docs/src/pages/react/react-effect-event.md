@@ -17,22 +17,22 @@ Effect 是由某些状态触发，而不是某些行为触发的逻辑。
 
 ```js
 function App() {
-  const [data, updateData] = useState(null)
+  const [data, updateData] = useState(null);
 
   useEffect(() => {
     fetchData().then((data) => {
       // ...一些业务逻辑
       // 更新data
-      updateData(data)
-    })
-  }, [])
+      updateData(data);
+    });
+  }, []);
 
   function onSubmit(opt) {
     fetchData(opt).then((data) => {
       // ...一些业务逻辑
       // 更新data
-      updateData(data)
-    })
+      updateData(data);
+    });
   }
 
   // ...
@@ -46,9 +46,9 @@ useEffect(() => {
   fetchData(options).then((data) => {
     // ...一些业务逻辑
     // 更新data
-    updateData(data)
-  })
-}, [options, xxx, yyy, zzz])
+    updateData(data);
+  });
+}, [options, xxx, yyy, zzz]);
 ```
 
 很难区分 fetchData 会在什么情况下执行，因为:
@@ -62,15 +62,15 @@ useEffect(() => {
 
 ```js
 useEffect(() => {
-  const connection = createConnection(roomId)
-  connection.connect()
+  const connection = createConnection(roomId);
+  connection.connect();
 
-  connection.on('connected', () => {
-    showNotification('连接成功!', theme)
-  })
+  connection.on("connected", () => {
+    showNotification("连接成功!", theme);
+  });
 
-  return () => connection.disconnect()
-}, [roomId, theme])
+  return () => connection.disconnect();
+}, [roomId, theme]);
 ```
 
 这个时候 useEffectEvent 就登场了:
@@ -78,21 +78,21 @@ useEffect(() => {
 ```js
 function ChatRoom({ roomId, theme }) {
   const onConnected = useEffectEvent(() => {
-    showNotification('连接成功!', theme)
-  })
+    showNotification("连接成功!", theme);
+  });
 
   useEffect(() => {
-    const connection = createConnection(roomId)
-    connection.connect()
+    const connection = createConnection(roomId);
+    connection.connect();
 
-    connection.on('connected', () => {
-      onConnected()
-    })
+    connection.on("connected", () => {
+      onConnected();
+    });
 
     return () => {
-      connection.disconnect()
-    }
-  }, [roomId])
+      connection.disconnect();
+    };
+  }, [roomId]);
 
   // ...
 }
@@ -102,20 +102,18 @@ useEffectEvent 的实现的源码是:
 
 ```js
 function updateEvent(callback) {
-  const hook = updateWorkInProgressHook()
+  const hook = updateWorkInProgressHook();
   // 保存callback的引用
-  const ref = hook.memoizedState
+  const ref = hook.memoizedState;
   // 在useEffect执行前更新callback的引用
-  useEffectEventImpl({ ref, nextImpl: callback })
+  useEffectEventImpl({ ref, nextImpl: callback });
 
   return function eventFn() {
     if (isInvalidExecutionContextForEventFunction()) {
-      throw new Error(
-        "A function wrapped in useEffectEvent can't be called during rendering."
-      )
+      throw new Error("A function wrapped in useEffectEvent can't be called during rendering.");
     }
-    return ref.impl.apply(undefined, arguments)
-  }
+    return ref.impl.apply(undefined, arguments);
+  };
 }
 ```
 
@@ -127,6 +125,6 @@ function updateEvent(callback) {
 - Effect 由某些状态变化触发
 - Effect Event 在 Effect 内执行，但 Effect 并不依赖其中的状态逻辑。并且它始终返回不同的引用。
 
-::: 参考地址
-https://juejin.cn/post/7255265868066046008
+:::tip 参考地址
+<https://juejin.cn/post/7255265868066046008>
 :::

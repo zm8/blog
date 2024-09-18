@@ -1,6 +1,6 @@
 # 常见问题解决整理
 
-### win10 上安装完 pnpm, 执行`pnpm -v`，显示不是内部或外部命令
+## win10 上安装完 pnpm, 执行`pnpm -v`，显示不是内部或外部命令
 
 ```
 > npm list -g --depth 0 // 查看 pnpm 安装到哪里了
@@ -9,14 +9,14 @@
 如果安装到了 `D:\UserData\13501697816\AppData\Roaming\npm`，则把它加入到 win10 的环境变量里。
 最后再执行 `pnpm -v` 就好了。
 
-### 家里的 Mac Air 添加 xing 的权限
+## 家里的 Mac Air 添加 xing 的权限
 
 ```
 `ssh-keygen -o -f ~/.ssh/id_rsa`
 ssh-keygen -o -t rsa -b 4096 -C "zhengming@fosun.com"
 ```
 
-### SSH key 添加完，github 拉代码失败
+## SSH key 添加完，github 拉代码失败
 
 ```
 Error: Permission denied (publickey)
@@ -44,13 +44,14 @@ Host *
   IdentityFile ~/.ssh/id_ed25519
 ```
 
-参考:
-https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
+:::tip 参考地址
+<https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent>
+:::
 
 ### 如何查看自己在 github 的全部评论
 
 ```
-> commenter:zm8
+commenter:zm8
 ```
 
 ### env: node: No such file or directory
@@ -58,8 +59,8 @@ https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generati
 每次启动 terminal 给的烦人的提示。
 
 ```
-> sudo chown -R $(whoami) $(brew --prefix)/*
-> brew link --overwrite node
+sudo chown -R $(whoami) $(brew --prefix)/*
+brew link --overwrite node
 ```
 
 参考地址:

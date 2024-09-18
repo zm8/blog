@@ -5,40 +5,40 @@
 反转字符串进行判断:
 
 ```js
-const str = 'abca'
+const str = "abca";
 const isPalindrome = (str: string) => {
-  return str === str.split('').reverse().join('')
-}
-console.log(isPalindrome(str))
+  return str === str.split("").reverse().join("");
+};
+console.log(isPalindrome(str));
 ```
 
 定义双指针，不断移动前后指针:
 
 ```js
-const str = 'aba'
+const str = "aba";
 const isPalindrome = (str) => {
-  let i = 0
-  let j = str.length - 1
+  let i = 0;
+  let j = str.length - 1;
   while (i < j) {
-    if (str[i] !== str[j]) return false
-    i++
-    j--
+    if (str[i] !== str[j]) return false;
+    i++;
+    j--;
   }
-  return true
-}
-console.log(isPalindrome(str))
+  return true;
+};
+console.log(isPalindrome(str));
 ```
 
 从中间劈开，判断左右 2 边的字符串是否相等。
 
 ```js
 const isPalindrome = (str) => {
-  const len = str.length
+  const len = str.length;
   for (let i = 0; i < len / 2; i++) {
-    if (str[i] !== str[len - 1 - i]) return false
+    if (str[i] !== str[len - 1 - i]) return false;
   }
-  return true
-}
+  return true;
+};
 ```
 
 ## 删除一个字符，判断是否为回文字符串
@@ -58,37 +58,37 @@ const isPalindrome = (str) => {
 利用头尾双指针移动，判断是否为回文字符串。
 
 ```js
-const str = 'abca' // 删除b或者删除c, 那么是回文字符串
-const str2 = 'abdca' // 不是回文字符串
+const str = "abca"; // 删除b或者删除c, 那么是回文字符串
+const str2 = "abdca"; // 不是回文字符串
 
 const validPalindrome = function (str) {
-  const len = str.length
-  let i = 0 // 头部指针
-  let j = len - 1 // 尾部指针
+  const len = str.length;
+  let i = 0; // 头部指针
+  let j = len - 1; // 尾部指针
   // 如果 i比j 小, 或者 他们的值相等, 则继续移动
   while (i < j && str[i] === str[j]) {
-    i++
-    j--
+    i++;
+    j--;
   }
 
   // 判断 [left+1, right] 或者 [left, right+1] 是否为回文
-  if (isPalindrome(i + 1, j)) return true
-  if (isPalindrome(i, j - 1)) return false
+  if (isPalindrome(i + 1, j)) return true;
+  if (isPalindrome(i, j - 1)) return false;
 
   function isPalindrome(start, end) {
     while (start < end) {
-      if (str[start] !== str[end]) return false
-      start++
-      end--
+      if (str[start] !== str[end]) return false;
+      start++;
+      end--;
     }
-    return true
+    return true;
   }
 
-  return false
-}
+  return false;
+};
 
-console.log(validPalindrome(str))
-console.log(validPalindrome(str2))
+console.log(validPalindrome(str));
+console.log(validPalindrome(str2));
 ```
 
 ## [买卖股票的最佳时机](https://leetcode.cn/problems/best-time-to-buy-and-sell-stock/)
@@ -116,53 +116,53 @@ console.log(validPalindrome(str2))
 - 如果 下一项-当前的最低价格 > 保存的最大利润, 则返回最大利润。
 
 ```js
-const prices = [7, 1, 6, 0, 7, 4]
+const prices = [7, 1, 6, 0, 7, 4];
 var maxProfit = function (prices) {
-  let maxProfit = 0
-  let historyMinPrice = Infinity
+  let maxProfit = 0;
+  let historyMinPrice = Infinity;
   for (let i = 0; i < prices.length; i++) {
     if (prices[i] < historyMinPrice) {
-      historyMinPrice = prices[i]
+      historyMinPrice = prices[i];
     }
     if (prices[i] - historyMinPrice > maxProfit) {
-      maxProfit = prices[i] - historyMinPrice
+      maxProfit = prices[i] - historyMinPrice;
     }
   }
-  return maxProfit
-}
-console.log(maxProfit(prices))
+  return maxProfit;
+};
+console.log(maxProfit(prices));
 ```
 
 如果买卖股票需要返回买入的时间 和 卖出的时间，则算法一样:
 
 ```js
 const prices = [
-  { date: '2023-3-1', value: 7 },
-  { date: '2023-3-2', value: 1 },
-  { date: '2023-3-3', value: 6 },
-  { date: '2023-3-4', value: 0 },
-  { date: '2023-3-5', value: 4 },
-  { date: '2023-3-6', value: 4 }
-]
+  { date: "2023-3-1", value: 7 },
+  { date: "2023-3-2", value: 1 },
+  { date: "2023-3-3", value: 6 },
+  { date: "2023-3-4", value: 0 },
+  { date: "2023-3-5", value: 4 },
+  { date: "2023-3-6", value: 4 }
+];
 const maxProfit = function (prices) {
-  let maxProfit = 0
-  let historyMinPrice = { value: Infinity }
-  let arrDate = []
+  let maxProfit = 0;
+  let historyMinPrice = { value: Infinity };
+  let arrDate = [];
   for (let i = 0; i < prices.length; i++) {
     if (prices[i].value < historyMinPrice.value) {
-      historyMinPrice = prices[i]
+      historyMinPrice = prices[i];
     }
     if (prices[i].value - historyMinPrice.value > maxProfit) {
-      maxProfit = prices[i].value - historyMinPrice.value
-      arrDate = [historyMinPrice, prices[i]]
+      maxProfit = prices[i].value - historyMinPrice.value;
+      arrDate = [historyMinPrice, prices[i]];
     }
   }
   return {
     maxProfit,
     arrDate
-  }
-}
-console.log(maxProfit(prices))
+  };
+};
+console.log(maxProfit(prices));
 /*
   {date: '2023-3-4', value: 0},
   {date: '2023-3-6', value: 7}
@@ -178,23 +178,23 @@ console.log(maxProfit(prices))
 比如下面的情况:
 
 ```js
-const arr = [3, 3]
-const map = new Map()
+const arr = [3, 3];
+const map = new Map();
 arr.forEach((item, index) => {
-  map.set(item, index)
-})
-console.log(map) // map 里只有 Map(1) {3 => 1}
+  map.set(item, index);
+});
+console.log(map); // map 里只有 Map(1) {3 => 1}
 ```
 
 所以得用 key 当 value，保证唯一性:
 
 ```js
-const arr = [3, 3]
-const map = new Map()
+const arr = [3, 3];
+const map = new Map();
 arr.forEach((item, index) => {
-  map.set(index, item)
-})
-console.log(map) // map 里只有 Map(1) {0=>3, 1=>3}
+  map.set(index, item);
+});
+console.log(map); // map 里只有 Map(1) {0=>3, 1=>3}
 ```
 
 ## 字符串前面补 0
@@ -202,33 +202,33 @@ console.log(map) // map 里只有 Map(1) {0=>3, 1=>3}
 ### 1. 使用原生的方法 padStart
 
 ```js
-const padStart = (str, total) => str.padStart(total, '0')
-padStart('aaa', 10)
+const padStart = (str, total) => str.padStart(total, "0");
+padStart("aaa", 10);
 ```
 
 ### 2. 使用 Array 填充
 
 ```js
 var padStart = (str, total) => {
-  const len = str.length
-  const diff = total > len ? total - len : 0
-  return Array(diff).fill('0').join('') + str
-}
-padStart('aaa', 10)
+  const len = str.length;
+  const diff = total > len ? total - len : 0;
+  return Array(diff).fill("0").join("") + str;
+};
+padStart("aaa", 10);
 ```
 
 ### 3. 字符串累加
 
 ```js
 var padStart = (str, total) => {
-  let len = str.length
+  let len = str.length;
   while (len < total) {
-    str = '0' + str
-    len++
+    str = "0" + str;
+    len++;
   }
-  return str
-}
-padStart('aaa', 10)
+  return str;
+};
+padStart("aaa", 10);
 ```
 
 ## 217. 存在重复元素
@@ -251,16 +251,16 @@ padStart('aaa', 10)
 
 ```js
 const constainersDuplicate = function (nums) {
-  const map = new Map()
+  const map = new Map();
   for (const num of nums) {
     if (nums.has(num)) {
-      return true
+      return true;
     } else {
-      nums.set(num, 1)
+      nums.set(num, 1);
     }
   }
-  return false
-}
+  return false;
+};
 ```
 
 ## 387. 字符串中的第一个唯一字符
@@ -286,16 +286,16 @@ s = "loveleetcode"
 
 ```js
 var firstUniqChar = function (str) {
-  const map = new Map()
+  const map = new Map();
   for (const char of str) {
-    const count = (map.get(char) || 0) + 1
-    map.set(char, count)
+    const count = (map.get(char) || 0) + 1;
+    map.set(char, count);
   }
   for (let i = 0; i < str.length; i++) {
-    if (map.get(str[i]) === 1) return i
+    if (map.get(str[i]) === 1) return i;
   }
-  return -1
-}
+  return -1;
+};
 ```
 
 ## 242. 有效的字母异位词
@@ -318,26 +318,26 @@ var firstUniqChar = function (str) {
 
 ```js
 const isAnagram = (s, t) => {
-  const sLen = s.length
-  const tLen = t.length
-  if (sLen !== tLen) return false
-  const obj = {}
+  const sLen = s.length;
+  const tLen = t.length;
+  if (sLen !== tLen) return false;
+  const obj = {};
   for (let i = 0; i < sLen; i++) {
-    obj[s[i]] = (obj[s[i]] || 0) + 1
-    obj[t[i]] = (obj[t[i]] || 0) - 1
+    obj[s[i]] = (obj[s[i]] || 0) + 1;
+    obj[t[i]] = (obj[t[i]] || 0) - 1;
   }
-  return Object.values(obj).every((item) => item === 0)
-}
+  return Object.values(obj).every((item) => item === 0);
+};
 ```
 
 for 里面的循环可以改成
 
 ```js
 for (let i = 0; i < sLen; i++) {
-  const sCurrent = s[i]
-  const tCurrent = t[i]
-  obj[sCurrent] ? obj[sCurrent]++ : (obj[sCurrent] = 1)
-  obj[tCurrent] ? obj[tCurrent]-- : (obj[tCurrent] = -1)
+  const sCurrent = s[i];
+  const tCurrent = t[i];
+  obj[sCurrent] ? obj[sCurrent]++ : (obj[sCurrent] = 1);
+  obj[tCurrent] ? obj[tCurrent]-- : (obj[tCurrent] = -1);
 }
 ```
 
@@ -362,14 +362,14 @@ for (let i = 0; i < sLen; i++) {
  * @return {number}
  */
 var majorityElement = function (nums) {
-  const len = nums.length
-  const time = Math.floor(len / 2)
-  const map = {}
+  const len = nums.length;
+  const time = Math.floor(len / 2);
+  const map = {};
   for (const num of nums) {
-    map[num] = (map[num] || 0) + 1
-    if (map[num] > time) return num
+    map[num] = (map[num] || 0) + 1;
+    if (map[num] > time) return num;
   }
-}
+};
 ```
 
 如果用 map 的话:
@@ -380,17 +380,17 @@ var majorityElement = function (nums) {
  * @return {number}
  */
 var majorityElement = function (nums) {
-  const len = nums.length
-  const time = Math.floor(len / 2)
-  const map = new Map()
+  const len = nums.length;
+  const time = Math.floor(len / 2);
+  const map = new Map();
   for (const num of nums) {
-    const val = map.has(num) ? map.get(num) + 1 : 1
+    const val = map.has(num) ? map.get(num) + 1 : 1;
     // 或者
     // const val = (map.get(num) || 0) + 1;
-    if (val > time) return num
-    map.set(num, val)
+    if (val > time) return num;
+    map.set(num, val);
   }
-}
+};
 ```
 
 ## 只出现一次的数字
@@ -415,15 +415,15 @@ var majorityElement = function (nums) {
  * @return {number}
  */
 var singleNumber = function (nums) {
-  const map = new Map()
+  const map = new Map();
   for (const num of nums) {
-    const val = (map.get(num) || 0) + 1
-    map.set(num, val)
+    const val = (map.get(num) || 0) + 1;
+    map.set(num, val);
   }
   for (const [num, value] of map) {
-    if (value === 1) return num
+    if (value === 1) return num;
   }
-}
+};
 ```
 
 巧妙的算法是, 由于 其余每个元素都会出现**2 次**，可以使用异或运算符`(^)`
@@ -433,9 +433,9 @@ var singleNumber = function (nums) {
 - 异或运算中，满足交换律和结合律，也就是 a^b^a=b^a^a=b^(a^a)=b^0=b
 
 ```js
-2 ^ 2 // 0
-2 ^ 0 // 2
-;2 ^ 3 ^ (2 === 2) ^ 2 ^ 3 // 3
+2 ^ 2; // 0
+2 ^ 0; // 2
+2 ^ 3 ^ (2 === 2) ^ 2 ^ 3; // 3
 ```
 
 ```js
@@ -444,12 +444,12 @@ var singleNumber = function (nums) {
  * @return {number}
  */
 var singleNumber = function (nums) {
-  let init = nums[0]
+  let init = nums[0];
   for (let i = 1; i < nums.length; i++) {
-    init ^= nums[i]
+    init ^= nums[i];
   }
-  return init
-}
+  return init;
+};
 ```
 
 ## 位 1 的个数
@@ -472,8 +472,8 @@ var singleNumber = function (nums) {
 首先 10 进制数转 2 进制数, 通过执行 `toString(2)`
 
 ```js
-var n = 3
-n.toString(2) // 11
+var n = 3;
+n.toString(2); // 11
 ```
 
 直接的实现方式:
@@ -484,39 +484,39 @@ n.toString(2) // 11
  * @return {number}
  */
 var hammingWeight = function (n) {
-  const binaryNum = n.toString(2) // 转换成二进制数
-  let i = 0
+  const binaryNum = n.toString(2); // 转换成二进制数
+  let i = 0;
   for (const char of binaryNum) {
-    if (char === '1') i++
+    if (char === "1") i++;
   }
-  return i
-}
+  return i;
+};
 ```
 
 还有一种方式，使用二进制的按位与&，二进制的 2 个操作数都为 1 的情况下，值才为 1
 
 ```js
-const a = 5 // 101
-const b = 4 // 100
+const a = 5; // 101
+const b = 4; // 100
 
-console.log(a & b) // 100 ===> 等于 4
+console.log(a & b); // 100 ===> 等于 4
 
-const a = 7 // 111
-const a = 6 // 110
-console.log(a & b) // 110 ===> 等于 6
+const a = 7; // 111
+const a = 6; // 110
+console.log(a & b); // 110 ===> 等于 6
 ```
 
 所以还有一种实现方式如下:
 
 ```js
 var hammingWeight = function (n) {
-  let ret = 0
+  let ret = 0;
   while (n) {
-    n &= n - 1
-    ret++
+    n &= n - 1;
+    ret++;
   }
-  return ret
-}
+  return ret;
+};
 ```
 
 假设 n 为 6:
@@ -549,32 +549,32 @@ var hammingWeight = function (n) {
 
 ```js
 var twoSum = function (nums, target) {
-  const map = new Map()
+  const map = new Map();
   for (let i = 0; i < nums.length; i++) {
-    const val = target - nums[i]
+    const val = target - nums[i];
     if (map.has(val)) {
-      return [map.get(val), i]
+      return [map.get(val), i];
     } else {
-      map.set(nums[i], i)
+      map.set(nums[i], i);
     }
   }
-}
+};
 ```
 
 还有一种实现方式, map 存储的是差值:
 
 ```js
 var twoSum = (nums, target) => {
-  const map = new Map()
+  const map = new Map();
   for (let i = 0, len = nums.length; i < len; i++) {
     if (map.has(nums[i])) {
-      return [map.get(nums[i]), i]
+      return [map.get(nums[i]), i];
     } else {
-      map.set(target - nums[i], i)
+      map.set(target - nums[i], i);
     }
   }
-  return []
-}
+  return [];
+};
 ```
 
 ## 快速排序算法
@@ -587,27 +587,27 @@ var twoSum = (nums, target) => {
 // 快速排序代码
 const quickSort = (arr) => {
   if (arr.length <= 1) {
-    return arr
+    return arr;
   }
-  const left = []
-  const right = []
-  const pivot = arr.splice(Math.floor(arr.length / 2), 1)[0]
-  let len = arr.length
+  const left = [];
+  const right = [];
+  const pivot = arr.splice(Math.floor(arr.length / 2), 1)[0];
+  let len = arr.length;
   while (len--) {
-    let item = arr[len]
+    let item = arr[len];
     if (item <= pivot) {
-      left.push(item)
+      left.push(item);
     } else {
-      right.push(item)
+      right.push(item);
     }
   }
-  return quickSort(left).concat([pivot], quickSort(right))
-}
+  return quickSort(left).concat([pivot], quickSort(right));
+};
 
-const arr = [2, 1, 5, 7, 20, -1]
-quickSort(arr)
+const arr = [2, 1, 5, 7, 20, -1];
+quickSort(arr);
 ```
 
-::: 参考地址
-https://juejin.cn/post/6987320619394138148
+:::tip 参考地址
+<https://juejin.cn/post/6987320619394138148>
 :::

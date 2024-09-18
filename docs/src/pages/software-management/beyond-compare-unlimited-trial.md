@@ -1,8 +1,8 @@
 # Beyond Compare 无限试用
 
-### 1. Mac
+## 1. Mac
 
-```
+```bash
 > cd "/Applications/Beyond Compare.app/Contents/MacOS/"
 > mv BCompare BCompare.real
 > touch BCompare
@@ -18,13 +18,15 @@ fi
 > chmod +x BCompare
 ```
 
-::: 参考地址
-https://gist.github.com/njleonzhang/e5b68b9e9e31d7c09731945a336e0310
-http://tutandtips.blogspot.com/2015/10/beyond-compare-4-for-mac-unlimited.html
-http://www.scootersoftware.com/support.php?zz=kb_evalpro
+:::tip 参考地址
+
+<https://gist.github.com/njleonzhang/e5b68b9e9e31d7c09731945a336e0310>
+<http://tutandtips.blogspot.com/2015/10/beyond-compare-4-for-mac-unlimited.html>
+<http://www.scootersoftware.com/support.php?zz=kb_evalpro>
+
 :::
 
-### 2. Window 10
+## 2. Window 10
 
 1: 搜索栏输入 regedit 打开注册表, 删除如下项目:
 **计算机\HKEY_CURRENT_USER\SOFTWARE\Scooter Software\Beyond Compare 4\CacheID**

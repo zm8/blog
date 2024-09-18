@@ -61,7 +61,7 @@ scrollList.value = [...props.list];
 </script>
 ```
 
-::: 参考地址
+:::tip 参考地址
 <https://github.com/vuejs/core/issues/2136>
 :::
 

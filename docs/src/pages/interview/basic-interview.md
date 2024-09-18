@@ -1,4 +1,8 @@
-# 前端常见面试总结
+# 常见面试总结
+
+## webpack5 新增了哪些功能
+
+--- 待定
 
 ## nginx 做过哪些优化
 
@@ -20,13 +24,11 @@ function getInt(num) {
 }
 ```
 
-6. 合理使用缓存。
+6.合理使用缓存。
 
 ## 做过哪些 webpack 优化
 
-参考地址: https://juejin.cn/post/6996816316875161637?searchId=2024042618300260D2C3573BDB3C998945
-
-### 提高构建速度
+### 一.提高构建速度
 
 #### 1. webpack 持久化缓存 cache: filesystem
 
@@ -58,7 +60,7 @@ module.exports = {
 
 通过 thread-loader 将耗时的 loader 放在一个独立的 worker 池中运行，加快 loader 构建速度。
 
-### 2. 减少打包体积
+### 二. 减少打包体积
 
 #### 1. 使用 SplitChunksPlugin 抽离重复代码
 
@@ -85,8 +87,6 @@ module.exports = {
 ```
 
 #### 2. 对组件库引用的优化
-
-1. lodash `import { throttle } from 'lodash-es'`
 
 ## 前端如何做鉴权的?
 
@@ -134,8 +134,6 @@ service.interceptors.request.use(
 都是数据驱动视图方式。
 独立的路由系统和独立的状态管路库。
 
-## webpack5 新增了哪些功能
-
 ## 前端的加密方法
 
 ### 1. 哈希函数
@@ -163,9 +161,13 @@ SHA/MD5 对比：SHA 在安全性方面优于 MD5，并且可以选择多种不�
 
 - RSA。RSA 是由 3 个人的姓氏开头字母拼接起来。是一个支持变长密钥的公共密钥算法，需要加密的文件块的长度也是可变的。RSA 是一种非对称加密算法，即加密和解密使用一对不同的密钥，分别称为公钥和私钥。
 
-参考地址:
-https://zh.wikipedia.org/wiki/RSA%E5%8A%A0%E5%AF%86%E6%BC%94%E7%AE%97%E6%B3%95
-https://juejin.cn/post/7280057907055919144?searchId=202311062228286AB7CDB07D901A338807
+:::tip 参考地址
+
+<https://zh.wikipedia.org/wiki/RSA%E5%8A%A0%E5%AF%86%E6%BC%94%E7%AE%97%E6%B3%95>
+
+<https://juejin.cn/post/7280057907055919144?searchId=202311062228286AB7CDB07D901A338807>
+
+:::
 
 ## 上传文件的 content-type
 
@@ -247,11 +249,11 @@ plugin 则可以用于执行范围更广的任务。
   Webpack 有一个庞大的社区和生态系统，提供了丰富的文档、插件和工具，使其更易于学习和使用。
 
 参考地址:
-https://juejin.cn/post/7031813766098452493?searchId=202310101549007A30405003CD58D70B9D
+<https://juejin.cn/post/7031813766098452493?searchId=202310101549007A30405003CD58D70B9D>
 
 ## Echarts 内核
 
-echarts 是基于 [ZRender]https://ecomfe.github.io/zrender-doc/public/ 框架写的。
+echarts 是基于 [ZRender]<https://ecomfe.github.io/zrender-doc/public/> 框架写的。
 ZRender 是二维绘图引擎，它提供 Canvas、SVG、VML 等多种渲染方式。ZRender 也是 ECharts 的渲染器。
 
 ## 闭包是什么?
@@ -379,7 +381,7 @@ animationcancel: 动画取消, 比如把下面的 css 里的 .active 样式移�
 ```
 
 参考地址:
-https://developer.mozilla.org/en-US/docs/Web/API/Element/animationend_event
+<https://developer.mozilla.org/en-US/docs/Web/API/Element/animationend_event>
 
 ## 回流(Reflow) 和 重绘 (Repaint)
 
