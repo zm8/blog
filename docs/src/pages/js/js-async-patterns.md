@@ -16,13 +16,13 @@ Callback 存在 2 个问题:
 
 ```javascript
 setTimeout(function () {
-	output("one");
-	setTimeout(function () {
-		output("two");
-		setTimeout(function () {
-			output("three");
-		}, 1000);
-	}, 1000);
+  output("one");
+  setTimeout(function () {
+    output("two");
+    setTimeout(function () {
+      output("three");
+    }, 1000);
+  }, 1000);
 }, 1000);
 ```
 
@@ -30,31 +30,31 @@ setTimeout(function () {
 
 ```js
 function output(msg) {
-	console.log(msg);
+  console.log(msg);
 }
 
 function one(cb) {
-	output("one");
-	setTimeout(cb, 1000);
+  output("one");
+  setTimeout(cb, 1000);
 }
 
 function two(cb) {
-	output("two");
-	setTimeout(cb, 1000);
+  output("two");
+  setTimeout(cb, 1000);
 }
 
 function three() {
-	output("three");
+  output("three");
 }
 
 function start(cb) {
-	setTimeout(cb, 1000);
+  setTimeout(cb, 1000);
 }
 
 start(function () {
-	one(function () {
-		two(three);
-	});
+  one(function () {
+    two(three);
+  });
 });
 ```
 
@@ -69,41 +69,41 @@ start(function () {
 ```js
 const arr = ["file1", "file2", "file3"];
 const time = {
-	file1: 3000,
-	file2: 2000,
-	file3: 1000,
+  file1: 3000,
+  file2: 2000,
+  file3: 1000
 };
 const objFiles = {
-	// file1: 'file1_content',
-	// file2: 'file2_content',
-	// file3: 'file3_content',
+  // file1: 'file1_content',
+  // file2: 'file2_content',
+  // file3: 'file3_content',
 };
 
 function fakeAjax(file, callback) {
-	setTimeout(() => {
-		callback(file + "_content");
-	}, time[file]);
+  setTimeout(() => {
+    callback(file + "_content");
+  }, time[file]);
 }
 
 function getFile(file) {
-	fakeAjax(file, function (text) {
-		fileReceived(file, text);
-	});
+  fakeAjax(file, function (text) {
+    fileReceived(file, text);
+  });
 }
 
 function fileReceived(file, text) {
-	objFiles[file] = text;
-	for (let i = 0; i < arr.length; i++) {
-		const item = arr[i];
-		const text = objFiles[item];
-		if (text) {
-			console.log(text);
-		} else {
-			// 保证按顺序输出, 如果第一项内容没有值, 则直接 return
-			return;
-		}
-	}
-	console.log("done");
+  objFiles[file] = text;
+  for (let i = 0; i < arr.length; i++) {
+    const item = arr[i];
+    const text = objFiles[item];
+    if (text) {
+      console.log(text);
+    } else {
+      // 保证按顺序输出, 如果第一项内容没有值, 则直接 return
+      return;
+    }
+  }
+  console.log("done");
 }
 
 getFile(arr[0]);
@@ -121,11 +121,11 @@ getFile(arr[2]);
 
 ```javascript
 const add = (a, b) => {
-	return a + b;
+  return a + b;
 };
 
 const thunk = () => {
-	return add(1, 2);
+  return add(1, 2);
 };
 
 thunk();
@@ -137,9 +137,9 @@ thunk();
 
 ```js
 const add = (a, b, cb) =>
-	setTimeout(() => {
-		cb(a + b);
-	}, 1000);
+  setTimeout(() => {
+    cb(a + b);
+  }, 1000);
 const thunk = (cb) => add(1, 2, cb);
 thunk((num) => console.log(num));
 ```
@@ -150,37 +150,37 @@ thunk((num) => console.log(num));
 const arr = ["file1", "file2", "file3"];
 
 function fakeAjax(file, callback) {
-	const time = {
-		file1: 1000,
-		file2: 2000,
-		file3: 3000,
-	};
-	setTimeout(() => {
-		callback(file + "_content");
-	}, time[file]);
+  const time = {
+    file1: 1000,
+    file2: 2000,
+    file3: 3000
+  };
+  setTimeout(() => {
+    callback(file + "_content");
+  }, time[file]);
 }
 
 function getFile(file) {
-	var cnt;
-	fakeAjax(file, function (text) {
-		if (cnt) {
-			// 如果提前执行了下面的 cnt = callback, 则直接执行回调函数
-			cnt(text);
-		} else {
-			// 否则赋值给 cnt
-			cnt = text;
-		}
-	});
+  var cnt;
+  fakeAjax(file, function (text) {
+    if (cnt) {
+      // 如果提前执行了下面的 cnt = callback, 则直接执行回调函数
+      cnt(text);
+    } else {
+      // 否则赋值给 cnt
+      cnt = text;
+    }
+  });
 
-	return function (callback) {
-		if (cnt) {
-			// 如果 fakeAjax 是同步执行, 已经赋值给了 cnt = text, 则直接执行回调
-			callback(cnt);
-		} else {
-			// 否则把 cnt 赋值给 callback (PS: 通常是走到这里)
-			cnt = callback;
-		}
-	};
+  return function (callback) {
+    if (cnt) {
+      // 如果 fakeAjax 是同步执行, 已经赋值给了 cnt = text, 则直接执行回调
+      callback(cnt);
+    } else {
+      // 否则把 cnt 赋值给 callback (PS: 通常是走到这里)
+      cnt = callback;
+    }
+  };
 }
 
 var gF1 = getFile(arr[0]);
@@ -189,14 +189,14 @@ var gF3 = getFile(arr[2]);
 const outPut = (text) => console.log(text);
 
 gF1((text) => {
-	outPut(text);
-	gF2((text) => {
-		outPut(text);
-		gF3((text) => {
-			outPut(text);
-			outPut("done");
-		});
-	});
+  outPut(text);
+  gF2((text) => {
+    outPut(text);
+    gF3((text) => {
+      outPut(text);
+      outPut("done");
+    });
+  });
 });
 ```
 
@@ -213,22 +213,22 @@ thunk 的优点是代码已经好理解来, 缺点是:
 const arr = ["file1", "file2", "file3"];
 
 function fakeAjax(file, callback) {
-	const time = {
-		file1: 1000,
-		file2: 2000,
-		file3: 3000,
-	};
-	setTimeout(() => {
-		callback(file + "_content");
-	}, time[file]);
+  const time = {
+    file1: 1000,
+    file2: 2000,
+    file3: 3000
+  };
+  setTimeout(() => {
+    callback(file + "_content");
+  }, time[file]);
 }
 
 function getFile(file) {
-	return new Promise((resolve, reject) => {
-		fakeAjax(file, (text) => {
-			resolve(text);
-		});
-	});
+  return new Promise((resolve, reject) => {
+    fakeAjax(file, (text) => {
+      resolve(text);
+    });
+  });
 }
 
 var getFile1 = getFile(arr[0]);
@@ -238,31 +238,31 @@ var getFile3 = getFile(arr[2]);
 const output = (text) => console.log(text);
 
 getFile1.then((text) => {
-	output(text);
-	getFile2.then((text) => {
-		output(text);
-		getFile3.then((text) => {
-			output(text);
-			output("done");
-		});
-	});
+  output(text);
+  getFile2.then((text) => {
+    output(text);
+    getFile3.then((text) => {
+      output(text);
+      output("done");
+    });
+  });
 });
 
 // 这里其实用下面的写法更好理解
 gF1
-	.then(output)
-	.then(() => gF2)
-	.then(output)
-	.then(() => gF3)
-	.then(output)
-	.then(() => console.log("done"));
+  .then(output)
+  .then(() => gF2)
+  .then(output)
+  .then(() => gF3)
+  .then(output)
+  .then(() => console.log("done"));
 
 // 或者用函数式编程的方法
 ["file1", "file2", "file3"]
-	.map((item) => getFile(item))
-	.reduce((a, b) => {
-		return a.then(() => b).then(output);
-	}, Promise.resolve());
+  .map((item) => getFile(item))
+  .reduce((a, b) => {
+    return a.then(() => b).then(output);
+  }, Promise.resolve());
 ```
 
 Promise 核心在于 then 后面的注册函数只会被调用 1 次，要么成功要么失败，控制权在自己手里。
@@ -283,29 +283,29 @@ generator 函数特点:
 
 ```javascript
 function runGenerator(ge) {
-	let it = ge();
-	const loop = (val) => {
-		let res = it.next(val);
-		if (res.done) {
-			return;
-		}
-		if (res.value.then) {
-			res.value.then(loop);
-		} else {
-			loop(res.value);
-		}
-	};
-	loop();
+  let it = ge();
+  const loop = (val) => {
+    let res = it.next(val);
+    if (res.done) {
+      return;
+    }
+    if (res.value.then) {
+      res.value.then(loop);
+    } else {
+      loop(res.value);
+    }
+  };
+  loop();
 }
 
 function* main() {
-	let f1 = getFile("file1");
-	let f2 = getFile("file2");
-	let f3 = getFile("file3");
-	output(yield f1);
-	output(yield f2);
-	output(yield f3);
-	console.log("done");
+  let f1 = getFile("file1");
+  let f2 = getFile("file2");
+  let f3 = getFile("file3");
+  output(yield f1);
+  output(yield f2);
+  output(yield f3);
+  console.log("done");
 }
 
 runGenerator(main);
@@ -322,13 +322,13 @@ runGenerator(main);
 
 ```javascript
 async function main() {
-	let f1 = getFile("file1");
-	let f2 = getFile("file2");
-	let f3 = getFile("file3");
-	output(await f1);
-	output(await f2);
-	output(await f3);
-	console.log("done");
+  let f1 = getFile("file1");
+  let f2 = getFile("file2");
+  let f3 = getFile("file3");
+  output(await f1);
+  output(await f2);
+  output(await f3);
+  console.log("done");
 }
 
 main();

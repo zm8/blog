@@ -178,7 +178,7 @@ css 沙箱有严格沙箱(strictStyleIsolation) 和 实验性沙箱(experimental
 
 **实验性沙箱**
 会给每一个子应用最外层添加 `div[data-qiankun-microName] ` 来隔离不同的子应用和主应用。
-![image](https://github.com/zm8/blog/assets/32337542/e19c6b5f-6627-4e95-842a-e7b7c3337027)
+![image](https://github.com/zm8/blog_old/assets/32337542/e19c6b5f-6627-4e95-842a-e7b7c3337027)
 
 但是还是没有解决 弹层挂载到主应用 body 上面，样式丢失问题。
 

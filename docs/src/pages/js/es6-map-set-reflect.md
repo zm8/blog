@@ -1,8 +1,8 @@
-# ES6 之 Map, WeakMap, Set, WeakSet
+# ES6 之 Map, WeakMap, Set, WeakSet, Reflect
 
-## Map Object Set Array 遍历
+## Map Object Set Array 遍历方式
 
-1. Map 的遍历
+### 1. Map 的遍历
 
 ```js
 const map = new Map([
@@ -21,7 +21,7 @@ map.forEach((value, key) => console.log(value, key));
 // 2, 'b'
 ```
 
-2. Object 的遍历
+### 2. Object 的遍历
 
 ```js
 var obj = {
@@ -41,7 +41,7 @@ for (let key of Object.keys(obj)) {
 }
 ```
 
-3. Set 的遍历
+### 3. Set 的遍历
 
 ```js
 const set = new Set([1, 2]);
@@ -56,7 +56,7 @@ set.forEach((val) => console.log(val));
 // 2
 ```
 
-4. Array 的遍历
+### 4. Array 的遍历
 
 ```js
 var arr = [1, 2];
@@ -78,8 +78,8 @@ arr.forEach((val) => console.log(val));
 
 Map 和 Set 区别是:
 
-1. 添加属性 Map 用 `map.set(key, value)`, 而 Set 用 `set.add(value)`
-2. Map 有 get 方法 `map.get(key)`, 而 Set 没有
+- 添加属性 Map 用 `map.set(key, value)`, 而 Set 用 `set.add(value)`
+- Map 有 get 方法 `map.get(key)`, 而 Set 没有
 
 ```js
 // 初始化
@@ -120,7 +120,7 @@ for (let item of map.entries()) {
 }
 ```
 
-问: 如何遍历 map 同时获得 value 和 key?
+如何遍历 map 同时获得 value 和 key?
 
 ```js
 //  '张三'      'name'
@@ -138,9 +138,35 @@ for (let [key, value] of map.entries()) {
 map.forEach((value, key) => console.log(value, key));
 ```
 
+### 查看 Map 实例上面有哪些方法
+
+```js
+const map = new Map();
+Reflect.ownKeys(map.__proto__);
+// 或
+Reflect.ownKeys(Map.prototype);
+/*
+[
+    "constructor",
+    "get",
+    "set",
+    "has",
+    "delete",
+    "clear",
+    "entries",
+    "forEach",
+    "keys",
+    "size",
+    "values",
+    Symbol(Symbol.toStringTag),
+    Symbol(Symbol.iterator)
+]
+*/
+```
+
 ### Map 于其它数据结构转换
 
-1. Map 转数组
+#### 1. Map 转数组
 
 ```js
 const map = new Map([
@@ -150,7 +176,7 @@ const map = new Map([
 [...map];
 ```
 
-2. 数组转 Map
+#### 2. 数组转 Map
 
 ```js
 const arr = [
@@ -160,8 +186,9 @@ const arr = [
 new Map(arr);
 ```
 
-4. Map 转对象
-   Map 的键最好都是字符串，否则会自动让它转为字符串
+#### 3. Map 转对象
+
+Map 的键最好都是字符串，否则会自动让它转为字符串
 
 ```js
 const mapToObj = (map) => {
@@ -171,9 +198,11 @@ const mapToObj = (map) => {
   }
   return obj;
 };
+// 或者
+const mapToObj = (map) => Object.fromEntries(map);
 ```
 
-6. 对象转 Map
+#### 4. 对象转 Map
 
 ```js
 const objToMap = (obj) => {
@@ -190,8 +219,9 @@ const objToMap = (obj) => {
 };
 ```
 
-7. Map 转 JSON
-   如果 Map 的键值都是 string
+#### 5. Map 转 JSON
+
+如果 Map 的键值都是 string
 
 ```js
 JSON.stringify(mapToObj(map));
@@ -203,7 +233,7 @@ JSON.stringify(mapToObj(map));
 JSON.stringify([...map]);
 ```
 
-8. JSON 转 Map
+#### 6. JSON 转 Map
 
 如果 JSON 的键名是 字符串:
 
@@ -360,4 +390,32 @@ ws.add({});
 for (let item of ws) {
   console.log(item);
 }
+```
+
+## Reflect
+
+```js
+const nobj = { a: 1 };
+nobj.hasOwnProperty("a");
+Object.hasOwn(nobj, "a");
+
+// 判断是否存在某个属性
+Reflect.has(nobj, "a");
+
+// 添加属性值
+Reflect.defineProperty(nobj, "b", { value: 2, enumerable: true });
+
+// 删除属性值
+Reflect.deleteProperty(nobj, "b");
+
+const fn = function (...args) {
+  console.log(this, args);
+};
+
+// 函数执行
+Reflect.apply(fn, window, [1, 2]);
+
+// 获取所有的key
+console.log(Object.keys(nobj)); // 只拿到可以枚举的属性, 即 enumerable 为 true
+console.log(Reflect.ownKeys(nobj));
 ```

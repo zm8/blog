@@ -10,8 +10,8 @@ startTransition 把任务标记为过渡更新的任务，过渡更新的任务�
 ```js
 startTransition(() => {
   /* 更新任务 */
-  setSearchQuery(value)
-})
+  setSearchQuery(value);
+});
 ```
 
 ## 什么是 useTranstion
@@ -19,13 +19,13 @@ startTransition(() => {
 和 startTransition 对比，提供了当前是否 pending 状态的标志。
 
 ```js
-import { useTransition } from 'react'
+import { useTransition } from "react";
 
 /* 使用 */
-const [isPending, startTransition] = useTransition()
+const [isPending, startTransition] = useTransition();
 
 {
-  isPending && <Spinner />
+  isPending && <Spinner />;
 }
 ```
 
@@ -49,20 +49,20 @@ const [isPending, startTransition] = useTransition()
 
 ```jsx
 export function startTransition(scope) {
-  const prevTransition = ReactCurrentBatchConfig.transition
+  const prevTransition = ReactCurrentBatchConfig.transition;
   /* 通过设置状态 */
-  ReactCurrentBatchConfig.transition = 1
+  ReactCurrentBatchConfig.transition = 1;
   try {
     /* 执行更新 */
-    scope()
+    scope();
   } finally {
     /* 恢复状态 */
-    ReactCurrentBatchConfig.transition = prevTransition
+    ReactCurrentBatchConfig.transition = prevTransition;
   }
 }
 ```
 
-![image](https://github.com/zm8/blog/assets/32337542/71ddbfd5-c068-42f1-8955-eb4a32fdd83b)
+![image](https://github.com/zm8/blog_old/assets/32337542/71ddbfd5-c068-42f1-8955-eb4a32fdd83b)
 
 ### useTranstion
 
@@ -71,23 +71,23 @@ useTranstion 本质上就是 `useState + startTransition`。
 
 ```jsx
 function mountTransition() {
-  const [isPending, setPending] = mountState(false)
+  const [isPending, setPending] = mountState(false);
   const start = (callback) => {
-    setPending(true)
-    const prevTransition = ReactCurrentBatchConfig.transition
-    ReactCurrentBatchConfig.transition = 1
+    setPending(true);
+    const prevTransition = ReactCurrentBatchConfig.transition;
+    ReactCurrentBatchConfig.transition = 1;
     try {
-      setPending(false)
-      callback()
+      setPending(false);
+      callback();
     } finally {
-      ReactCurrentBatchConfig.transition = prevTransition
+      ReactCurrentBatchConfig.transition = prevTransition;
     }
-  }
-  return [isPending, start]
+  };
+  return [isPending, start];
 }
 ```
 
-![image](https://github.com/zm8/blog/assets/32337542/21477272-9a48-4e04-871c-308addd73e2e)
+![image](https://github.com/zm8/blog_old/assets/32337542/21477272-9a48-4e04-871c-308addd73e2e)
 
 ### 3 useDeferredValue
 
@@ -96,18 +96,18 @@ useDeferredValue 本质上是 `useState + useEffect + transition`
 
 ```jsx
 function updateDeferredValue(value) {
-  const [prevValue, setValue] = updateState(value)
+  const [prevValue, setValue] = updateState(value);
   updateEffect(() => {
-    const prevTransition = ReactCurrentBatchConfig.transition
-    ReactCurrentBatchConfig.transition = 1
+    const prevTransition = ReactCurrentBatchConfig.transition;
+    ReactCurrentBatchConfig.transition = 1;
     try {
-      setValue(value)
+      setValue(value);
     } finally {
-      ReactCurrentBatchConfig.transition = prevTransition
+      ReactCurrentBatchConfig.transition = prevTransition;
     }
-  }, [value])
-  return prevValue
+  }, [value]);
+  return prevValue;
 }
 ```
 
-![image](https://github.com/zm8/blog/assets/32337542/36197d2b-8b93-48ec-8b59-327c13c095ce)
+![image](https://github.com/zm8/blog_old/assets/32337542/36197d2b-8b93-48ec-8b59-327c13c095ce)

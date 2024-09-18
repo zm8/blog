@@ -10,7 +10,7 @@
 
 使用 Vue 开发 星财富，主要是用 rem 来做响应式布局。架构了 JSBridge 和 Native 通信。
 JSBridge 简单理解就是向 JavaScript 中提供了可以调用 Native 方法的 api。
-![image](https://github.com/zm8/blog/assets/32337542/91010ff4-5cf0-4dbe-99e3-274e4e617ce2)
+![image](https://github.com/zm8/blog_old/assets/32337542/91010ff4-5cf0-4dbe-99e3-274e4e617ce2)
 
 - 1. 单纯的向 Native 发送信息
 - 2. 调用 Native 方法，传递信息，并执行回调函数。

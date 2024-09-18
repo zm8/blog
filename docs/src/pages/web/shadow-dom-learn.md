@@ -1,34 +1,36 @@
 # Shadow DOM 学习
 
-### 1. Shadow dom 是什么?
+## 1. Shadow dom 是什么?
 
-1. 影子 DOM 树, 使用 JS API 将[影子 DOM 树] 附加到元素上, 与主文档的 DOM 树隔离;
-2. 在 Chrome 浏览器的 `Settings > Preferences > Elements > Show user agent shadow DOM` 可以打开开关;
-   包括 video 标签, input 标签, 展开可以看到 `#shadow-root`, 它们就是一个 `Shadow dom`;
+1.影子 DOM 树, 使用 JS API 将[影子 DOM 树] 附加到元素上, 与主文档的 DOM 树隔离;
+
+2.在 Chrome 浏览器的 `Settings > Preferences > Elements > Show user agent shadow DOM` 可以打开开关;
+包括 video 标签, input 标签, 展开可以看到 `#shadow-root`, 它们就是一个 `Shadow dom`;
 
 ![image](https://user-images.githubusercontent.com/32337542/118634273-ecf82f00-b804-11eb-9a77-a80c38997b93.png)
 
-### 2. 浏览器支持情况
+## 2. 浏览器支持情况
 
 IE 都不支持, Chrome 浏览器绝大部分都支持;
-https://caniuse.com/shadowdomv1
+<https://caniuse.com/shadowdomv1>
+
 ![image](https://user-images.githubusercontent.com/32337542/118631699-588ccd00-b802-11eb-8fbc-ea20f57d6f0e.png)
 
-### 3. 基本用法
+## 3. 基本用法
 
-使用 `Element.attachShadow() ` 将一个 shadow root 附加到一个 HTML 元素上。
+使用 `Element.attachShadow()` 将一个 shadow root 附加到一个 HTML 元素上。
 可以通过 `Element.shadowRoot` 获取到 Shadow DOM 根元素
 
 ```html
 <div class="box"></div>
 <script>
-  var box = document.querySelector('.box')
+  var box = document.querySelector(".box");
   // 返回 shadow dom 的根节点
-  const shadowRoot = box.attachShadow({ mode: 'open' })
-  shadowRoot.innerHTML = `<style>h1 {color: red}</style><h1>标题</h1>`
+  const shadowRoot = box.attachShadow({ mode: "open" });
+  shadowRoot.innerHTML = `<style>h1 {color: red}</style><h1>标题</h1>`;
 
-  console.log(box.shadowRoot?.querySelector('h1')) // <h1>标题</h1>
-  console.log(box.shadowRoot?.innerHTML) // <style>h1 {color: red}</style><h1>标题</h1>
+  console.log(box.shadowRoot?.querySelector("h1")); // <h1>标题</h1>
+  console.log(box.shadowRoot?.innerHTML); // <style>h1 {color: red}</style><h1>标题</h1>
 </script>
 ```
 
@@ -42,7 +44,7 @@ https://caniuse.com/shadowdomv1
 </script>
 ```
 
-### 4. 哪些元素可以附加 Shadow DOM
+## 4. 哪些元素可以附加 Shadow DOM
 
 a 标签, image 标签都不能附加 shadow dom
 否则会报错
@@ -70,12 +72,13 @@ Uncaught DOMException: Failed to execute 'attachShadow' on 'Element': This eleme
                 +----------------+----------------+----------------+
 ```
 
-### 3. shadow dom 的 css 样式
+## 3. shadow dom 的 css 样式
 
 shadow dom 里面不能定义 body 元素, 所以 shadow dom 里如果有弹层, 还是会展示在外面的 body 上
 
-1.  shadow dom 不会被外面的样式影响
-    `标题`不是红色
+1.shadow dom 不会被外面的样式影响
+
+`标题`不是红色
 
 ```html
 <style>
@@ -86,28 +89,31 @@ shadow dom 里面不能定义 body 元素, 所以 shadow dom 里如果有弹层,
 <h1>hello World</h1>
 <div class="box"></div>
 <script>
-  var box = document.querySelector('.box')
-  const shadowRoot = box.attachShadow({ mode: 'open' })
-  shadowRoot.innerHTML = `<h1>标题</h1>`
+  var box = document.querySelector(".box");
+  const shadowRoot = box.attachShadow({ mode: "open" });
+  shadowRoot.innerHTML = `<h1>标题</h1>`;
 </script>
 ```
 
-2. shadow dom 不会影响外面元素的样式
-   `hello World` 不是红色
+2.shadow dom 不会影响外面元素的样式
+
+`hello World` 不是红色
 
 ```html
 <h1>hello World</h1>
 <div class="box"></div>
 <script>
-  var box = document.querySelector('.box')
-  const shadowRoot = box.attachShadow({ mode: 'open' })
-  shadowRoot.innerHTML = `<style>h1{color: blue}</style><h1>标题</h1>`
+  var box = document.querySelector(".box");
+  const shadowRoot = box.attachShadow({ mode: "open" });
+  shadowRoot.innerHTML = `<style>h1{color: blue}</style><h1>标题</h1>`;
 </script>
 ```
 
-3. shadow dom 里的元素可以被插入到 body 中
-   不管 mode 是 open 还是 closed, 只要能拿到 shadowRoot, 那么就可以完全控制 shadow dom 里面的元素;
-   所以对于微前端, shadow dom 的元素如果被插入到 body 当中, 比如 antd 里面的弹层, 那么样式隔离就不起作用了。
+3.shadow dom 里的元素可以被插入到 body 中
+
+不管 mode 是 open 还是 closed, 只要能拿到 shadowRoot, 那么就可以完全控制 shadow dom 里面的元素;
+
+所以对于微前端, shadow dom 的元素如果被插入到 body 当中, 比如 antd 里面的弹层, 那么样式隔离就不起作用了。
 
 下面的例子 显示如下:
 ![image](https://user-images.githubusercontent.com/32337542/118680173-14fd8780-b831-11eb-9421-76506e5cdffb.png)
@@ -121,19 +127,20 @@ shadow dom 里面不能定义 body 元素, 所以 shadow dom 里如果有弹层,
 <h1>hello World</h1>
 <div class="box"></div>
 <script>
-  var box = document.querySelector('.box')
-  const shadowRoot = box.attachShadow({ mode: 'closed' })
+  var box = document.querySelector(".box");
+  const shadowRoot = box.attachShadow({ mode: "closed" });
   shadowRoot.innerHTML = `
         <style>
             h1 { color: blue }
         </style>
-        <h1>标题</h1>`
-  document.body.appendChild(shadowRoot.querySelector('h1'))
+        <h1>标题</h1>`;
+  document.body.appendChild(shadowRoot.querySelector("h1"));
 </script>
 ```
 
-4. shadow dom 的 open 和 closed 的区别
-   设置 `mode` 为`open` 的时候, 可以通过外层元素的 shadowRoot 获得对 shadow dom 的控制;
+4.shadow dom 的 open 和 closed 的区别
+
+设置 `mode` 为`open` 的时候, 可以通过外层元素的 shadowRoot 获得对 shadow dom 的控制;
 
 ```html
 <style>
@@ -144,17 +151,17 @@ shadow dom 里面不能定义 body 元素, 所以 shadow dom 里如果有弹层,
 <h1>hello World</h1>
 <div class="box"></div>
 <script>
-  var box = document.querySelector('.box')
-  const shadowRoot = box.attachShadow({ mode: 'open' })
+  var box = document.querySelector(".box");
+  const shadowRoot = box.attachShadow({ mode: "open" });
   shadowRoot.innerHTML = `
         <style>
             h1 { color: blue }
         </style>
-        <h1>标题</h1>`
+        <h1>标题</h1>`;
 </script>
 <script>
-  const h1 = document.querySelector('.box').shadowRoot?.querySelector('h1')
-  console.log(h1) // <h1>标题</h1>
+  const h1 = document.querySelector(".box").shadowRoot?.querySelector("h1");
+  console.log(h1); // <h1>标题</h1>
 </script>
 ```
 
@@ -163,12 +170,12 @@ shadow dom 里面不能定义 body 元素, 所以 shadow dom 里如果有弹层,
 ```html
 ...
 <script>
-  const shadowRoot = document.querySelector('.box').shadowRoot
-  console.log(shadowRoot) // null
+  const shadowRoot = document.querySelector(".box").shadowRoot;
+  console.log(shadowRoot); // null
 </script>
 ```
 
-### 4. shadow dom 的 js 控制
+## 4. shadow dom 的 js 控制
 
 当一个元素 设置成 shadow dom 的时候，那么子元素是不可见的;
 如下, h1 元素不在 shadow-root 下面
@@ -189,14 +196,14 @@ shadow dom 里面不能定义 body 元素, 所以 shadow dom 里如果有弹层,
 解决方式, 获取 box 下面所有的 Children, 并且插入到 shadow dom 里面
 
 ```js
-var box = document.querySelector('.box')
-var shadowRoot = box.attachShadow({ mode: 'open' })
-;[].slice.call(box.children).forEach((child) => {
-  shadowRoot.appendChild(child)
-})
+var box = document.querySelector(".box");
+var shadowRoot = box.attachShadow({ mode: "open" });
+[].slice.call(box.children).forEach((child) => {
+  shadowRoot.appendChild(child);
+});
 ```
 
-### 5. shadow dom 里的元素可以访问外层 document 和 window 对象
+## 5. shadow dom 里的元素可以访问外层 document 和 window 对象
 
 不管 mode 为 'open' 或者 'closed'
 
@@ -215,6 +222,6 @@ var shadowRoot = box.attachShadow({ mode: 'open' })
 ```
 
 ::: 参考地址
-https://developer.aliyun.com/article/717933
-https://developer.mozilla.org/zh-CN/docs/Web/Web_Components/Using_shadow_DOM
+<https://developer.aliyun.com/article/717933>
+<https://developer.mozilla.org/zh-CN/docs/Web/Web_Components/Using_shadow_DOM>
 :::

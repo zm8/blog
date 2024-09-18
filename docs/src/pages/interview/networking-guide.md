@@ -113,7 +113,7 @@ https://juejin.cn/post/6992424410581827592?searchId=20231021220101B06EAE764EFF6D
 
 sessionId 是以 cookie 的形式存储在客户端。
 session 是存储在服务端，是以键值对的形式存储。键是 sessionId, 值是 用户的各种信息。
-![image](https://github.com/zm8/blog/assets/32337542/995a23a3-c787-4df2-857e-4d2ba13d968f)
+![image](https://github.com/zm8/blog_old/assets/32337542/995a23a3-c787-4df2-857e-4d2ba13d968f)
 参考地址: https://juejin.cn/post/7246675998758846522
 
 ## 什么是 Websocket
@@ -128,7 +128,7 @@ Websocket 是一个持久化的协议, 经过一次 HTTP 握手，升级成 webs
 2. 消息同步库, 对于离线的接收方，拉取同步消息。
 3. 对于在线的接收方，会直接选择在线推送。
 
-![image](https://github.com/zm8/blog/assets/32337542/fea501cb-c3ef-4497-9159-b15db0009b5f)
+![image](https://github.com/zm8/blog_old/assets/32337542/fea501cb-c3ef-4497-9159-b15db0009b5f)
 
 参考地址：
 https://zhuanlan.zhihu.com/p/31377253

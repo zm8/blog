@@ -273,7 +273,7 @@ ZRender 是二维绘图引擎，它提供 Canvas、SVG、VML 等多种渲染方�
 宏任务主要包含：script（整体代码）、setTimeout、setInterval、setImmediate、I/O、UI 交互事件。
 微任务主要包含：Promise、MutationObserver 等。
 
-![image](https://github.com/zm8/blog/assets/32337542/dfa2af3a-1e24-4bf8-838d-65d95217cce2)
+![image](https://github.com/zm8/blog_old/assets/32337542/dfa2af3a-1e24-4bf8-838d-65d95217cce2)
 
 ## requestAnimationFrame 和 setTimeout, setInterval 的区别?
 

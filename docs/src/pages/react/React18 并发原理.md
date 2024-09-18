@@ -68,7 +68,7 @@ React 为通过 lane 来分配优先级。
 ```
 
 先点击 B，又点击 A，如果 B 还没更新完，会通过 lan 进行对比，此时会中断 B 更新，开始 A 更新。直到 A 更新完，再重新开始 B 更新。
-![image](https://github.com/zm8/blog/assets/32337542/a270facb-7570-4d65-a6bc-9bf371d2dd57)
+![image](https://github.com/zm8/blog_old/assets/32337542/a270facb-7570-4d65-a6bc-9bf371d2dd57)
 
 ## 9. React18 并发渲染
 
@@ -94,18 +94,18 @@ fallback 是指定加载状态或者骨架，List 里面主要用于读取数据
 实现的原理是 unstable_createResource 会抛出一个错误 Promise 被 Suspense 捕获，Promise 执行成功之后重新渲染 组件。
 
 ```jsx
-const wrappedData = unstable_createResource((pageId) => fetchData(pageId))
+const wrappedData = unstable_createResource((pageId) => fetchData(pageId));
 
 function List({ pageId }) {
-  const data = wrappedData.read(pageId)
+  const data = wrappedData.read(pageId);
 
-  return data[pageId].map((item) => <li>{item}</li>)
+  return data[pageId].map((item) => <li>{item}</li>);
 }
 
 // 在需要使用 List 组件的地方包裹一层  Suspense 即可自动控制加载抓昂太
-;<Suspense fallback={<div>Loading...</div>}>
+<Suspense fallback={<div>Loading...</div>}>
   <List />
-</Suspense>
+</Suspense>;
 ```
 
 ## useTransition/useDeferredValue
