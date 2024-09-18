@@ -1,11 +1,11 @@
 # http 1.0, 1.1, 2 的区别
 
-### 1. http1.0
+## 1. http1.0
 
 浏览器与服务器只保持短暂的连接，浏览器的每次请求都需要与服务器建立一个 TCP 连接;
 解决方案: 添加头 `Connection: keep-alive`
 
-### 2. http1.1
+## 2. http1.1
 
 1. 持久连接
    TCP 连接默认不关闭, 不用声明 `Connection: keep-alive`, 同一个域名, 大多数可以建立 6 个持久化连接;
@@ -24,7 +24,7 @@
 4. http1.1 的缺点：
    队头堵塞 问题; 服务器只有处理完一个请求，才会接着处理下一个请求。
 
-### 3. HTTP/2
+## 3. HTTP/2
 
 1. 二进制协议
    头信息和数据体都是二进制，并且统称为”帧”：头信息帧和数据帧。二进制解析高效, 错误少;
@@ -39,6 +39,6 @@
    比如请求 html 文件, 服务器在返回 HTML 的基础上, 将 HTML 引用的其它资源文件一起返回给客户端, 减少客户端等待;
 
 ::: 参考地址
-https://www.debugger.wiki/article/html/1565502376358922
-https://juejin.cn/post/6844904100035821575#heading-43
+<https://www.debugger.wiki/article/html/1565502376358922>
+<https://juejin.cn/post/6844904100035821575#heading-43>
 :::
