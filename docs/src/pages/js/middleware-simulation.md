@@ -4,43 +4,43 @@
 
 ```js
 class middleWare {
-	constructor() {
-		this.arr = [];
-	}
-	use(fn) {
-		const fff = () => {
-			fn.call(null, this.obj, this.next.bind(this));
-		};
-		this.arr.push(fff);
-	}
-	next() {
-		var fn = this.arr.shift();
-		if (fn) {
-			fn();
-		}
-	}
-	go(obj) {
-		this.obj = obj;
-		this.next();
-	}
+  constructor() {
+    this.arr = [];
+  }
+  use(fn) {
+    const fff = () => {
+      fn.call(null, this.obj, this.next.bind(this));
+    };
+    this.arr.push(fff);
+  }
+  next() {
+    var fn = this.arr.shift();
+    if (fn) {
+      fn();
+    }
+  }
+  go(obj) {
+    this.obj = obj;
+    this.next();
+  }
 }
 
 var o = new middleWare();
 o.use(function (ctx, next) {
-	console.log(1);
-	ctx.name = "Lucy";
-	setTimeout(() => {
-		next();
-	}, 2000);
+  console.log(1);
+  ctx.name = "Lucy";
+  setTimeout(() => {
+    next();
+  }, 2000);
 });
 o.use(function (ctx, next) {
-	console.log(2);
-	ctx.age = 12;
-	next();
+  console.log(2);
+  ctx.age = 12;
+  next();
 });
 o.use(function (ctx, next) {
-	console.log(ctx);
-	next();
+  console.log(ctx);
+  next();
 });
 o.go({});
 ```
@@ -67,8 +67,8 @@ f3(ctx, () => done);
 
 ```js
 [f1, f2, f3].reduceRight(
-	(next, f) => () => f(ctx, next),
-	() => {}
+  (next, f) => () => f(ctx, next),
+  () => {}
 );
 ```
 
@@ -76,37 +76,37 @@ f3(ctx, () => done);
 
 ```js
 const app = {
-	done(ctx) {
-		console.log("done", ctx);
-	},
-	use(fn) {
-		app.middleware = app.middleware || [];
-		app.middleware.push(fn);
-	},
-	go(ctx) {
-		app.middleware = app.middleware || [];
-		app.middleware.reduceRight(
-			(p, c) => () => c(ctx, p),
-			() => app.done(ctx)
-		)();
-	},
+  done(ctx) {
+    console.log("done", ctx);
+  },
+  use(fn) {
+    app.middleware = app.middleware || [];
+    app.middleware.push(fn);
+  },
+  go(ctx) {
+    app.middleware = app.middleware || [];
+    app.middleware.reduceRight(
+      (p, c) => () => c(ctx, p),
+      () => app.done(ctx)
+    )();
+  }
 };
 
 app.use(function f1(ctx, next) {
-	console.log(1);
-	ctx.name = "Lucy";
-	setTimeout(() => {
-		next();
-	}, 2000);
+  console.log(1);
+  ctx.name = "Lucy";
+  setTimeout(() => {
+    next();
+  }, 2000);
 });
 app.use(function f2(ctx, next) {
-	console.log(2);
-	ctx.age = 12;
-	next();
+  console.log(2);
+  ctx.age = 12;
+  next();
 });
 app.use(function f3(ctx, next) {
-	console.log(ctx);
-	next();
+  console.log(ctx);
+  next();
 });
 let ctx = {};
 app.go(ctx);

@@ -4,10 +4,10 @@
 
 ```javascript
 function* helloWorldGenerator() {
-	var res = yield "hello";
-	yield res / 2;
-	yield "world";
-	return "ending";
+  var res = yield "hello";
+  yield res / 2;
+  yield "world";
+  return "ending";
 }
 
 var hw = helloWorldGenerator();
@@ -26,36 +26,36 @@ console.log(hw.next()); // {value: undefined, done: true}
 var _marked = /*#__PURE__*/ regeneratorRuntime.mark(helloWorldGenerator);
 
 function helloWorldGenerator() {
-	var res;
-	return regeneratorRuntime.wrap(
-		function helloWorldGenerator$(_context) {
-			while (1) {
-				switch ((_context.prev = _context.next)) {
-					case 0:
-						_context.next = 2;
-						return "hello";
+  var res;
+  return regeneratorRuntime.wrap(
+    function helloWorldGenerator$(_context) {
+      while (1) {
+        switch ((_context.prev = _context.next)) {
+          case 0:
+            _context.next = 2;
+            return "hello";
 
-					case 2:
-						res = _context.sent;
-						_context.next = 5;
-						return res / 2;
+          case 2:
+            res = _context.sent;
+            _context.next = 5;
+            return res / 2;
 
-					case 5:
-						_context.next = 7;
-						return "world";
+          case 5:
+            _context.next = 7;
+            return "world";
 
-					case 7:
-						return _context.abrupt("return", "ending");
+          case 7:
+            return _context.abrupt("return", "ending");
 
-					case 8:
-					case "end":
-						return _context.stop();
-				}
-			}
-		},
-		_marked,
-		this
-	);
+          case 8:
+          case "end":
+            return _context.stop();
+        }
+      }
+    },
+    _marked,
+    this
+  );
 }
 
 var hw = helloWorldGenerator();
@@ -70,101 +70,101 @@ console.log(hw.next()); // {value: undefined, done: true}
 
 ```javascript
 (function () {
-	var ContinueSentinel = {};
+  var ContinueSentinel = {};
 
-	var mark = function (genFun) {
-		var generator = Object.create({
-			next: function (arg) {
-				return this._invoke("next", arg);
-			},
-			return: function (arg) {
-				return this._invoke("return", arg);
-			},
-			throw: function (arg) {
-				return this._invoke("throw", arg);
-			},
-		});
-		genFun.prototype = generator;
-		return genFun;
-	};
+  var mark = function (genFun) {
+    var generator = Object.create({
+      next: function (arg) {
+        return this._invoke("next", arg);
+      },
+      return: function (arg) {
+        return this._invoke("return", arg);
+      },
+      throw: function (arg) {
+        return this._invoke("throw", arg);
+      }
+    });
+    genFun.prototype = generator;
+    return genFun;
+  };
 
-	function wrap(innerFn, outerFn, self) {
-		/*
+  function wrap(innerFn, outerFn, self) {
+    /*
                 outerFn.prototype 其实就是 genFun.prototype( 在mark 函数里)
         */
-		var generator = Object.create(outerFn.prototype);
+    var generator = Object.create(outerFn.prototype);
 
-		var context = {
-			done: false,
-			method: "next",
-			next: 0,
-			prev: 0,
-			// type: "return", arg: "ending"
-			abrupt: function (type, arg) {
-				var record = {};
-				record.type = type;
-				record.arg = arg;
+    var context = {
+      done: false,
+      method: "next",
+      next: 0,
+      prev: 0,
+      // type: "return", arg: "ending"
+      abrupt: function (type, arg) {
+        var record = {};
+        record.type = type;
+        record.arg = arg;
 
-				return this.complete(record);
-			},
-			complete: function (record, afterLoc) {
-				if (record.type === "return") {
-					this.rval = this.arg = record.arg;
-					this.method = "return";
-					this.next = "end";
-				}
+        return this.complete(record);
+      },
+      complete: function (record, afterLoc) {
+        if (record.type === "return") {
+          this.rval = this.arg = record.arg;
+          this.method = "return";
+          this.next = "end";
+        }
 
-				return ContinueSentinel;
-			},
-			stop: function () {
-				this.done = true;
-				return this.rval;
-			},
-		};
+        return ContinueSentinel;
+      },
+      stop: function () {
+        this.done = true;
+        return this.rval;
+      }
+    };
 
-		generator._invoke = makeInvokeMethod(innerFn, context);
+    generator._invoke = makeInvokeMethod(innerFn, context);
 
-		return generator;
-	}
+    return generator;
+  }
 
-	function makeInvokeMethod(innerFn, context) {
-		var state = "start";
+  function makeInvokeMethod(innerFn, context) {
+    var state = "start";
 
-		return function invoke(method, arg) {
-			if (method === "throw") {
-				throw arg;
-			}
-			if (state === "completed") {
-				return { value: undefined, done: true };
-			}
-			context.method = method;
-			context.arg = arg;
-			while (true) {
-				if (context.method === "next") {
-					context.sent = context.arg;
-				} else if (context.method === "return") {
-					context.abrupt("return", context.arg);
-				}
-				state = "executing";
-				var record = {
-					type: "normal",
-					arg: innerFn.call(self, context),
-				};
-				state = context.done ? "completed" : "yield";
-				if (record.arg === ContinueSentinel) {
-					continue;
-				}
-				return {
-					value: record.arg,
-					done: context.done,
-				};
-			}
-		};
-	}
+    return function invoke(method, arg) {
+      if (method === "throw") {
+        throw arg;
+      }
+      if (state === "completed") {
+        return { value: undefined, done: true };
+      }
+      context.method = method;
+      context.arg = arg;
+      while (true) {
+        if (context.method === "next") {
+          context.sent = context.arg;
+        } else if (context.method === "return") {
+          context.abrupt("return", context.arg);
+        }
+        state = "executing";
+        var record = {
+          type: "normal",
+          arg: innerFn.call(self, context)
+        };
+        state = context.done ? "completed" : "yield";
+        if (record.arg === ContinueSentinel) {
+          continue;
+        }
+        return {
+          value: record.arg,
+          done: context.done
+        };
+      }
+    };
+  }
 
-	window.regeneratorRuntime = {};
-	regeneratorRuntime.wrap = wrap;
-	regeneratorRuntime.mark = mark;
+  window.regeneratorRuntime = {};
+  regeneratorRuntime.wrap = wrap;
+  regeneratorRuntime.mark = mark;
 })();
 ```
 

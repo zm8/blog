@@ -24,10 +24,10 @@ ES6 提供的。
 3. `.then(fn)` 里面的函数 fn 执行的是一个**微任务**，如果函数 fn 执行返回的是一个 Promise，则会等待这个 Promise resolve。
 
 ```js
-const delay = (time) => new Promise((r) => setTimeout(r, time))
+const delay = (time) => new Promise((r) => setTimeout(r, time));
 Promise.resolve()
   .then(() => delay(2000))
-  .then(() => console.log('ok'))
+  .then(() => console.log("ok"));
 ```
 
 ### 原理上:
@@ -52,26 +52,26 @@ promise-2
 
 ```js
 new Promise((resolve) => {
-  console.log('promise-1')
-  resolve()
+  console.log("promise-1");
+  resolve();
 })
   .then((d) => {
-    console.log('1')
+    console.log("1");
   })
   .then(() => {
-    console.log('3')
-  })
+    console.log("3");
+  });
 
 new Promise((resolve) => {
-  console.log('promise-2')
-  resolve()
+  console.log("promise-2");
+  resolve();
 })
   .then(function () {
-    console.log('2')
+    console.log("2");
   })
   .then(function () {
-    console.log('4')
-  })
+    console.log("4");
+  });
 ```
 
 分析原因，promise-1 的所有的 then 不会一起放在微任务里，
@@ -91,15 +91,15 @@ new Promise((resolve) => {
    如下代码输出: 1, 2, 3
 
 ```js
-console.log(1)
+console.log(1);
 async function fn1() {
-  await fn2()
+  await fn2();
 }
 async function fn2() {
-  console.log(2)
+  console.log(2);
 }
-fn1()
-console.log(3)
+fn1();
+console.log(3);
 ```
 
 3. 但是在 await 之后执行的代码是一个微任务
@@ -107,25 +107,25 @@ console.log(3)
    如下代码输出: 1 2 3 4
 
 ```js
-console.log(1)
+console.log(1);
 async function fn1() {
-  await fn2()
-  console.log(4)
+  await fn2();
+  console.log(4);
 }
 
 async function fn2() {
-  console.log(2)
+  console.log(2);
 }
-fn1()
-console.log(3)
+fn1();
+console.log(3);
 ```
 
 如果这个时候修改 fn2 函数如下，这个时候 `console.log(2);` 是一个微任务，所以执行顺序为: 1, 3, 2, 4
 
 ```js
 async function fn2() {
-  await ''
-  console.log(2)
+  await "";
+  console.log(2);
 }
 ```
 
@@ -134,25 +134,25 @@ async function fn2() {
 执行顺序为: 1,2,3,4,5,6
 
 ```js
-console.log(1)
+console.log(1);
 
 async function fn1() {
-  await fn2()
-  console.log(5)
+  await fn2();
+  console.log(5);
 }
 
 async function fn2() {
-  console.log(2)
+  console.log(2);
 }
 
-fn1()
+fn1();
 
 new Promise((resolve) => {
-  console.log(3)
-  resolve()
+  console.log(3);
+  resolve();
 }).then(() => {
-  console.log(6)
-})
+  console.log(6);
+});
 
-console.log(4)
+console.log(4);
 ```

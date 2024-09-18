@@ -19,14 +19,14 @@ range 函数在全局的执行上下文当中被调用, 并且触发了一个新
 // Generate an array of integers in the range s -> e.
 // Iterative implementation
 function range(s, e) {
-	var res = [];
+  var res = [];
 
-	while (s != e) {
-		res.push(s);
-		s < e ? s++ : s--;
-	}
-	res.push(s);
-	return res;
+  while (s != e) {
+    res.push(s);
+    s < e ? s++ : s--;
+  }
+  res.push(s);
+  return res;
 }
 
 range(1, 4); // [1,2,3,4]
@@ -44,10 +44,10 @@ range(-5, 1); // [-5,-4,-3,-2,-1,0,1]
 // Generate an array of numbers in a given range.
 // Recursive implementation
 function range(s, e) {
-	var res = [];
+  var res = [];
 
-	res.push(s);
-	return s == e ? res : res.concat(range(s < e ? ++s : --s, e));
+  res.push(s);
+  return s == e ? res : res.concat(range(s < e ? ++s : --s, e));
 }
 
 range(1, 4); // [1,2,3,4]
@@ -64,9 +64,9 @@ range(1, 4); // [1,2,3,4]
 // Generate an array of numbers in a given range.
 // Tail Recursive implementation
 function range(s, e, res) {
-	res = res || [];
-	res.push(s);
-	return s == e ? res : range(s < e ? ++s : --s, e, res);
+  res = res || [];
+  res.push(s);
+  return s == e ? res : range(s < e ? ++s : --s, e, res);
 }
 
 range(1, 4); // [1,2,3,4]
@@ -92,26 +92,26 @@ thunk 函数是指包装另外一个函数, 而延迟执行。
 
 ```javascript
 function trampoline(fn) {
-	return function () {
-		var res = fn.apply(this, arguments);
-		while (res instanceof Function) {
-			res = res();
-		}
-		return res;
-	};
+  return function () {
+    var res = fn.apply(this, arguments);
+    while (res instanceof Function) {
+      res = res();
+    }
+    return res;
+  };
 }
 
 // Generate an array of numbers in a given range.
 // Tail Recursive implementation
 function range(s, e, res) {
-	res = res || [];
-	res.push(s);
-	// return a result or a thunk if we need to do more
-	return s == e
-		? res
-		: function () {
-				return range(s < e ? ++s : --s, e, res);
-		  };
+  res = res || [];
+  res.push(s);
+  // return a result or a thunk if we need to do more
+  return s == e
+    ? res
+    : function () {
+        return range(s < e ? ++s : --s, e, res);
+      };
 }
 
 trampoline(range)(1, 4); // [1,2,3,4]
@@ -136,11 +136,11 @@ call stack 如下, 蹦床函数堆运行比较安全，虽然运行的比较慢�
 // Call ourselves repeatedly until some other async process
 // loads our app's local storage we need.
 (function waitForLocalStorage(key) {
-	if (localStorage.getItem(key)) {
-		// do something with loaded data
-	} else {
-		setTimeout(waitForLocalStorage.bind(null, key), 100);
-	}
+  if (localStorage.getItem(key)) {
+    // do something with loaded data
+  } else {
+    setTimeout(waitForLocalStorage.bind(null, key), 100);
+  }
 })("mydata");
 ```
 
@@ -157,78 +157,78 @@ babel 转移的代码，使用一个新的函数，并且使用 while 循环, �
 "use strict";
 
 function trampoline(fn) {
-	return function (/*args*/) {
-		var res = fn.apply(this, arguments);
-		while (res instanceof Function) {
-			res = res();
-		}
-		return res;
-	};
+  return function (/*args*/) {
+    var res = fn.apply(this, arguments);
+    while (res instanceof Function) {
+      res = res();
+    }
+    return res;
+  };
 }
 // Generate an array of numbers in a given range.
 // Tail Recursive implementation
 function _rangetr(s, e, res) {
-	res = res || [];
-	res.push(s);
-	return s == e
-		? res
-		: function () {
-				return _rangetr(s < e ? ++s : --s, e, res);
-		  };
+  res = res || [];
+  res.push(s);
+  return s == e
+    ? res
+    : function () {
+        return _rangetr(s < e ? ++s : --s, e, res);
+      };
 }
 
 // Generate an array of numbers in a given range.
 // Tail Recursive implementation
 function rangetr(s, e, res) {
-	res = res || [];
-	res.push(s);
-	return s == e ? res : rangetr(s < e ? ++s : --s, e, res);
+  res = res || [];
+  res.push(s);
+  return s == e ? res : rangetr(s < e ? ++s : --s, e, res);
 }
 
 // Generate an array of numbers in a given range.
 // Recursive implementation
 function ranger(s, e) {
-	var res = [];
+  var res = [];
 
-	res.push(s);
-	return s == e ? res : res.concat(ranger(s < e ? ++s : --s, e));
+  res.push(s);
+  return s == e ? res : res.concat(ranger(s < e ? ++s : --s, e));
 }
 
 // Generate an array of numbers in a given range.
 // Iterative implementation
 function range(s, e) {
-	var res = [];
+  var res = [];
 
-	while (s != e) {
-		res.push(s);
-		s < e ? s++ : s--;
-	}
-	res.push(s);
-	return res;
+  while (s != e) {
+    res.push(s);
+    s < e ? s++ : s--;
+  }
+  res.push(s);
+  return res;
 }
 
 // Babel transpiled tail-call optimization
 function rangetr_babel(_x, _x2, _x3) {
-	var _again = true;
+  var _again = true;
 
-	_function: while (_again) {
-		var s = _x,
-			e = _x2,
-			res = _x3;
-		_again = false;
+  _function: while (_again) {
+    var s = _x,
+      e = _x2,
+      res = _x3;
+    _again = false;
 
-		res = res || [];
-		res.push(s);
-		if (s == e) {
-			return res;
-		} else {
-			_x = s < e ? ++s : --s;
-			_x2 = e;
-			_x3 = res;
-			_again = true;
-			continue _function;
-		}
-	}
+    res = res || [];
+    res.push(s);
+    if (s == e) {
+      return res;
+    } else {
+      _x = s < e ? ++s : --s;
+      _x2 = e;
+      _x3 = res;
+      _again = true;
+      continue _function;
+    }
+  }
 }
 ```
 
@@ -238,9 +238,9 @@ function rangetr_babel(_x, _x2, _x3) {
 
 ```javascript
 function range(s, e, res) {
-	res = res || [];
-	res.push(s);
-	return s == e ? res : range(s < e ? ++s : --s, e, res);
+  res = res || [];
+  res.push(s);
+  return s == e ? res : range(s < e ? ++s : --s, e, res);
 }
 ```
 
@@ -254,26 +254,26 @@ call stack 如下, 这里 js 认识尾调用，并且可以重新使用之前的
 "use strict";
 
 function range(_x, _x2, _x3) {
-	var _again = true;
+  var _again = true;
 
-	_function: while (_again) {
-		var s = _x,
-			e = _x2,
-			res = _x3;
-		_again = false;
+  _function: while (_again) {
+    var s = _x,
+      e = _x2,
+      res = _x3;
+    _again = false;
 
-		res = res || [];
-		res.push(s);
-		if (s == e) {
-			return res;
-		} else {
-			_x = s < e ? ++s : --s;
-			_x2 = e;
-			_x3 = res;
-			_again = true;
-			continue _function;
-		}
-	}
+    res = res || [];
+    res.push(s);
+    if (s == e) {
+      return res;
+    } else {
+      _x = s < e ? ++s : --s;
+      _x2 = e;
+      _x3 = res;
+      _again = true;
+      continue _function;
+    }
+  }
 }
 ```
 
@@ -294,10 +294,10 @@ function range(_x, _x2, _x3) {
 ```javascript
 "use strict";
 function rangetr(s, e, res) {
-	"use strict";
-	res = res || [];
-	res.push(s);
-	return s == e ? res : rangetr(s < e ? ++s : --s, e, res);
+  "use strict";
+  res = res || [];
+  res.push(s);
+  return s == e ? res : rangetr(s < e ? ++s : --s, e, res);
 }
 console.log(rangetr(1, 123456));
 ```

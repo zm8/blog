@@ -5,29 +5,29 @@
 函数里用 yield 关键字来暂停函数运行。外部没有任何东西可以暂停它。所以当它暂停了，必须有外部控制来重新启动它。
 通常一个函数，你刚开始传递参数进去，然后 用 return 来返回。而 Generator 函数，通过 yield 传递消息出去，每次启动的时候传递消息进去，传递的值是 yield 表达式的结果。
 
-### Generator 返回的是一个迭代器
+## Generator 返回的是一个迭代器
 
 ```js
 function* foo() {
-	yield 1;
-	yield 2;
-	yield 3;
-	yield 4;
-	yield 5;
+  yield 1;
+  yield 2;
+  yield 3;
+  yield 4;
+  yield 5;
 }
 var it = foo();
 ```
 
-### yeild 调用
+## yeild 调用
 
 由于第 1 次调用 `it.next(5)` 时，因为并没有 yeild 表达式接收 5 这个值，都没有 yeild 执行过。
 所以只能初始化 `foo(5)`, 传递值 5 进去给 x。
 
 ```js
 function* foo(x) {
-	var y = 2 * (yield x + 1);
-	var z = yield y / 3;
-	return x + y + z;
+  var y = 2 * (yield x + 1);
+  var z = yield y / 3;
+  return x + y + z;
 }
 
 var it = foo(5);
@@ -38,23 +38,23 @@ console.log(it.next(12)); // { value:8, done:false }
 console.log(it.next(13)); // { value:42, done:true }
 ```
 
-### for..of
+## for..of
 
 ES6 也可以用 `for..of` 来迭代 `generator`, 但是注意下面的例子, return 返回的值并不能被迭代出, 所以 `generator` 里不建议用 `return`;
 另外一个角度理解, 函数的最后 `return undefined`
 
 ```js
 function* foo() {
-	yield 1;
-	yield 2;
-	yield 3;
-	yield 4;
-	yield 5;
-	return 6;
+  yield 1;
+  yield 2;
+  yield 3;
+  yield 4;
+  yield 5;
+  return 6;
 }
 
 for (var v of foo()) {
-	console.log(v);
+  console.log(v);
 }
 // 1 2 3 4 5
 
@@ -68,12 +68,12 @@ console.log(v); // still `5`, not `6`
 
 ```js
 function* foo() {
-	try {
-		var x = yield 3;
-		console.log("x: " + x); // may never get here!
-	} catch (err) {
-		console.log("Error: " + err);
-	}
+  try {
+    var x = yield 3;
+    console.log("x: " + x); // may never get here!
+  } catch (err) {
+    console.log("Error: " + err);
+  }
 }
 var it = foo();
 var res = it.next(); // { value:3, done:false }
@@ -84,15 +84,15 @@ it.throw("Oops!"); // Error: Oops!
 
 ```js
 function* foo() {
-	var x = yield 3;
-	console.log("x: " + x); // may never get here!
+  var x = yield 3;
+  console.log("x: " + x); // may never get here!
 }
 var it = foo();
 var res = it.next(); // { value:3, done:false }
 try {
-	it.throw("Oops!");
+  it.throw("Oops!");
 } catch (e) {
-	console.log("Error: " + e); // Error: Oops!
+  console.log("Error: " + e); // Error: Oops!
 }
 ```
 
@@ -100,9 +100,9 @@ try {
 
 ```js
 function* foo() {
-	var x = yield 3;
-	var y = x.toUpperCase(); // could be a TypeError error!
-	yield y;
+  var x = yield 3;
+  var y = x.toUpperCase(); // could be a TypeError error!
+  yield y;
 }
 
 var it = foo();
@@ -110,9 +110,9 @@ var it = foo();
 it.next(); // { value:3, done:false }
 
 try {
-	it.next(42); // `42` won't have `toUpperCase()`
+  it.next(42); // `42` won't have `toUpperCase()`
 } catch (err) {
-	console.log(err); // TypeError (from `toUpperCase()` call)
+  console.log(err); // TypeError (from `toUpperCase()` call)
 }
 ```
 
@@ -120,12 +120,12 @@ try {
 
 ```js
 function f1() {
-	console.log(aaaa);
+  console.log(aaaa);
 }
 try {
-	f1();
+  f1();
 } catch (e) {
-	console.log(e); // 'ReferenceError: a is not defined'
+  console.log(e); // 'ReferenceError: a is not defined'
 }
 ```
 
@@ -137,19 +137,19 @@ try {
 
 ```js
 function* foo() {
-	yield 3;
-	yield 4;
+  yield 3;
+  yield 4;
 }
 
 function* bar() {
-	yield 1;
-	yield 2;
-	yield* foo(); // `yield *` delegates iteration control to `foo()`
-	yield 5;
+  yield 1;
+  yield 2;
+  yield* foo(); // `yield *` delegates iteration control to `foo()`
+  yield 5;
 }
 
 for (var v of bar()) {
-	console.log(v);
+  console.log(v);
 }
 // 1 2 3 4 5
 ```
@@ -158,17 +158,17 @@ for (var v of bar()) {
 
 ```js
 function* foo() {
-	var z = yield 3;
-	var w = yield 4;
-	console.log("z: " + z + ", w: " + w);
+  var z = yield 3;
+  var w = yield 4;
+  console.log("z: " + z + ", w: " + w);
 }
 
 function* bar() {
-	var x = yield 1;
-	var y = yield 2;
-	yield* foo(); // 相当于 var ffff = foo(); ffff.next();
-	var v = yield 5;
-	console.log("x: " + x + ", y: " + y + ", v: " + v);
+  var x = yield 1;
+  var y = yield 2;
+  yield* foo(); // 相当于 var ffff = foo(); ffff.next();
+  var v = yield 5;
+  console.log("x: " + x + ", y: " + y + ", v: " + v);
 }
 
 var it = bar();
@@ -189,16 +189,16 @@ it.next("V"); // { value:undefined, done:true }
 
 ```js
 function* foo() {
-	yield 2;
-	yield 3;
-	return "foo"; // return value back to `yield*` expression
+  yield 2;
+  yield 3;
+  return "foo"; // return value back to `yield*` expression
 }
 
 function* bar() {
-	yield 1;
-	var v = yield* foo();
-	console.log("v: " + v);
-	yield 4;
+  yield 1;
+  var v = yield* foo();
+  console.log("v: " + v);
+  yield 4;
 }
 
 var it = bar();
@@ -215,9 +215,9 @@ it.next(); // { value:undefined, done:true }
 
 ```js
 function* foo() {
-	yield 1;
-	yield 2;
-	return "foo"; // return value back to `yield*` expression
+  yield 1;
+  yield 2;
+  return "foo"; // return value back to `yield*` expression
 }
 var it = foo();
 it.next(); // { value:1, done:false }
@@ -231,25 +231,25 @@ it.next(); // { value:'foo', done:true }
 
 ```js
 function* foo() {
-	try {
-		yield 2;
-	} catch (err) {
-		console.log("foo caught: " + err);
-	}
+  try {
+    yield 2;
+  } catch (err) {
+    console.log("foo caught: " + err);
+  }
 
-	yield; // pause
+  yield; // pause
 
-	// now, throw another error
-	throw "Oops!";
+  // now, throw another error
+  throw "Oops!";
 }
 
 function* bar() {
-	yield 1;
-	try {
-		yield* foo();
-	} catch (err) {
-		console.log("bar caught: " + err);
-	}
+  yield 1;
+  try {
+    yield* foo();
+  } catch (err) {
+    console.log("bar caught: " + err);
+  }
 }
 var it = bar();
 it.next(); // {value: 1, done: false}
@@ -262,13 +262,13 @@ it.next(); // bar caught: Oops! {value: undefined, done: true}
 
 ```js
 function* bar() {
-	yield 1;
-	try {
-		console.log(a);
-		yield 2;
-	} catch (err) {
-		console.log("bar caught: " + err);
-	}
+  yield 1;
+  try {
+    console.log(a);
+    yield 2;
+  } catch (err) {
+    console.log("bar caught: " + err);
+  }
 }
 var it = bar();
 it.next(); // {value: 1, done: false}
@@ -292,12 +292,12 @@ throw 的例子, **下面的 2 个例子是等价的**
 
 ```js
 function* bar() {
-	yield 1;
-	try {
-		yield 2;
-	} catch (err) {
-		console.log("bar caught: " + err);
-	}
+  yield 1;
+  try {
+    yield 2;
+  } catch (err) {
+    console.log("bar caught: " + err);
+  }
 }
 var it = bar();
 it.next(); // {value: 1, done: false}
@@ -309,13 +309,13 @@ it.throw("aaa"); // bar caught: aaa; {value: undefined, done: false}
 
 ```js
 function* bar() {
-	yield 1;
-	try {
-		yield 2;
-		throw "aaa";
-	} catch (err) {
-		console.log("bar caught: " + err);
-	}
+  yield 1;
+  try {
+    yield 2;
+    throw "aaa";
+  } catch (err) {
+    console.log("bar caught: " + err);
+  }
 }
 var it = bar();
 it.next(); // {value: 1, done: false}
@@ -325,7 +325,7 @@ it.next(); // bar caught: aaa; {value: undefined, done: false}
 
 ## 6. Going Async With ES6 Generators
 
-### Simplest Async
+## Simplest Async
 
 通过 request 里面调用 `it.next` 来进行下一步。yeild 不用关心 request 里面是怎么拿最新的 data 的。
 注意 makeAjaxCall 里的代码不能立即执行 callback, 否则有个错误,
@@ -334,29 +334,29 @@ it.next(); // bar caught: aaa; {value: undefined, done: false}
 ```js
 var id = 1;
 function makeAjaxCall(url, callback) {
-	setTimeout(() => {
-		callback(
-			JSON.stringify({
-				value: url,
-				id: id++,
-			})
-		);
-	}, 1000);
+  setTimeout(() => {
+    callback(
+      JSON.stringify({
+        value: url,
+        id: id++
+      })
+    );
+  }, 1000);
 }
 
 function request(url) {
-	makeAjaxCall(url, function (response) {
-		it.next(response);
-	});
+  makeAjaxCall(url, function (response) {
+    it.next(response);
+  });
 }
 
 function* main() {
-	var result1 = yield request("http://some.url.1");
-	var data = JSON.parse(result1);
+  var result1 = yield request("http://some.url.1");
+  var data = JSON.parse(result1);
 
-	var result2 = yield request("http://some.url.2?id=" + data.id);
-	var resp = JSON.parse(result2);
-	console.log("The value you asked for: " + resp.value);
+  var result2 = yield request("http://some.url.2?id=" + data.id);
+  var resp = JSON.parse(result2);
+  console.log("The value you asked for: " + resp.value);
 }
 
 var it = main();
@@ -367,21 +367,21 @@ it.next();
 
 ```js
 function doNext() {
-	it.next();
+  it.next();
 }
 function* foo() {
-	var res = yield doNext();
-	console.log(res);
-	res = yield 2;
-	console.log(res);
-	res = yield 3;
-	console.log(res);
+  var res = yield doNext();
+  console.log(res);
+  res = yield 2;
+  console.log(res);
+  res = yield 3;
+  console.log(res);
 }
 var it = foo();
 it.next();
 ```
 
-### Better Async
+## Better Async
 
 目前异步的问题有 3 个:
 1: 对于异常的处理不清晰。虽然我们能用 `it.throw` 来处理异常, 然后用 `try..catch` 来捕获异常,
@@ -395,41 +395,41 @@ it.next();
 
 ```js
 function request(url) {
-	return new Promise((resolve, reject) => {
-		setTimeout(() => {
-			resolve(url);
-		}, 2000);
-	});
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve(url);
+    }, 2000);
+  });
 }
 
 runGenerator(function* main() {
-	var result1 = yield request("http://some.url.1");
-	console.log("result1=" + result1);
-	var result2 = yield request("http://some.url.2?id=");
-	console.log("result2=" + result2);
-	var r3 = yield 2;
-	console.log(r3);
+  var result1 = yield request("http://some.url.1");
+  console.log("result1=" + result1);
+  var result2 = yield request("http://some.url.2?id=");
+  console.log("result2=" + result2);
+  var r3 = yield 2;
+  console.log(r3);
 });
 
 function runGenerator(ge) {
-	let it = ge();
-	const loop = (data) => {
-		let p = it.next(data);
-		if (p.done) {
-			return;
-		}
-		if (p.value.then) {
-			p.value.then(loop);
-		} else {
-			/*
-                这里其实不用 setTimeout 也不会报错,
-                但是为了跟上面的 promise.then 一样是异步的, 所以加了个 setTimeout
-            */
-			setTimeout(() => {
-				loop(p.value);
-			});
-		}
-	};
-	loop();
+  let it = ge();
+  const loop = (data) => {
+    let p = it.next(data);
+    if (p.done) {
+      return;
+    }
+    if (p.value.then) {
+      p.value.then(loop);
+    } else {
+      /*
+  这里其实不用 setTimeout 也不会报错,
+  但是为了跟上面的 promise.then 一样是异步的, 所以加了个 setTimeout
+ */
+      setTimeout(() => {
+        loop(p.value);
+      });
+    }
+  };
+  loop();
 }
 ```

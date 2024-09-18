@@ -1,10 +1,10 @@
 # Koa 简单模拟
 
-### 1. koa 的请求像一个洋葱模型
+## 1. koa 的请求像一个洋葱模型
 
 ![image](https://user-images.githubusercontent.com/32337542/81541634-fe169080-93a5-11ea-8b88-067bb0f8308d.png)
 
-### 2. 实例代码
+## 2. 实例代码
 
 下面的代码输出：
 
@@ -47,7 +47,7 @@ app.use((ctx) => {
 app.listen(3002, () => console.log("Koa app listening on 3002"));
 ```
 
-### 2. 如何模拟一个简单的 koa
+## 2. 如何模拟一个简单的 koa
 
 不断的递归 next 函数来模拟
 
@@ -82,7 +82,7 @@ class Koa {
 }
 ```
 
-### 3. 如何模拟一个简单的 koa
+## 3. 如何模拟一个简单的 koa
 
 通过调用高阶函数 compose, 然后里面通过 Promise 来巧妙的递归。
 
@@ -135,7 +135,7 @@ class Koa {
 }
 ```
 
-### 4. koa 如何监听报错
+## 4. koa 如何监听报错
 
 错误处理中间件在最顶端运行。
 
@@ -151,7 +151,7 @@ app.use(async (ctx, next) => {
 });
 ```
 
-### 5. koa 计算 http 的请求时间
+## 5. koa 计算 http 的请求时间
 
 ```javascript
 app.use(async (ctx, next) => {
@@ -162,6 +162,8 @@ app.use(async (ctx, next) => {
 ```
 
 ::: 参考地址
-https://hijiangtao.github.io/2017/11/10/Mastering-Koa-Middleware/
-https://github.com/0326/super-mini-koa/blob/master/super-mini-koa.js
+
+<https://hijiangtao.github.io/2017/11/10/Mastering-Koa-Middleware/>
+<https://github.com/0326/super-mini-koa/blob/master/super-mini-koa.js>
+
 :::

@@ -100,15 +100,15 @@ newest: -----0-----------2-----------4-...
 var source = Rx.Observable.interval(1000);
 var example = source.take(3);
 example.subscribe({
-	next: (value) => {
-		console.log(value);
-	},
-	error: (err) => {
-		console.log("Error: " + err);
-	},
-	complete: () => {
-		console.log("complete");
-	},
+  next: (value) => {
+    console.log(value);
+  },
+  error: (err) => {
+    console.log("Error: " + err);
+  },
+  complete: () => {
+    console.log("complete");
+  }
 });
 // 0
 // 1
@@ -130,15 +130,15 @@ example: -----0-----1-----2|
 var source = Rx.Observable.interval(1000);
 var example = source.first();
 example.subscribe({
-	next: (value) => {
-		console.log(value);
-	},
-	error: (err) => {
-		console.log("Error: " + err);
-	},
-	complete: () => {
-		console.log("complete");
-	},
+  next: (value) => {
+    console.log(value);
+  },
+  error: (err) => {
+    console.log("Error: " + err);
+  },
+  complete: () => {
+    console.log("complete");
+  }
 });
 // 0
 // complete
@@ -158,15 +158,15 @@ takeLast 必須等到整個 observable 完成(complete)，才能知道最後的�
 var source = Rx.Observable.interval(1000).take(6);
 var example = source.takeLast(2);
 example.subscribe({
-	next: (value) => {
-		console.log(value);
-	},
-	error: (err) => {
-		console.log("Error: " + err);
-	},
-	complete: () => {
-		console.log("complete");
-	},
+  next: (value) => {
+    console.log(value);
+  },
+  error: (err) => {
+    console.log("Error: " + err);
+  },
+  complete: () => {
+    console.log("complete");
+  }
 });
 // 4
 // 5
@@ -187,15 +187,15 @@ example: ------------------------------(45)|
 var source = Rx.Observable.interval(1000).take(6);
 var example = source.last();
 example.subscribe({
-	next: (value) => {
-		console.log(value);
-	},
-	error: (err) => {
-		console.log("Error: " + err);
-	},
-	complete: () => {
-		console.log("complete");
-	},
+  next: (value) => {
+    console.log(value);
+  },
+  error: (err) => {
+    console.log("Error: " + err);
+  },
+  complete: () => {
+    console.log("complete");
+  }
 });
 // 5
 // complete
@@ -217,15 +217,15 @@ var click = Rx.Observable.fromEvent(document.body, "click");
 var example = source.takeUntil(click);
 
 example.subscribe({
-	next: (value) => {
-		console.log(value);
-	},
-	error: (err) => {
-		console.log("Error: " + err);
-	},
-	complete: () => {
-		console.log("complete");
-	},
+  next: (value) => {
+    console.log(value);
+  },
+  error: (err) => {
+    console.log("Error: " + err);
+  },
+  complete: () => {
+    console.log("complete");
+  }
 });
 // 0
 // 1
@@ -251,15 +251,15 @@ var source2 = Rx.Observable.of(3);
 var source3 = Rx.Observable.of(4, 5, 6);
 var example = source.concat(source2, source3);
 example.subscribe({
-	next: (value) => {
-		console.log(value);
-	},
-	error: (err) => {
-		console.log("Error: " + err);
-	},
-	complete: () => {
-		console.log("complete");
-	},
+  next: (value) => {
+    console.log(value);
+  },
+  error: (err) => {
+    console.log("Error: " + err);
+  },
+  complete: () => {
+    console.log("complete");
+  }
 });
 // 0
 // 1
@@ -287,15 +287,15 @@ var source2 = Rx.Observable.of(3);
 var source3 = Rx.Observable.of(4, 5, 6);
 var example = Rx.Observable.concat(source, source2, source3);
 example.subscribe({
-	next: (value) => {
-		console.log(value);
-	},
-	error: (err) => {
-		console.log("Error: " + err);
-	},
-	complete: () => {
-		console.log("complete");
-	},
+  next: (value) => {
+    console.log(value);
+  },
+  error: (err) => {
+    console.log("Error: " + err);
+  },
+  complete: () => {
+    console.log("complete");
+  }
 });
 ```
 
@@ -308,15 +308,15 @@ var click = Rx.Observable.fromEvent(document.body, "click");
 var source = click.map((e) => Rx.Observable.of(1, 2, 3));
 var example = source.concatAll();
 example.subscribe({
-	next: (value) => {
-		console.log(value);
-	},
-	error: (err) => {
-		console.log("Error: " + err);
-	},
-	complete: () => {
-		console.log("complete");
-	},
+  next: (value) => {
+    console.log(value);
+  },
+  error: (err) => {
+    console.log("Error: " + err);
+  },
+  complete: () => {
+    console.log("complete");
+  }
 });
 ```
 
@@ -339,15 +339,15 @@ var obs3 = Rx.Observable.interval(2000).take(1);
 var source = Rx.Observable.of(obs1, obs2, obs3);
 var example = source.concatAll();
 example.subscribe({
-	next: (value) => {
-		console.log(value);
-	},
-	error: (err) => {
-		console.log("Error: " + err);
-	},
-	complete: () => {
-		console.log("complete");
-	},
+  next: (value) => {
+    console.log(value);
+  },
+  error: (err) => {
+    console.log("Error: " + err);
+  },
+  complete: () => {
+    console.log("complete");
+  }
 });
 // 0
 // 1
@@ -377,15 +377,15 @@ example: --0--1--2--3--4-0-1----0|
 var source = Rx.Observable.interval(1000);
 var example = source.skip(3);
 example.subscribe({
-	next: (value) => {
-		console.log(value);
-	},
-	error: (err) => {
-		console.log("Error: " + err);
-	},
-	complete: () => {
-		console.log("complete");
-	},
+  next: (value) => {
+    console.log(value);
+  },
+  error: (err) => {
+    console.log("Error: " + err);
+  },
+  complete: () => {
+    console.log("complete");
+  }
 });
 // 3
 // 4
@@ -407,15 +407,15 @@ startWith 的值是一開始就同步發出的，這個 operator 很常被用來
 var source = Rx.Observable.interval(1000);
 var example = source.startWith(0);
 example.subscribe({
-	next: (value) => {
-		console.log(value);
-	},
-	error: (err) => {
-		console.log("Error: " + err);
-	},
-	complete: () => {
-		console.log("complete");
-	},
+  next: (value) => {
+    console.log(value);
+  },
+  error: (err) => {
+    console.log("Error: " + err);
+  },
+  complete: () => {
+    console.log("complete");
+  }
 });
 // 0 马上发出
 // 0 过1秒
@@ -439,15 +439,15 @@ var source = Rx.Observable.interval(500).take(3);
 var source2 = Rx.Observable.interval(300).take(6);
 var example = source.merge(source2);
 example.subscribe({
-	next: (value) => {
-		console.log(value);
-	},
-	error: (err) => {
-		console.log("Error: " + err);
-	},
-	complete: () => {
-		console.log("complete");
-	},
+  next: (value) => {
+    console.log(value);
+  },
+  error: (err) => {
+    console.log("Error: " + err);
+  },
+  complete: () => {
+    console.log("complete");
+  }
 });
 // 0
 // 0
@@ -474,7 +474,7 @@ example: --0-01--21-3--(24)--5|
 ```javascript
 var stopVideo = Rx.Observable.merge(stopButton, endButton);
 stopVideo.subscribe(() => {
-	// 暫停播放影片
+  // 暫停播放影片
 });
 ```
 
@@ -505,15 +505,15 @@ var source = Rx.Observable.interval(500).take(3);
 var newest = Rx.Observable.interval(300).take(6);
 var example = source.combineLatest(newest, (x, y) => x + y);
 example.subscribe({
-	next: (value) => {
-		console.log(value);
-	},
-	error: (err) => {
-		console.log("Error: " + err);
-	},
-	complete: () => {
-		console.log("complete");
-	},
+  next: (value) => {
+    console.log(value);
+  },
+  error: (err) => {
+    console.log("Error: " + err);
+  },
+  complete: () => {
+    console.log("complete");
+  }
 });
 // 0
 // 1
@@ -561,15 +561,15 @@ var source = Rx.Observable.interval(500).take(3);
 var newest = Rx.Observable.interval(300).take(6);
 var example = source.zip(newest, (x, y) => x + y);
 example.subscribe({
-	next: (value) => {
-		console.log(value);
-	},
-	error: (err) => {
-		console.log("Error: " + err);
-	},
-	complete: () => {
-		console.log("complete");
-	},
+  next: (value) => {
+    console.log(value);
+  },
+  error: (err) => {
+    console.log("Error: " + err);
+  },
+  complete: () => {
+    console.log("complete");
+  }
 });
 // 0
 // 2
@@ -620,27 +620,21 @@ withLatestFrom 運作方式跟 combineLatest 有點像，只是他有主從的�
 - main 送出了 o，some 上一次送出的值為 1，callback 得到 O。
 
 ```javascript
-var main = Rx.Observable.from("hello").zip(
-	Rx.Observable.interval(500),
-	(x, y) => x
-);
-var some = Rx.Observable.from([0, 1, 0, 0, 0, 1]).zip(
-	Rx.Observable.interval(300),
-	(x, y) => x
-);
+var main = Rx.Observable.from("hello").zip(Rx.Observable.interval(500), (x, y) => x);
+var some = Rx.Observable.from([0, 1, 0, 0, 0, 1]).zip(Rx.Observable.interval(300), (x, y) => x);
 var example = main.withLatestFrom(some, (x, y) => {
-	return y === 1 ? x.toUpperCase() : x;
+  return y === 1 ? x.toUpperCase() : x;
 });
 example.subscribe({
-	next: (value) => {
-		console.log(value);
-	},
-	error: (err) => {
-		console.log("Error: " + err);
-	},
-	complete: () => {
-		console.log("complete");
-	},
+  next: (value) => {
+    console.log(value);
+  },
+  error: (err) => {
+    console.log("Error: " + err);
+  },
+  complete: () => {
+    console.log("complete");
+  }
 });
 ```
 
@@ -657,21 +651,18 @@ withLatestFrom 很常用在一些 checkbox 型的功能，例如說一個編輯�
 ## 19. scan
 
 ```javascript
-var source = Rx.Observable.from("hello").zip(
-	Rx.Observable.interval(600),
-	(x, y) => x
-);
+var source = Rx.Observable.from("hello").zip(Rx.Observable.interval(600), (x, y) => x);
 var example = source.scan((origin, next) => origin + next, "");
 example.subscribe({
-	next: (value) => {
-		console.log(value);
-	},
-	error: (err) => {
-		console.log("Error: " + err);
-	},
-	complete: () => {
-		console.log("complete");
-	},
+  next: (value) => {
+    console.log(value);
+  },
+  error: (err) => {
+    console.log("Error: " + err);
+  },
+  complete: () => {
+    console.log("complete");
+  }
 });
 // h
 // he
@@ -696,20 +687,20 @@ const state = document.getElementById("state");
 const addClick = Rx.Observable.fromEvent(addButton, "click").mapTo(1);
 const minusClick = Rx.Observable.fromEvent(minusButton, "click").mapTo(-1);
 const numberState = Rx.Observable.empty()
-	.startWith(0)
-	.merge(addClick, minusClick)
-	.scan((origin, next) => origin + next, 0);
+  .startWith(0)
+  .merge(addClick, minusClick)
+  .scan((origin, next) => origin + next, 0);
 
 numberState.subscribe({
-	next: (value) => {
-		state.innerHTML = value;
-	},
-	error: (err) => {
-		console.log("Error: " + err);
-	},
-	complete: () => {
-		console.log("complete");
-	},
+  next: (value) => {
+    state.innerHTML = value;
+  },
+  error: (err) => {
+    console.log("Error: " + err);
+  },
+  complete: () => {
+    console.log("complete");
+  }
 });
 ```
 
@@ -734,15 +725,15 @@ var source = Rx.Observable.interval(300);
 var source2 = Rx.Observable.interval(1000);
 var example = source.buffer(source2);
 example.subscribe({
-	next: (value) => {
-		console.log(value);
-	},
-	error: (err) => {
-		console.log("Error: " + err);
-	},
-	complete: () => {
-		console.log("complete");
-	},
+  next: (value) => {
+    console.log(value);
+  },
+  error: (err) => {
+    console.log("Error: " + err);
+  },
+  complete: () => {
+    console.log("complete");
+  }
 });
 // [0,1,2]
 // [3,4,5]
@@ -762,15 +753,15 @@ example: ---------([0,1,2])---------([3,4,5])
 var source = Rx.Observable.interval(300);
 var example = source.bufferCount(3);
 example.subscribe({
-	next: (value) => {
-		console.log(value);
-	},
-	error: (err) => {
-		console.log("Error: " + err);
-	},
-	complete: () => {
-		console.log("complete");
-	},
+  next: (value) => {
+    console.log(value);
+  },
+  error: (err) => {
+    console.log("Error: " + err);
+  },
+  complete: () => {
+    console.log("complete");
+  }
 });
 // [0,1,2]
 // [3,4,5]
@@ -787,15 +778,15 @@ const button = document.getElementById("demo");
 const click = Rx.Observable.fromEvent(button, "click");
 const example = click.bufferTime(500).filter((arr) => arr.length >= 2);
 example.subscribe({
-	next: (value) => {
-		console.log("success");
-	},
-	error: (err) => {
-		console.log("Error: " + err);
-	},
-	complete: () => {
-		console.log("complete");
-	},
+  next: (value) => {
+    console.log("success");
+  },
+  error: (err) => {
+    console.log("Error: " + err);
+  },
+  complete: () => {
+    console.log("complete");
+  }
 });
 ```
 
@@ -805,15 +796,15 @@ example.subscribe({
 var source = Rx.Observable.interval(300).take(5);
 var example = source.delay(500);
 example.subscribe({
-	next: (value) => {
-		console.log(value);
-	},
-	error: (err) => {
-		console.log("Error: " + err);
-	},
-	complete: () => {
-		console.log("complete");
-	},
+  next: (value) => {
+    console.log(value);
+  },
+  error: (err) => {
+    console.log("Error: " + err);
+  },
+  complete: () => {
+    console.log("complete");
+  }
 });
 // 0
 // 1
@@ -834,15 +825,15 @@ delay 除了可以傳入毫秒以外，也可以傳入 Date 型別的資料
 var source = Rx.Observable.interval(300).take(5);
 var example = source.delay(new Date(new Date().getTime() + 1000));
 example.subscribe({
-	next: (value) => {
-		console.log(value);
-	},
-	error: (err) => {
-		console.log("Error: " + err);
-	},
-	complete: () => {
-		console.log("complete");
-	},
+  next: (value) => {
+    console.log(value);
+  },
+  error: (err) => {
+    console.log("Error: " + err);
+  },
+  complete: () => {
+    console.log("complete");
+  }
 });
 ```
 
@@ -854,15 +845,15 @@ delayWhen 可以影響每個元素，而且需要傳一個 callback 並回傳一
 var source = Rx.Observable.interval(300).take(5);
 var example = source.delayWhen((x) => Rx.Observable.empty().delay(100 * x * x));
 example.subscribe({
-	next: (value) => {
-		console.log(value);
-	},
-	error: (err) => {
-		console.log("Error: " + err);
-	},
-	complete: () => {
-		console.log("complete");
-	},
+  next: (value) => {
+    console.log(value);
+  },
+  error: (err) => {
+    console.log("Error: " + err);
+  },
+  complete: () => {
+    console.log("complete");
+  }
 });
 ```
 
@@ -885,15 +876,15 @@ debounce 跟 debounceTime 一個是傳入 observable 另一個則是傳入毫秒
 var source = Rx.Observable.interval(300).take(5);
 var example = source.debounceTime(1000);
 example.subscribe({
-	next: (value) => {
-		console.log(value);
-	},
-	error: (err) => {
-		console.log("Error: " + err);
-	},
-	complete: () => {
-		console.log("complete");
-	},
+  next: (value) => {
+    console.log(value);
+  },
+  error: (err) => {
+    console.log("Error: " + err);
+  },
+  complete: () => {
+    console.log("complete");
+  }
 });
 // 4
 // complete
@@ -911,12 +902,12 @@ example: --------------4|
 const searchInput = document.getElementById("searchInput");
 const theRequestValue = document.getElementById("theRequestValue");
 Rx.Observable.fromEvent(searchInput, "input")
-	.debounceTime(300)
-	.map((e) => e.target.value)
-	.subscribe((value) => {
-		theRequestValue.textContent = value;
-		// 在這裡發 request
-	});
+  .debounceTime(300)
+  .map((e) => e.target.value)
+  .subscribe((value) => {
+    theRequestValue.textContent = value;
+    // 在這裡發 request
+  });
 ```
 
 ## 24. throttle
@@ -931,15 +922,15 @@ Rx.Observable.fromEvent(searchInput, "input")
 var source = Rx.Observable.interval(400).take(8);
 var example = source.throttleTime(1000);
 example.subscribe({
-	next: (value) => {
-		console.log(value);
-	},
-	error: (err) => {
-		console.log("Error: " + err);
-	},
-	complete: () => {
-		console.log("complete");
-	},
+  next: (value) => {
+    console.log(value);
+  },
+  error: (err) => {
+    console.log("Error: " + err);
+  },
+  complete: () => {
+    console.log("complete");
+  }
 });
 // 0
 // 3
@@ -969,15 +960,15 @@ var click = Rx.Observable.fromEvent(document.body, "click");
 var source = click.map((e) => Rx.Observable.interval(1000).take(3));
 var example = source.concatAll();
 example.subscribe({
-	next: (value) => {
-		console.log(value);
-	},
-	error: (err) => {
-		console.log("Error: " + err);
-	},
-	complete: () => {
-		console.log("complete");
-	},
+  next: (value) => {
+    console.log(value);
+  },
+  error: (err) => {
+    console.log("Error: " + err);
+  },
+  complete: () => {
+    console.log("complete");
+  }
 });
 ```
 
@@ -1002,15 +993,15 @@ var click = Rx.Observable.fromEvent(document.body, "click");
 var source = click.map((e) => Rx.Observable.interval(1000));
 var example = source.switch();
 example.subscribe({
-	next: (value) => {
-		console.log(value);
-	},
-	error: (err) => {
-		console.log("Error: " + err);
-	},
-	complete: () => {
-		console.log("complete");
-	},
+  next: (value) => {
+    console.log(value);
+  },
+  error: (err) => {
+    console.log("Error: " + err);
+  },
+  complete: () => {
+    console.log("complete");
+  }
 });
 ```
 
@@ -1035,15 +1026,15 @@ var click = Rx.Observable.fromEvent(document.body, "click");
 var source = click.map((e) => Rx.Observable.interval(1000));
 var example = source.mergeAll();
 example.subscribe({
-	next: (value) => {
-		console.log(value);
-	},
-	error: (err) => {
-		console.log("Error: " + err);
-	},
-	complete: () => {
-		console.log("complete");
-	},
+  next: (value) => {
+    console.log(value);
+  },
+  error: (err) => {
+    console.log("Error: " + err);
+  },
+  complete: () => {
+    console.log("complete");
+  }
 });
 ```
 
@@ -1065,15 +1056,15 @@ var click = Rx.Observable.fromEvent(document.body, "click");
 var source = click.map((e) => Rx.Observable.interval(1000).take(3));
 var example = source.mergeAll(2);
 example.subscribe({
-	next: (value) => {
-		console.log(value);
-	},
-	error: (err) => {
-		console.log("Error: " + err);
-	},
-	complete: () => {
-		console.log("complete");
-	},
+  next: (value) => {
+    console.log(value);
+  },
+  error: (err) => {
+    console.log("Error: " + err);
+  },
+  complete: () => {
+    console.log("complete");
+  }
 });
 ```
 
@@ -1094,19 +1085,17 @@ concatMap= map+concatAll
 
 ```javascript
 var source = Rx.Observable.fromEvent(document.body, "click");
-var example = source
-	.map((e) => Rx.Observable.interval(1000).take(3))
-	.concatAll();
+var example = source.map((e) => Rx.Observable.interval(1000).take(3)).concatAll();
 example.subscribe({
-	next: (value) => {
-		console.log(value);
-	},
-	error: (err) => {
-		console.log("Error: " + err);
-	},
-	complete: () => {
-		console.log("complete");
-	},
+  next: (value) => {
+    console.log(value);
+  },
+  error: (err) => {
+    console.log("Error: " + err);
+  },
+  complete: () => {
+    console.log("complete");
+  }
 });
 ```
 
@@ -1116,15 +1105,15 @@ example.subscribe({
 var source = Rx.Observable.fromEvent(document.body, "click");
 var example = source.concatMap((e) => Rx.Observable.interval(100).take(3));
 example.subscribe({
-	next: (value) => {
-		console.log(value);
-	},
-	error: (err) => {
-		console.log("Error: " + err);
-	},
-	complete: () => {
-		console.log("complete");
-	},
+  next: (value) => {
+    console.log(value);
+  },
+  error: (err) => {
+    console.log("Error: " + err);
+  },
+  complete: () => {
+    console.log("complete");
+  }
 });
 ```
 
@@ -1140,22 +1129,20 @@ example: -------------0-1-2-0-1-2---------...
 
 ```javascript
 function getPostData() {
-	return fetch("https://jsonplaceholder.typicode.com/posts/1").then((res) =>
-		res.json()
-	);
+  return fetch("https://jsonplaceholder.typicode.com/posts/1").then((res) => res.json());
 }
 var source = Rx.Observable.fromEvent(document.body, "click");
 var example = source.concatMap((e) => Rx.Observable.from(getPostData()));
 example.subscribe({
-	next: (value) => {
-		console.log(value);
-	},
-	error: (err) => {
-		console.log("Error: " + err);
-	},
-	complete: () => {
-		console.log("complete");
-	},
+  next: (value) => {
+    console.log(value);
+  },
+  error: (err) => {
+    console.log("Error: " + err);
+  },
+  complete: () => {
+    console.log("complete");
+  }
 });
 ```
 
@@ -1168,25 +1155,23 @@ concatMap 還有第二個參數是一個 selector callback，這個 callback 會
 
 ```javascript
 function getPostData() {
-	return fetch("https://jsonplaceholder.typicode.com/posts/1").then((res) =>
-		res.json()
-	);
+  return fetch("https://jsonplaceholder.typicode.com/posts/1").then((res) => res.json());
 }
 var source = Rx.Observable.fromEvent(document.body, "click");
 var example = source.concatMap(
-	(e) => Rx.Observable.from(getPostData()),
-	(e, res, eIndex, resIndex) => res.title
+  (e) => Rx.Observable.from(getPostData()),
+  (e, res, eIndex, resIndex) => res.title
 );
 example.subscribe({
-	next: (value) => {
-		console.log(value);
-	},
-	error: (err) => {
-		console.log("Error: " + err);
-	},
-	complete: () => {
-		console.log("complete");
-	},
+  next: (value) => {
+    console.log(value);
+  },
+  error: (err) => {
+    console.log("Error: " + err);
+  },
+  complete: () => {
+    console.log("complete");
+  }
 });
 ```
 
@@ -1200,15 +1185,15 @@ var source = Rx.Observable.fromEvent(document.body, "click");
 var example = source.map((e) => Rx.Observable.interval(1000).take(3)).switch();
 
 example.subscribe({
-	next: (value) => {
-		console.log(value);
-	},
-	error: (err) => {
-		console.log("Error: " + err);
-	},
-	complete: () => {
-		console.log("complete");
-	},
+  next: (value) => {
+    console.log(value);
+  },
+  error: (err) => {
+    console.log("Error: " + err);
+  },
+  complete: () => {
+    console.log("complete");
+  }
 });
 ```
 
@@ -1219,15 +1204,15 @@ var source = Rx.Observable.fromEvent(document.body, "click");
 var example = source.switchMap((e) => Rx.Observable.interval(100).take(3));
 
 example.subscribe({
-	next: (value) => {
-		console.log(value);
-	},
-	error: (err) => {
-		console.log("Error: " + err);
-	},
-	complete: () => {
-		console.log("complete");
-	},
+  next: (value) => {
+    console.log(value);
+  },
+  error: (err) => {
+    console.log("Error: " + err);
+  },
+  complete: () => {
+    console.log("complete");
+  }
 });
 ```
 
@@ -1243,22 +1228,20 @@ switchMap 用在 HTTP request, 雖然我們發送了多個 request 但最後真�
 
 ```javascript
 function getPostData() {
-	return fetch("https://jsonplaceholder.typicode.com/posts/1").then((res) =>
-		res.json()
-	);
+  return fetch("https://jsonplaceholder.typicode.com/posts/1").then((res) => res.json());
 }
 var source = Rx.Observable.fromEvent(document.body, "click");
 var example = source.switchMap((e) => Rx.Observable.from(getPostData()));
 example.subscribe({
-	next: (value) => {
-		console.log(value);
-	},
-	error: (err) => {
-		console.log("Error: " + err);
-	},
-	complete: () => {
-		console.log("complete");
-	},
+  next: (value) => {
+    console.log(value);
+  },
+  error: (err) => {
+    console.log("Error: " + err);
+  },
+  complete: () => {
+    console.log("complete");
+  }
 });
 ```
 
@@ -1268,20 +1251,18 @@ mergeMap = map + mergeAll
 
 ```javascript
 var source = Rx.Observable.fromEvent(document.body, "click");
-var example = source
-	.map((e) => Rx.Observable.interval(1000).take(3))
-	.mergeAll();
+var example = source.map((e) => Rx.Observable.interval(1000).take(3)).mergeAll();
 
 example.subscribe({
-	next: (value) => {
-		console.log(value);
-	},
-	error: (err) => {
-		console.log("Error: " + err);
-	},
-	complete: () => {
-		console.log("complete");
-	},
+  next: (value) => {
+    console.log(value);
+  },
+  error: (err) => {
+    console.log("Error: " + err);
+  },
+  complete: () => {
+    console.log("complete");
+  }
 });
 ```
 
@@ -1292,15 +1273,15 @@ var source = Rx.Observable.fromEvent(document.body, "click");
 var example = source.mergeMap((e) => Rx.Observable.interval(100).take(3));
 
 example.subscribe({
-	next: (value) => {
-		console.log(value);
-	},
-	error: (err) => {
-		console.log("Error: " + err);
-	},
-	complete: () => {
-		console.log("complete");
-	},
+  next: (value) => {
+    console.log(value);
+  },
+  error: (err) => {
+    console.log("Error: " + err);
+  },
+  complete: () => {
+    console.log("complete");
+  }
 });
 ```
 
@@ -1318,26 +1299,24 @@ mergeMap 也能傳入第 2 個參數和 concatMap 是一样的，但 mergeMap �
 
 ```javascript
 function getPostData() {
-	return fetch("https://jsonplaceholder.typicode.com/posts/1").then((res) =>
-		res.json()
-	);
+  return fetch("https://jsonplaceholder.typicode.com/posts/1").then((res) => res.json());
 }
 var source = Rx.Observable.fromEvent(document.body, "click");
 var example = source.mergeMap(
-	(e) => Rx.Observable.from(getPostData()),
-	(e, res, eIndex, resIndex) => res.title,
-	3
+  (e) => Rx.Observable.from(getPostData()),
+  (e, res, eIndex, resIndex) => res.title,
+  3
 );
 example.subscribe({
-	next: (value) => {
-		console.log(value);
-	},
-	error: (err) => {
-		console.log("Error: " + err);
-	},
-	complete: () => {
-		console.log("complete");
-	},
+  next: (value) => {
+    console.log(value);
+  },
+  error: (err) => {
+    console.log("Error: " + err);
+  },
+  complete: () => {
+    console.log("complete");
+  }
 });
 ```
 
@@ -1346,9 +1325,7 @@ switchMap, mergeMap, concatMap 相同和不同的地方
 
 ```javascript
 function getPersonData() {
-	return fetch("https://jsonplaceholder.typicode.com/posts/1").then((res) =>
-		res.json()
-	);
+  return fetch("https://jsonplaceholder.typicode.com/posts/1").then((res) => res.json());
 }
 var source = Rx.Observable.fromEvent(document.body, "click");
 // 不需要写成
@@ -1356,15 +1333,15 @@ var source = Rx.Observable.fromEvent(document.body, "click");
 var example = source.concatMap((e) => getPersonData());
 //直接回傳 promise 物件
 example.subscribe({
-	next: (value) => {
-		console.log(value);
-	},
-	error: (err) => {
-		console.log("Error: " + err);
-	},
-	complete: () => {
-		console.log("complete");
-	},
+  next: (value) => {
+    console.log(value);
+  },
+  error: (err) => {
+    console.log("Error: " + err);
+  },
+  complete: () => {
+    console.log("complete");
+  }
 });
 ```
 

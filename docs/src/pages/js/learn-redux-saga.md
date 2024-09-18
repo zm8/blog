@@ -7,17 +7,17 @@ redux 里的 action 的 type 相当于 put 参数的 pattern, payload 相当于 
 
 ## 1. effect 介绍
 
-#### 1. take
+### 1. take
 
 'take' 会阻塞! next 等待 channel put 后才会执行。
 runTakeEffect 源码大概如下, 它执行了 channel.take, 需要等待 channel.put 会触发它的 next。
 
 ```javascript
 function runTakeEffect({ pattern }, next) {
-	channel.take({
-		pattern,
-		cb: (args) => next(null, args),
-	});
+  channel.take({
+    pattern,
+    cb: (args) => next(null, args)
+  });
 }
 ```
 
@@ -28,10 +28,10 @@ function runTakeEffect({ pattern }, next) {
 
 ```javascript
 function runCallEffect({ fn, args }, next) {
-	/* 通常情况fn返回promise */
-	fn.call(null, args)
-		.then((success) => next(null, success))
-		.catch((error) => next(error));
+  /* 通常情况fn返回promise */
+  fn.call(null, args)
+    .then((success) => next(null, success))
+    .catch((error) => next(error));
 }
 ```
 
@@ -39,25 +39,25 @@ call 不仅可以用来调用 返回的是 Promise 的函数，也可以用来�
 
 ```javascript
 function fn(num) {
-	return new Promise((resolve) => {
-		setTimeout(() => resolve(num), 3000);
-	});
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(num), 3000);
+  });
 }
 
 function* saga() {
-	const data = yield call(fn, 1);
-	console.log(data); // 等于1
+  const data = yield call(fn, 1);
+  console.log(data); // 等于1
 }
 
 // --------或者---------
 function* fn(num) {
-	yield delay(3000);
-	return num;
+  yield delay(3000);
+  return num;
 }
 
 function* saga() {
-	const data = yield call(fn, 1);
-	console.log(data); // 等于1
+  const data = yield call(fn, 1);
+  console.log(data); // 等于1
 }
 ```
 
@@ -68,9 +68,9 @@ function* saga() {
 
 ```javascript
 function runPutEffect({ action }, next, store) {
-	const { dispatch } = store;
-	dispatch(action);
-	next();
+  const { dispatch } = store;
+  dispatch(action);
+  next();
 }
 ```
 
@@ -81,9 +81,9 @@ fork 的参数是个 saga, 也就是 Generator, 里面会走另外一个线程, 
 
 ```javascript
 function runForkEffect({ saga }, next, store) {
-	const child = saga();
-	producer.call(store, child);
-	next(null); // 继续执行下一个
+  const child = saga();
+  producer.call(store, child);
+  next(null); // 继续执行下一个
 }
 ```
 
@@ -94,63 +94,64 @@ function runForkEffect({ saga }, next, store) {
 
 ```javascript
 function runTakeEveryEffect({ pattern, saga }, next, store) {
-	function* takeEvery() {
-		while (true) {
-			yield take(pattern);
-			yield fork(saga);
-		}
-	}
+  function* takeEvery() {
+    while (true) {
+      yield take(pattern);
+      yield fork(saga);
+    }
+  }
 
-	runForkEffect({ saga: takeEvery }, next, store);
+  runForkEffect({ saga: takeEvery }, next, store);
 }
 ```
 
 ## 2. 取消任务的传播
 
-1. **正常的 cancel task**
-   会先 cancel 最底层的, 然后一层一层往上冒
+### 1. 正常的 cancel task
+
+会先 cancel 最底层的, 然后一层一层往上冒
 
 ```javascript
 function f3() {
-	let t;
-	var p = new Promise((resolve) => {
-		t = setTimeout(() => resolve("f3333333"), 3000);
-	});
-	p[CANCEL] = function () {
-		clearTimeout(t);
-		console.log("cancel f3");
-	};
-	return p;
+  let t;
+  var p = new Promise((resolve) => {
+    t = setTimeout(() => resolve("f3333333"), 3000);
+  });
+  p[CANCEL] = function () {
+    clearTimeout(t);
+    console.log("cancel f3");
+  };
+  return p;
 }
 
 function* f2() {
-	let v;
-	try {
-		v = yield call(f3);
-	} finally {
-		if (yield cancelled()) {
-			console.log("cancel f2");
-		}
-	}
-	return v;
+  let v;
+  try {
+    v = yield call(f3);
+  } finally {
+    if (yield cancelled()) {
+      console.log("cancel f2");
+    }
+  }
+  return v;
 }
 
 function* f1() {
-	let v;
-	try {
-		v = yield call(f2);
-	} finally {
-		if (yield cancelled()) {
-			console.log("cancel f1");
-		}
-	}
-	console.log(v);
+  let v;
+  try {
+    v = yield call(f2);
+  } finally {
+    if (yield cancelled()) {
+      console.log("cancel f1");
+    }
+  }
+  console.log(v);
 }
 
 function* testSaga() {
-	const task = yield fork(f1);
-	yield delay(1000);
-	yield cancel(task);
+  const task = yield fork(f1);
+  yield delay(1000);
+  yield cancel(task);
 }
 
 // cancel f3
@@ -158,66 +159,66 @@ function* testSaga() {
 // cancel f1
 ```
 
-2. fork 嵌套 fork
+### 2.fork 嵌套 fork
 
-- `console.log('delayFunc'); // 永远不会执行 `
+- `console.log('delayFunc'); // 永远不会执行`
 - 先 cancel 当前阻塞的 delayFunc, 然后再主进程 cancel f1, 然后再 cancel 子进程
 
 ```javascript
 function f3(num) {
-	let t;
-	var p = new Promise((resolve) => {
-		t = setTimeout(() => resolve(num), 3000);
-	});
-	p[CANCEL] = function () {
-		clearTimeout(t);
-		console.log("cancel f3");
-	};
-	return p;
+  let t;
+  var p = new Promise((resolve) => {
+    t = setTimeout(() => resolve(num), 3000);
+  });
+  p[CANCEL] = function () {
+    clearTimeout(t);
+    console.log("cancel f3");
+  };
+  return p;
 }
 
 function* f2(num) {
-	let v;
-	try {
-		v = yield call(f3, num);
-	} finally {
-		if (yield cancelled()) {
-			console.log("cancel f2");
-		}
-	}
-	console.log(v);
-	return v;
+  let v;
+  try {
+    v = yield call(f3, num);
+  } finally {
+    if (yield cancelled()) {
+      console.log("cancel f2");
+    }
+  }
+  console.log(v);
+  return v;
 }
 
 function delayFunc() {
-	let t;
-	var p = new Promise((resolve) => {
-		t = setTimeout(() => resolve("delayFunc"), 3000);
-	});
-	p[CANCEL] = function () {
-		clearTimeout(t);
-		console.log("cancel delay");
-	};
-	return p;
+  let t;
+  var p = new Promise((resolve) => {
+    t = setTimeout(() => resolve("delayFunc"), 3000);
+  });
+  p[CANCEL] = function () {
+    clearTimeout(t);
+    console.log("cancel delay");
+  };
+  return p;
 }
 
 function* f1() {
-	try {
-		yield fork(f2, 1);
-		yield fork(f2, 2);
-		yield call(delayFunc);
-		console.log("delayFunc"); // 永远不会执行
-	} finally {
-		if (yield cancelled()) {
-			console.log("cancel f1");
-		}
-	}
+  try {
+    yield fork(f2, 1);
+    yield fork(f2, 2);
+    yield call(delayFunc);
+    console.log("delayFunc"); // 永远不会执行
+  } finally {
+    if (yield cancelled()) {
+      console.log("cancel f1");
+    }
+  }
 }
 
 function* testSaga() {
-	const task = yield fork(f1);
-	yield call(delay, 2000);
-	yield cancel(task);
+  const task = yield fork(f1);
+  yield call(delay, 2000);
+  yield cancel(task);
 }
 
 // cancel delay
@@ -228,54 +229,54 @@ function* testSaga() {
 // cancel f2
 ```
 
-3. `yield all` 发生错误
+1.`yield all` 发生错误
 
 会造成平行的任务取消, delayFunc 的错误会造成 f2 两个任务的取消。
 
 ```javascript
 function f3(num) {
-	let t;
-	var p = new Promise((resolve) => {
-		t = setTimeout(() => resolve(num), 3000);
-	});
-	p[CANCEL] = function () {
-		clearTimeout(t);
-		console.log("cancel f3");
-	};
-	return p;
+  let t;
+  var p = new Promise((resolve) => {
+    t = setTimeout(() => resolve(num), 3000);
+  });
+  p[CANCEL] = function () {
+    clearTimeout(t);
+    console.log("cancel f3");
+  };
+  return p;
 }
 
 function* f2(num) {
-	let v;
-	try {
-		v = yield call(f3, num);
-	} finally {
-		if (yield cancelled()) {
-			console.log("cancel f2");
-		}
-	}
-	console.log(v);
-	return v;
+  let v;
+  try {
+    v = yield call(f3, num);
+  } finally {
+    if (yield cancelled()) {
+      console.log("cancel f2");
+    }
+  }
+  console.log(v);
+  return v;
 }
 
 function delayFunc() {
-	let t;
-	var p = new Promise((resolve, reject) => {
-		t = setTimeout(() => reject("delayFunc error"), 2000);
-	});
-	p[CANCEL] = function () {
-		clearTimeout(t);
-		console.log("cancel delay");
-	};
-	return p;
+  let t;
+  var p = new Promise((resolve, reject) => {
+    t = setTimeout(() => reject("delayFunc error"), 2000);
+  });
+  p[CANCEL] = function () {
+    clearTimeout(t);
+    console.log("cancel delay");
+  };
+  return p;
 }
 
 function* testSaga2() {
-	try {
-		yield all([call(delayFunc), call(f2, 1), call(f2, 2)]);
-	} catch (e) {
-		console.log(e); // delayFunc error
-	}
+  try {
+    yield all([call(delayFunc), call(f2, 1), call(f2, 2)]);
+  } catch (e) {
+    console.log(e); // delayFunc error
+  }
 }
 
 // cancel f3
@@ -292,15 +293,15 @@ function* testSaga2() {
 
 ```javascript
 function* f1() {
-	yield fork(delay, 1000);
-	yield fork(delay, 5000);
-	yield call(delay, 1000);
-	console.log("delay 1000");
+  yield fork(delay, 1000);
+  yield fork(delay, 5000);
+  yield call(delay, 1000);
+  console.log("delay 1000");
 }
 
 function* testSaga() {
-	yield call(f1);
-	console.log("end");
+  yield call(f1);
+  console.log("end");
 }
 
 // delay 1000
@@ -312,31 +313,33 @@ function* testSaga() {
 一个 saga 发生错误, 原因有它自身主体发生错误，或错误从它的 fork 子任务冒泡上来
 
 1. **主任务错误, 造成子任务取消**
-   如下代码, 造成 fork 的子任务 fn 取消。
-   ![image](https://user-images.githubusercontent.com/32337542/74600893-843a7800-50d2-11ea-9362-20f2b386860e.png)
+
+如下代码, 造成 fork 的子任务 fn 取消。
+
+![image](https://user-images.githubusercontent.com/32337542/74600893-843a7800-50d2-11ea-9362-20f2b386860e.png)
 
 ```javascript
 function fn() {
-	let t;
-	var p = new Promise((resolve) => {
-		t = setTimeout(resolve, 3000);
-	});
-	p[CANCEL] = function () {
-		clearTimeout(t);
-		console.log("cancel promise");
-	};
-	return p;
+  let t;
+  var p = new Promise((resolve) => {
+    t = setTimeout(resolve, 3000);
+  });
+  p[CANCEL] = function () {
+    clearTimeout(t);
+    console.log("cancel promise");
+  };
+  return p;
 }
 function* main() {
-	yield fork(fn);
-	throw "error in *errorFn";
+  yield fork(fn);
+  throw "error in *errorFn";
 }
 export default function* rootSaga() {
-	yield all([main()]);
+  yield all([main()]);
 }
 ```
 
-2. **子任务错误, 造成其它子任务取消**
+2.**子任务错误, 造成其它子任务取消**
 
 打印日志同上。
 由于子任务的错误冒泡到主任务, 所以造成其它任务取消
@@ -345,11 +348,11 @@ export default function* rootSaga() {
 // fn代码同上
 
 function* child() {
-	throw "error in *child";
+  throw "error in *child";
 }
 function* main() {
-	yield fork(fn);
-	yield fork(child);
+  yield fork(fn);
+  yield fork(child);
 }
 ```
 
@@ -362,20 +365,20 @@ function* main() {
 
 ```javascript
 function* child() {
-	throw "error in *child";
+  throw "error in *child";
 }
 function* main() {
-	try {
-		yield fork(child);
-	} catch (e) {
-		console.log(e); // 不会打印
-	} finally {
-		if (yield cancelled()) {
-			console.log("*main cancel");
-		}
-		console.log("*main finally");
-	}
-	console.log("*main end"); // 不会打印
+  try {
+    yield fork(child);
+  } catch (e) {
+    console.log(e); // 不会打印
+  } finally {
+    if (yield cancelled()) {
+      console.log("*main cancel");
+    }
+    console.log("*main finally");
+  }
+  console.log("*main end"); // 不会打印
 }
 ```
 
@@ -395,27 +398,28 @@ function* main() {
 
 ```javascript
 function* child() {
-	yield delay(1000);
-	throw "error in *child";
+  yield delay(1000);
+  throw "error in *child";
 }
 function* main() {
-	try {
-		yield fork(child);
-	} catch (e) {
-		console.log(e); // 不会打印
-	} finally {
-		if (yield cancelled()) {
-			console.log("*main cancel");
-		}
-		console.log("*main finally");
-	}
-	console.log("*main end"); // 不会打印
+  try {
+    yield fork(child);
+  } catch (e) {
+    console.log(e); // 不会打印
+  } finally {
+    if (yield cancelled()) {
+      console.log("*main cancel");
+    }
+    console.log("*main finally");
+  }
+  console.log("*main end"); // 不会打印
 }
 ```
 
-4. **主任务直接错误(throw), 不会造成主任务取消。**
-   throw 代码要么被 catch 抓到, 那么就不算错误。
-   打印:
+4.**主任务直接错误(throw), 不会造成主任务取消。**
+
+throw 代码要么被 catch 抓到, 那么就不算错误。
+打印:
 
 ```
 error in *main
@@ -425,17 +429,17 @@ error in *main
 
 ```javascript
 function* main() {
-	try {
-		throw "error in *main";
-	} catch (e) {
-		console.log(e);
-	} finally {
-		if (yield cancelled()) {
-			console.log("*main cancel"); // 不会打印
-		}
-		console.log("*main finally");
-	}
-	console.log("*main end");
+  try {
+    throw "error in *main";
+  } catch (e) {
+    console.log(e);
+  } finally {
+    if (yield cancelled()) {
+      console.log("*main cancel"); // 不会打印
+    }
+    console.log("*main finally");
+  }
+  console.log("*main end");
 }
 ```
 
@@ -448,32 +452,33 @@ function* main() {
 }
 ```
 
-5. **取消顺序, 主任务先取消, 子任务再取消**
-   ![image](https://user-images.githubusercontent.com/32337542/74601599-e7300d00-50da-11ea-9566-12ec34d136d6.png)
+1.**取消顺序, 主任务先取消, 子任务再取消**
+
+![image](https://user-images.githubusercontent.com/32337542/74601599-e7300d00-50da-11ea-9566-12ec34d136d6.png)
 
 ```javascript
 // fn 函数同上
 
 function* child() {
-	throw "error in *child";
+  throw "error in *child";
 }
 function* main() {
-	yield fork(fn);
-	try {
-		yield fork(child);
-	} catch (e) {
-		console.log(e);
-	} finally {
-		if (yield cancelled()) {
-			console.log("*main cancel");
-		}
-		console.log("*main finally");
-	}
-	console.log("*main end"); // 不会打印
+  yield fork(fn);
+  try {
+    yield fork(child);
+  } catch (e) {
+    console.log(e);
+  } finally {
+    if (yield cancelled()) {
+      console.log("*main cancel");
+    }
+    console.log("*main finally");
+  }
+  console.log("*main end"); // 不会打印
 }
 ```
 
-**总结**
+总结:
 
 - 主任务只要发生错误, 会造成其它子任务取消。
   这里的错误是能捕捉的到, 比如直接 throw, 或者 fork 的子任务错误冒泡上来。
@@ -481,10 +486,10 @@ function* main() {
 
 ```javascript
 function* main() {
-	yield fork(fn);
-	setTimeout(() => {
-		throw "error in *child";
-	});
+  yield fork(fn);
+  setTimeout(() => {
+    throw "error in *child";
+  });
 }
 ```
 
@@ -493,14 +498,14 @@ function* main() {
 
 ```javascript
 function* child() {
-	throw "error in *child";
+  throw "error in *child";
 }
 function* main() {
-	try {
-		yield fork(child);
-	} catch (e) {
-		console.log(e); // 不会执行
-	}
+  try {
+    yield fork(child);
+  } catch (e) {
+    console.log(e); // 不会执行
+  }
 }
 ```
 
@@ -508,25 +513,25 @@ function* main() {
 
 ```javascript
 function* child() {
-	throw "error in *child";
+  throw "error in *child";
 }
 function* main() {
-	yield fork(child);
+  yield fork(child);
 }
 function* mainParent() {
-	try {
-		yield call(main);
-	} catch (e) {
-		console.log(e);
-	}
+  try {
+    yield call(main);
+  } catch (e) {
+    console.log(e);
+  }
 }
 export default function* rootSaga() {
-	yield all([mainParent()]);
+  yield all([mainParent()]);
 }
 ```
 
 **注:**
-1.1.3^版本 redux-saga, delay 是一个 effect, 所以得用 `yield delay(500)`, 而不是 ` yield call(delay, 500)`
+1.1.3^版本 redux-saga, delay 是一个 effect, 所以得用 `yield delay(500)`, 而不是 `yield call(delay, 500)`
 
 ## 5. Detached forks (using spawn)
 
@@ -543,18 +548,18 @@ export default function* rootSaga() {
 
 ```javascript
 function* testSaga() {
-	yield put({ type: "REQUEST" });
-	yield take("REQUEST");
-	console.log("testSaga end");
+  yield put({ type: "REQUEST" });
+  yield take("REQUEST");
+  console.log("testSaga end");
 }
 
 export default function* rootSaga() {
-	yield all([testSaga()]);
+  yield all([testSaga()]);
 }
 ```
 
 2. **fork 里的 put**
-   fork 里的*putSaga 里面的 put 会把主动权又交回 *testSaga, 并且会把 put 的动作存储下来, 并且阻塞 \*putSaga，相当于延迟执行 asap。
+   fork 里的*putSaga 里面的 put 会把主动权又交回*testSaga, 并且会把 put 的动作存储下来, 并且阻塞 \*putSaga，相当于延迟执行 asap。
 
 所以最终打印:
 
@@ -569,68 +574,68 @@ export default function* rootSaga() {
 
 ```javascript
 function* testSaga() {
-	yield fork(putSaga);
-	console.log(3);
-	yield take("REQUEST");
-	console.log(4);
+  yield fork(putSaga);
+  console.log(3);
+  yield take("REQUEST");
+  console.log(4);
 }
 
 function* putSaga() {
-	console.log(1);
-	yield console.log(2);
-	yield put({ type: "REQUEST" });
-	yield console.log(5);
-	console.log(6);
+  console.log(1);
+  yield console.log(2);
+  yield put({ type: "REQUEST" });
+  yield console.log(5);
+  console.log(6);
 }
 
 export default function* rootSaga() {
-	yield all([testSaga()]);
+  yield all([testSaga()]);
 }
 ```
 
 3. **actionChannel**
    fork 可以不阻塞请求的处理，但如果我们想按顺序处理请求, 则这个时候可以使用 actionChannel
 
-如下代码 1 秒钟会马上打印出 ` 1,2,3,4,5,6,7,8,9,10`
+如下代码 1 秒钟会马上打印出 `1,2,3,4,5,6,7,8,9,10`
 
 ```javascript
 function* testSaga() {
-	while (true) {
-		const { payload } = yield take("REQUEST");
-		yield fork(handleRequest, payload);
-	}
+  while (true) {
+    const { payload } = yield take("REQUEST");
+    yield fork(handleRequest, payload);
+  }
 }
 
 function* handleRequest(payload) {
-	yield delay(1000);
-	console.log("payload", payload);
+  yield delay(1000);
+  console.log("payload", payload);
 }
 
 function* putRequest() {
-	let i = 0;
-	while (true) {
-		i++;
-		if (i > 10) {
-			break;
-		}
-		yield put({ type: "REQUEST", payload: i });
-	}
+  let i = 0;
+  while (true) {
+    i++;
+    if (i > 10) {
+      break;
+    }
+    yield put({ type: "REQUEST", payload: i });
+  }
 }
 
 export default function* rootSaga() {
-	yield all([testSaga(), putRequest()]);
+  yield all([testSaga(), putRequest()]);
 }
 ```
 
-如下代码每隔 1 秒会顺序打印出 ` 1,2,3,4,5,6,7,8,9,10`
+如下代码每隔 1 秒会顺序打印出 `1,2,3,4,5,6,7,8,9,10`
 
 ```javascript
 function* testSaga() {
-	const requestChan = yield actionChannel("REQUEST");
-	while (true) {
-		const { payload } = yield take(requestChan);
-		yield call(handleRequest, payload); // fork 改成了 call
-	}
+  const requestChan = yield actionChannel("REQUEST");
+  while (true) {
+    const { payload } = yield take(requestChan);
+    yield call(handleRequest, payload); // fork 改成了 call
+  }
 }
 ```
 
@@ -722,21 +727,21 @@ function* testSaga() {
 
 ```javascript
 function* testSaga() {
-	const requestChan = yield actionChannel("REQUEST");
-	yield delay(0);
-	let i = 0;
-	while (true) {
-		i++;
-		if (i > 2) {
-			console.log("--------");
-			const actions = yield flush(requestChan);
-			console.log(actions);
-			break;
-		}
-		const actions = yield take(requestChan);
-		console.log(actions);
-		yield call(handleRequest, actions.payload);
-	}
+  const requestChan = yield actionChannel("REQUEST");
+  yield delay(0);
+  let i = 0;
+  while (true) {
+    i++;
+    if (i > 2) {
+      console.log("--------");
+      const actions = yield flush(requestChan);
+      console.log(actions);
+      break;
+    }
+    const actions = yield take(requestChan);
+    console.log(actions);
+    yield call(handleRequest, actions.payload);
+  }
 }
 ```
 
@@ -757,25 +762,25 @@ end
 
 ```javascript
 const PAYLOAD = {
-	fff: 1,
+  fff: 1
 };
 
 function evtChan() {
-	return eventChannel((emitter) => {
-		setTimeout(() => {
-			emitter(PAYLOAD);
-			emitter(END);
-		});
-		return () => {
-			console.log("end");
-		};
-	});
+  return eventChannel((emitter) => {
+    setTimeout(() => {
+      emitter(PAYLOAD);
+      emitter(END);
+    });
+    return () => {
+      console.log("end");
+    };
+  });
 }
 
 function* testSaga3() {
-	const chan = yield call(evtChan);
-	const payload = yield take(chan);
-	console.log(payload);
+  const chan = yield call(evtChan);
+  const payload = yield take(chan);
+  console.log(payload);
 }
 ```
 
@@ -783,13 +788,13 @@ function* testSaga3() {
 
 ```javascript
 function evtChan() {
-	return eventChannel((emitter) => {
-		emitter(PAYLOAD);
-		emitter(END);
-		return () => {
-			console.log("end");
-		};
-	});
+  return eventChannel((emitter) => {
+    emitter(PAYLOAD);
+    emitter(END);
+    return () => {
+      console.log("end");
+    };
+  });
 }
 ```
 
@@ -809,40 +814,40 @@ coundownSaga finally
 import { eventChannel, END } from "redux-saga";
 
 function coundown(num) {
-	return eventChannel((emitter) => {
-		const iv = setInterval(() => {
-			num--;
-			if (num > 0) {
-				emitter(num);
-			} else {
-				// 触发 channel 关闭, 则会执行下面的 clearInterval
-				emitter(END);
-			}
-		}, 1000);
-		return () => {
-			console.log("clearInterval");
-			clearInterval(iv);
-		};
-	});
+  return eventChannel((emitter) => {
+    const iv = setInterval(() => {
+      num--;
+      if (num > 0) {
+        emitter(num);
+      } else {
+        // 触发 channel 关闭, 则会执行下面的 clearInterval
+        emitter(END);
+      }
+    }, 1000);
+    return () => {
+      console.log("clearInterval");
+      clearInterval(iv);
+    };
+  });
 }
 
 function* coundownSaga() {
-	const chan = yield call(coundown, 3);
-	try {
-		while (true) {
-			let num = yield take(chan);
-			console.log(num);
-		}
-	} finally {
-		console.log("coundownSaga finally");
-	}
-	console.log("coundownSaga end"); // 注意它不会执行，具体原因看后面解释。
+  const chan = yield call(coundown, 3);
+  try {
+    while (true) {
+      let num = yield take(chan);
+      console.log(num);
+    }
+  } finally {
+    console.log("coundownSaga finally");
+  }
+  console.log("coundownSaga end"); // 注意它不会执行，具体原因看后面解释。
 }
 ```
 
 #### 2. 自己取消
 
-通过调用 ` chan.close();`, 下面的代码输出:
+通过调用 `chan.close();`, 下面的代码输出:
 
 ```
 4
@@ -855,21 +860,21 @@ coundownSaga end
 
 ```javascript
 function* coundownSaga() {
-	const chan = yield call(coundown, 5);
-	try {
-		while (true) {
-			let num = yield take(chan);
-			if (num === 1) {
-				throw "error";
-			}
-			console.log(num);
-		}
-	} catch (e) {
-		chan.close();
-	} finally {
-		console.log("coundownSaga finally");
-	}
-	console.log("coundownSaga end");
+  const chan = yield call(coundown, 5);
+  try {
+    while (true) {
+      let num = yield take(chan);
+      if (num === 1) {
+        throw "error";
+      }
+      console.log(num);
+    }
+  } catch (e) {
+    chan.close();
+  } finally {
+    console.log("coundownSaga finally");
+  }
+  console.log("coundownSaga end");
 }
 ```
 
@@ -900,34 +905,34 @@ coundownSaga finally
 
 ```javascript
 function* coundownSaga() {
-	const chan = yield call(coundown, 5);
-	try {
-		while (true) {
-			let num = yield take(chan);
-			console.log(num);
-		}
-	} catch (e) {
-		console.log("coundownSaga error");
-	} finally {
-		if (yield cancelled()) {
-			chan.close();
-			console.log("coundownSaga cancel");
-		}
-		console.log("coundownSaga finally");
-	}
-	// 下面代码 不会执行
-	// 详情博客 Generator里try..finnaly执行return的特殊
-	console.log("coundownSaga end");
+  const chan = yield call(coundown, 5);
+  try {
+    while (true) {
+      let num = yield take(chan);
+      console.log(num);
+    }
+  } catch (e) {
+    console.log("coundownSaga error");
+  } finally {
+    if (yield cancelled()) {
+      chan.close();
+      console.log("coundownSaga cancel");
+    }
+    console.log("coundownSaga finally");
+  }
+  // 下面代码 不会执行
+  // 详情博客 Generator里try..finnaly执行return的特殊
+  console.log("coundownSaga end");
 }
 
 function* testSaga() {
-	const task = yield fork(coundownSaga);
-	yield delay(3000);
-	yield cancel(task);
+  const task = yield fork(coundownSaga);
+  yield delay(3000);
+  yield cancel(task);
 }
 
 export default function* rootSaga() {
-	yield all([testSaga()]);
+  yield all([testSaga()]);
 }
 ```
 
@@ -945,35 +950,35 @@ coundownSaga finally
 
 ```javascript
 function coundown(num) {
-	return eventChannel((emitter) => {
-		const iv = setInterval(() => {
-			emitter(END);
-		}, 1000);
-		return () => {
-			console.log("clearInterval");
-			clearInterval(iv);
-		};
-	});
+  return eventChannel((emitter) => {
+    const iv = setInterval(() => {
+      emitter(END);
+    }, 1000);
+    return () => {
+      console.log("clearInterval");
+      clearInterval(iv);
+    };
+  });
 }
 
 function* coundownSaga() {
-	const chan = yield call(coundown, 5);
-	try {
-		// chan.close();
-		let num = yield take(chan);
-		console.log(num);
-		yield delay(3000);
-		console.log(1111111);
-	} catch (e) {
-		console.log("coundownSaga error");
-	} finally {
-		console.log("coundownSaga finally");
-	}
-	console.log("coundownSaga end");
+  const chan = yield call(coundown, 5);
+  try {
+    // chan.close();
+    let num = yield take(chan);
+    console.log(num);
+    yield delay(3000);
+    console.log(1111111);
+  } catch (e) {
+    console.log("coundownSaga error");
+  } finally {
+    console.log("coundownSaga finally");
+  }
+  console.log("coundownSaga end");
 }
 
 export default function* rootSaga() {
-	yield all([coundownSaga()]);
+  yield all([coundownSaga()]);
 }
 ```
 
@@ -990,38 +995,38 @@ coundownSaga end
 
 ```javascript
 function coundown(num) {
-	return eventChannel((emitter) => {
-		const iv = setInterval(() => {
-			emitter(num);
-			setTimeout(() => {
-				emitter(END);
-			}, 100);
-		}, 1000);
-		return () => {
-			console.log("clearInterval");
-			clearInterval(iv);
-		};
-	});
+  return eventChannel((emitter) => {
+    const iv = setInterval(() => {
+      emitter(num);
+      setTimeout(() => {
+        emitter(END);
+      }, 100);
+    }, 1000);
+    return () => {
+      console.log("clearInterval");
+      clearInterval(iv);
+    };
+  });
 }
 
 function* coundownSaga() {
-	const chan = yield call(coundown, 5);
-	try {
-		let num = yield take(chan);
-		console.log(num);
-		// 这种情况 chan.close() 也不会阻止后面的代码执行
-		yield delay(3000);
-		console.log(1111111);
-	} catch (e) {
-		console.log("coundownSaga error");
-	} finally {
-		console.log("coundownSaga finally");
-	}
-	console.log("coundownSaga end");
+  const chan = yield call(coundown, 5);
+  try {
+    let num = yield take(chan);
+    console.log(num);
+    // 这种情况 chan.close() 也不会阻止后面的代码执行
+    yield delay(3000);
+    console.log(1111111);
+  } catch (e) {
+    console.log("coundownSaga error");
+  } finally {
+    console.log("coundownSaga finally");
+  }
+  console.log("coundownSaga end");
 }
 
 export default function* rootSaga() {
-	yield all([coundownSaga()]);
+  yield all([coundownSaga()]);
 }
 ```
 
@@ -1031,11 +1036,11 @@ export default function* rootSaga() {
 
 ```javascript
 function coundown() {
-	try {
-		while (true) {}
-	} finally {
-	}
-	console.log("coundown end");
+  try {
+    while (true) {}
+  } finally {
+  }
+  console.log("coundown end");
 }
 ```
 
@@ -1043,20 +1048,20 @@ function coundown() {
 
 ```javascript
 function coundown() {
-	try {
-		while (true) {
-			throw "error";
-		}
-	} catch (e) {
-	} finally {
-	}
-	console.log("coundown end");
+  try {
+    while (true) {
+      throw "error";
+    }
+  } catch (e) {
+  } finally {
+  }
+  console.log("coundown end");
 }
 ```
 
 ### 3. 使用 channels (在不同 saga 之间进行交流)
 
-#### 3 种区别:
+#### 3 种区别
 
 1. 创建的方式有
 
@@ -1074,19 +1079,19 @@ eventChannel 内部 emmit 派发 emitter(PAYLOAD);
 yield put(chan, PAYLOAD);
 ```
 
-#### 3 种实现:
+#### 3 种实现
 
 **1. actionChannel**
 
 ```javascript
 function* actionChannelSaga() {
-	const chan = yield actionChannel("REQUEST");
-	yield fork(handle, chan);
-	yield put({ type: "REQUEST", payload: PAYLOAD });
+  const chan = yield actionChannel("REQUEST");
+  yield fork(handle, chan);
+  yield put({ type: "REQUEST", payload: PAYLOAD });
 }
 function* handle(chan) {
-	const { payload } = yield take(chan);
-	console.log(payload);
+  const { payload } = yield take(chan);
+  console.log(payload);
 }
 ```
 
@@ -1094,19 +1099,19 @@ function* handle(chan) {
 
 ```javascript
 function* eventChannelSaga() {
-	const chan = yield call(evtChan);
-	const payload = yield take(chan);
-	console.log(payload);
+  const chan = yield call(evtChan);
+  const payload = yield take(chan);
+  console.log(payload);
 }
 
 function evtChan() {
-	return eventChannel((emitter) => {
-		setTimeout(() => {
-			emitter(PAYLOAD);
-			emitter(END);
-		});
-		return () => {};
-	});
+  return eventChannel((emitter) => {
+    setTimeout(() => {
+      emitter(PAYLOAD);
+      emitter(END);
+    });
+    return () => {};
+  });
 }
 ```
 
@@ -1114,13 +1119,13 @@ function evtChan() {
 
 ```javascript
 function* channelSaga() {
-	const chan = yield call(channel);
-	yield fork(handle, chan);
-	yield put(chan, PAYLOAD);
+  const chan = yield call(channel);
+  yield fork(handle, chan);
+  yield put(chan, PAYLOAD);
 }
 function* handle(chan) {
-	const payload = yield take(chan);
-	console.log(payload);
+  const payload = yield take(chan);
+  console.log(payload);
 }
 ```
 
@@ -1152,37 +1157,37 @@ function* handle(chan) {
 
 ```javascript
 function* channelSaga() {
-	const chan = yield call(channel);
-	for (let i = 0; i < 3; i++) {
-		yield fork(handleRequest, chan);
-	}
-	while (true) {
-		// 这里巧妙的做了一层代理
-		const { payload } = yield take("REQUEST");
-		yield put(chan, payload);
-	}
+  const chan = yield call(channel);
+  for (let i = 0; i < 3; i++) {
+    yield fork(handleRequest, chan);
+  }
+  while (true) {
+    // 这里巧妙的做了一层代理
+    const { payload } = yield take("REQUEST");
+    yield put(chan, payload);
+  }
 }
 function* handleRequest(chan) {
-	while (true) {
-		const payload = yield take(chan);
-		yield delay(1000);
-		console.log(payload);
-	}
+  while (true) {
+    const payload = yield take(chan);
+    yield delay(1000);
+    console.log(payload);
+  }
 }
 
 function* putRequest() {
-	let i = 0;
-	while (true) {
-		i++;
-		if (i > 9) {
-			break;
-		}
-		yield put({ type: "REQUEST", payload: i });
-	}
+  let i = 0;
+  while (true) {
+    i++;
+    if (i > 9) {
+      break;
+    }
+    yield put({ type: "REQUEST", payload: i });
+  }
 }
 
 export default function* rootSaga() {
-	yield all([channelSaga(), putRequest()]);
+  yield all([channelSaga(), putRequest()]);
 }
 ```
 
@@ -1190,18 +1195,18 @@ export default function* rootSaga() {
 
 ```javascript
 function* channelSaga() {
-	const chan = yield actionChannel("REQUEST");
-	for (let i = 0; i < 3; i++) {
-		yield fork(handleRequest, chan);
-	}
+  const chan = yield actionChannel("REQUEST");
+  for (let i = 0; i < 3; i++) {
+    yield fork(handleRequest, chan);
+  }
 }
 
 function* handleRequest(chan) {
-	while (true) {
-		const { payload } = yield take(chan);
-		yield delay(1000);
-		console.log(payload);
-	}
+  while (true) {
+    const { payload } = yield take(chan);
+    yield delay(1000);
+    console.log(payload);
+  }
 }
 ```
 
@@ -1240,9 +1245,9 @@ spawn 和 fork 的区别是, spawn is an effect that will disconnect your child 
 
 ```javascript
 export default function* rootSaga() {
-	yield spawn(saga1);
-	yield spawn(saga2);
-	yield spawn(saga3);
+  yield spawn(saga1);
+  yield spawn(saga2);
+  yield spawn(saga3);
 }
 ```
 
@@ -1252,22 +1257,22 @@ export default function* rootSaga() {
 
 ```javascript
 function* rootSaga() {
-	const sagas = [saga1, saga2, saga3];
+  const sagas = [saga1, saga2, saga3];
 
-	yield all(
-		sagas.map((saga) =>
-			spawn(function* () {
-				while (true) {
-					try {
-						yield call(saga);
-						break;
-					} catch (e) {
-						console.log(e);
-					}
-				}
-			})
-		)
-	);
+  yield all(
+    sagas.map((saga) =>
+      spawn(function* () {
+        while (true) {
+          try {
+            yield call(saga);
+            break;
+          } catch (e) {
+            console.log(e);
+          }
+        }
+      })
+    )
+  );
 }
 ```
 
@@ -1284,24 +1289,24 @@ function* rootSaga() {
 
 ```javascript
 function* handleInput(action) {
-	console.log(Date.now());
-	console.log(action.payload);
+  console.log(Date.now());
+  console.log(action.payload);
 }
 
 function* watchInput() {
-	yield throttle(2000, "INPUT_CHANGED", handleInput);
+  yield throttle(2000, "INPUT_CHANGED", handleInput);
 }
 
 function* putSaga() {
-	console.log(Date.now());
-	yield put({ type: "INPUT_CHANGED", payload: 1 });
-	yield put({ type: "INPUT_CHANGED", payload: 2 });
-	yield delay(1000); // 并不影响上面的代码throttle设置的 2000
-	yield put({ type: "INPUT_CHANGED", payload: 3 });
+  console.log(Date.now());
+  yield put({ type: "INPUT_CHANGED", payload: 1 });
+  yield put({ type: "INPUT_CHANGED", payload: 2 });
+  yield delay(1000); // 并不影响上面的代码throttle设置的 2000
+  yield put({ type: "INPUT_CHANGED", payload: 3 });
 }
 
 export default function* rootSaga() {
-	yield all([watchInput(), putSaga()]);
+  yield all([watchInput(), putSaga()]);
 }
 ```
 
@@ -1309,15 +1314,15 @@ export default function* rootSaga() {
 
 ```javascript
 const throttle = (ms, pattern, task, ...args) =>
-	fork(function* () {
-		const throttleChannel = yield actionChannel(pattern, buffers.sliding(1));
+  fork(function* () {
+    const throttleChannel = yield actionChannel(pattern, buffers.sliding(1));
 
-		while (true) {
-			const action = yield take(throttleChannel);
-			yield fork(task, ...args, action);
-			yield delay(ms);
-		}
-	});
+    while (true) {
+      const action = yield take(throttleChannel);
+      yield fork(task, ...args, action);
+      yield delay(ms);
+    }
+  });
 ```
 
 ### 2. debounce(防抖)
@@ -1335,21 +1340,21 @@ t = setTimeout(()=>{
 
 ```javascript
 function* handleInput(action) {
-	console.log(Date.now());
-	console.log(action.payload);
+  console.log(Date.now());
+  console.log(action.payload);
 }
 
 function* watchInput() {
-	yield debounce(2000, "INPUT_CHANGED", handleInput);
+  yield debounce(2000, "INPUT_CHANGED", handleInput);
 }
 
 function* putSaga() {
-	console.log(Date.now());
-	yield put({ type: "INPUT_CHANGED", payload: 1 });
-	yield delay(1000);
-	yield put({ type: "INPUT_CHANGED", payload: 2 });
-	yield delay(1000);
-	yield put({ type: "INPUT_CHANGED", payload: 3 });
+  console.log(Date.now());
+  yield put({ type: "INPUT_CHANGED", payload: 1 });
+  yield delay(1000);
+  yield put({ type: "INPUT_CHANGED", payload: 2 });
+  yield delay(1000);
+  yield put({ type: "INPUT_CHANGED", payload: 3 });
 }
 ```
 
@@ -1357,32 +1362,32 @@ function* putSaga() {
 
 ```javascript
 function* handleInput(action) {
-	yield delay(2000); // 这里延迟了 执行
-	console.log(Date.now());
-	console.log(action.payload);
+  yield delay(2000); // 这里延迟了 执行
+  console.log(Date.now());
+  console.log(action.payload);
 }
 
 function* watchInput() {
-	let task;
-	while (true) {
-		const action = yield take("INPUT_CHANGED");
-		if (task) {
-			yield cancel(task);
-		}
-		task = yield fork(handleInput, action);
-	}
+  let task;
+  while (true) {
+    const action = yield take("INPUT_CHANGED");
+    if (task) {
+      yield cancel(task);
+    }
+    task = yield fork(handleInput, action);
+  }
 }
 
 function* putSaga() {
-	console.log(Date.now());
-	yield put({ type: "INPUT_CHANGED", payload: 1 });
-	yield put({ type: "INPUT_CHANGED", payload: 2 });
-	yield delay(1000);
-	yield put({ type: "INPUT_CHANGED", payload: 3 });
+  console.log(Date.now());
+  yield put({ type: "INPUT_CHANGED", payload: 1 });
+  yield put({ type: "INPUT_CHANGED", payload: 2 });
+  yield delay(1000);
+  yield put({ type: "INPUT_CHANGED", payload: 3 });
 }
 
 export default function* rootSaga() {
-	yield all([watchInput(), putSaga()]);
+  yield all([watchInput(), putSaga()]);
 }
 ```
 
@@ -1403,25 +1408,25 @@ function* watchInput() {
 
 ```javascript
 const debounce = (ms, pattern, task, ...args) =>
-	fork(function* () {
-		while (true) {
-			let action = yield take(pattern);
+  fork(function* () {
+    while (true) {
+      let action = yield take(pattern);
 
-			while (true) {
-				const { debounced, latestAction } = yield race({
-					debounced: delay(ms),
-					latestAction: take(pattern),
-				});
+      while (true) {
+        const { debounced, latestAction } = yield race({
+          debounced: delay(ms),
+          latestAction: take(pattern)
+        });
 
-				if (debounced) {
-					yield fork(task, ...args, action);
-					break;
-				}
+        if (debounced) {
+          yield fork(task, ...args, action);
+          break;
+        }
 
-				action = latestAction;
-			}
-		}
-	});
+        action = latestAction;
+      }
+    }
+  });
 ```
 
 ### 3. Retrying XHR calls
@@ -1435,42 +1440,42 @@ const debounce = (ms, pattern, task, ...args) =>
 ```javascript
 let j = 0;
 function ajax(text) {
-	j++;
-	if (j < 4) {
-		throw "err";
-	}
-	return text;
+  j++;
+  if (j < 4) {
+    throw "err";
+  }
+  return text;
 }
 
 function* fetchApi() {
-	for (let i = 0; i < 5; i++) {
-		try {
-			let data = yield call(ajax, "success");
-			// 巧妙的地方, for 里面用了 return, 成功则返回了
-			return data;
-		} catch (e) {
-			if (i < 4) {
-				// 最后1次还是失败, 则不需要 delay, 所以这里用了 < 4
-				yield delay(1000);
-			}
-		}
-	}
-	throw new Error("API request failed");
+  for (let i = 0; i < 5; i++) {
+    try {
+      let data = yield call(ajax, "success");
+      // 巧妙的地方, for 里面用了 return, 成功则返回了
+      return data;
+    } catch (e) {
+      if (i < 4) {
+        // 最后1次还是失败, 则不需要 delay, 所以这里用了 < 4
+        yield delay(1000);
+      }
+    }
+  }
+  throw new Error("API request failed");
 }
 
 function* watchInput() {
-	try {
-		console.log(Date.now());
-		let data = yield call(fetchApi);
-		console.log(Date.now());
-		console.log(data);
-	} catch (e) {
-		console.log("fail", e.message);
-	}
+  try {
+    console.log(Date.now());
+    let data = yield call(fetchApi);
+    console.log(Date.now());
+    console.log(data);
+  } catch (e) {
+    console.log("fail", e.message);
+  }
 }
 
 export default function* rootSaga() {
-	yield all([watchInput()]);
+  yield all([watchInput()]);
 }
 ```
 
@@ -1479,26 +1484,26 @@ export default function* rootSaga() {
 ```javascript
 let j = 0;
 function ajax(text) {
-	j++;
-	if (j < 4) {
-		throw "err";
-	}
-	return text;
+  j++;
+  if (j < 4) {
+    throw "err";
+  }
+  return text;
 }
 
 function* watchInput() {
-	try {
-		console.log(Date.now());
-		let data = yield retry(5, 1 * 1000, ajax, "success");
-		console.log(Date.now());
-		console.log(data);
-	} catch (e) {
-		console.log("fail", e.message);
-	}
+  try {
+    console.log(Date.now());
+    let data = yield retry(5, 1 * 1000, ajax, "success");
+    console.log(Date.now());
+    console.log(data);
+  } catch (e) {
+    console.log("fail", e.message);
+  }
 }
 
 export default function* rootSaga() {
-	yield all([watchInput()]);
+  yield all([watchInput()]);
 }
 ```
 
@@ -1541,25 +1546,25 @@ yield take(["aa", "bb"]); // 只要有一个等于 type, 都会触发
 
 ```javascript
 function* watchSaga() {
-	try {
-		yield take("bb");
-		console.log("1"); // 不会触发
-	} catch (e) {
-	} finally {
-		if (yield cancelled()) {
-			console.log("cancel"); // 不会触发
-		}
-		console.log("finally");
-	}
-	console.log("end"); // 不会触发
+  try {
+    yield take("bb");
+    console.log("1"); // 不会触发
+  } catch (e) {
+  } finally {
+    if (yield cancelled()) {
+      console.log("cancel"); // 不会触发
+    }
+    console.log("finally");
+  }
+  console.log("end"); // 不会触发
 }
 
 function* putSaga() {
-	yield put(END);
+  yield put(END);
 }
 
 export default function* rootSaga() {
-	yield all([watchSaga(), putSaga()]);
+  yield all([watchSaga(), putSaga()]);
 }
 ```
 
@@ -1600,14 +1605,14 @@ function* watchSaga() {
 
 ```javascript
 function* watchSaga() {
-	yield takeMaybe("bb");
-	console.log("ok");
+  yield takeMaybe("bb");
+  console.log("ok");
 }
 
 function* putSaga() {
-	yield put({
-		type: "bb",
-	});
+  yield put({
+    type: "bb"
+  });
 }
 ```
 
@@ -1615,13 +1620,13 @@ function* putSaga() {
 
 ```javascript
 function* watchSaga() {
-	yield takeMaybe("bb");
-	yield takeMaybe("ss");
-	console.log("ok");
+  yield takeMaybe("bb");
+  yield takeMaybe("ss");
+  console.log("ok");
 }
 
 function* putSaga() {
-	yield put(END);
+  yield put(END);
 }
 ```
 
@@ -1634,10 +1639,7 @@ Just like put but the effect is blocking (if promise is returned from dispatch i
 ```javascript
 import thunkMiddleware from "redux-thunk";
 const sagaMiddleware = createSagaMiddleware();
-const store = createStore(
-	reducer,
-	applyMiddleware(thunkMiddleware, sagaMiddleware)
-);
+const store = createStore(reducer, applyMiddleware(thunkMiddleware, sagaMiddleware));
 sagaMiddleware.run(rootSaga);
 ```
 
@@ -1652,28 +1654,27 @@ putSaga
 
 ```javascript
 const delayFn = (ms) => {
-	return new Promise((resolve) => setTimeout(resolve, ms));
+  return new Promise((resolve) => setTimeout(resolve, ms));
 };
 
-const fetchSmth = (smth) => (dispatch) =>
-	delayFn(2000).then(() => dispatch({ type: smth }));
+const fetchSmth = (smth) => (dispatch) => delayFn(2000).then(() => dispatch({ type: smth }));
 
 function* watchSaga() {
-	yield take("bb");
-	console.log("watchSaga");
+  yield take("bb");
+  console.log("watchSaga");
 }
 
 function* putSaga() {
-	yield putResolve(fetchSmth("bb"));
-	console.log("putSaga");
+  yield putResolve(fetchSmth("bb"));
+  console.log("putSaga");
 }
 
 export default function* rootSaga() {
-	yield all([watchSaga(), putSaga()]);
+  yield all([watchSaga(), putSaga()]);
 }
 ```
 
-若改成 ` yield put(fetchSmth("bb"));`, 输出如下:
+若改成 `yield put(fetchSmth("bb"));`, 输出如下:
 
 ```
 // 马上打印 watchSaga
@@ -1692,12 +1693,12 @@ putSaga
 
 ```javascript
 var obj = {
-	n: (val) => val,
+  n: (val) => val
 };
 
 function* putSaga() {
-	var d = yield call([obj, "n"], "aaaa");
-	console.log(d);
+  var d = yield call([obj, "n"], "aaaa");
+  console.log(d);
 }
 ```
 
@@ -1709,12 +1710,12 @@ function* putSaga() {
 const fn = (a, b, cb) => cb(null, [a, b]);
 
 function* watchSaga() {
-	try {
-		var d = yield cps(fn, 1, 2);
-		console.log(d);
-	} catch (e) {
-		console.log(e);
-	}
+  try {
+    var d = yield cps(fn, 1, 2);
+    console.log(d);
+  } catch (e) {
+    console.log(e);
+  }
 }
 ```
 
@@ -1732,13 +1733,13 @@ const fn = (a, b, cb) => cb('ffff', [a, b]);
 
 ```javascript
 function* fn(time) {
-	yield delay(time);
+  yield delay(time);
 }
 
 function* watchSaga() {
-	const task = yield fork(fn, 2000);
-	yield join(task);
-	console.log("watchSaga");
+  const task = yield fork(fn, 2000);
+  yield join(task);
+  console.log("watchSaga");
 }
 ```
 
@@ -1746,14 +1747,14 @@ function* watchSaga() {
 
 ```javascript
 function* fn(time) {
-	yield delay(time);
+  yield delay(time);
 }
 
 function* watchSaga() {
-	const task = yield fork(fn, 2000);
-	const task2 = yield fork(fn, 4000);
-	yield join([task, task2]);
-	console.log("watchSaga");
+  const task = yield fork(fn, 2000);
+  const task2 = yield fork(fn, 4000);
+  yield join([task, task2]);
+  console.log("watchSaga");
 }
 ```
 
@@ -1767,22 +1768,22 @@ finally
 
 ```javascript
 function* fn(time) {
-	yield delay(time);
+  yield delay(time);
 }
 
 function* watchSaga() {
-	const task = yield fork(fn, 2000);
-	yield cancel(task);
-	try {
-		yield join(task);
-	} catch (e) {
-	} finally {
-		if (yield cancelled()) {
-			console.log("cancelled");
-		}
-		console.log("finally");
-	}
-	console.log("watchSaga"); // 不会执行
+  const task = yield fork(fn, 2000);
+  yield cancel(task);
+  try {
+    yield join(task);
+  } catch (e) {
+  } finally {
+    if (yield cancelled()) {
+      console.log("cancelled");
+    }
+    console.log("finally");
+  }
+  console.log("watchSaga"); // 不会执行
 }
 ```
 
@@ -1797,21 +1798,21 @@ finally
 
 ```javascript
 function* fn(time) {
-	try {
-		yield delay(time);
-	} catch (e) {
-	} finally {
-		if (yield cancelled()) {
-			console.log("cancelled");
-		}
-		console.log("finally");
-	}
-	console.log("end"); // 不会输出
+  try {
+    yield delay(time);
+  } catch (e) {
+  } finally {
+    if (yield cancelled()) {
+      console.log("cancelled");
+    }
+    console.log("finally");
+  }
+  console.log("end"); // 不会输出
 }
 
 function* watchSaga() {
-	const task = yield fork(fn, 2000);
-	yield cancel(task);
+  const task = yield fork(fn, 2000);
+  yield cancel(task);
 }
 ```
 
@@ -1828,35 +1829,35 @@ finally fn2
 
 ```javascript
 function* fn2() {
-	try {
-		yield delay(1000);
-	} catch (e) {
-	} finally {
-		if (yield cancelled()) {
-			console.log("cancelled fn2");
-		}
-		console.log("finally fn2");
-	}
-	console.log("end fn2"); // 不会输出
+  try {
+    yield delay(1000);
+  } catch (e) {
+  } finally {
+    if (yield cancelled()) {
+      console.log("cancelled fn2");
+    }
+    console.log("finally fn2");
+  }
+  console.log("end fn2"); // 不会输出
 }
 
 function* fn() {
-	try {
-		yield fork(fn2);
-		yield delay(2000);
-	} catch (e) {
-	} finally {
-		if (yield cancelled()) {
-			console.log("cancelled fn");
-		}
-		console.log("finally fn");
-	}
-	console.log("end fn"); // 不会输出
+  try {
+    yield fork(fn2);
+    yield delay(2000);
+  } catch (e) {
+  } finally {
+    if (yield cancelled()) {
+      console.log("cancelled fn");
+    }
+    console.log("finally fn");
+  }
+  console.log("end fn"); // 不会输出
 }
 
 function* watchSaga() {
-	const task = yield fork(fn);
-	yield cancel(task);
+  const task = yield fork(fn);
+  yield cancel(task);
 }
 ```
 
@@ -1893,19 +1894,19 @@ console.log(num); // 11
 
 ```javascript
 function* fn1() {
-	yield delay(1);
-	return 1;
+  yield delay(1);
+  return 1;
 }
 function* fn2() {
-	yield delay(0);
-	return 2;
+  yield delay(0);
+  return 2;
 }
 function* watchSaga() {
-	const { res1, res2 } = yield race({
-		res1: call(fn1),
-		res2: call(fn2),
-	});
-	console.log(res1, res2); // 输出 1, undefined
+  const { res1, res2 } = yield race({
+    res1: call(fn1),
+    res2: call(fn2)
+  });
+  console.log(res1, res2); // 输出 1, undefined
 }
 ```
 
@@ -1913,8 +1914,8 @@ function* watchSaga() {
 
 ```javascript
 function* watchSaga() {
-	const [res1, res2] = yield race([call(fn1), call(fn2)]);
-	console.log(res1, res2); // 输出 1, undefined
+  const [res1, res2] = yield race([call(fn1), call(fn2)]);
+  console.log(res1, res2); // 输出 1, undefined
 }
 ```
 
@@ -1929,25 +1930,25 @@ finally
 
 ```javascript
 function* fn1() {
-	yield delay(500);
-	return 1;
+  yield delay(500);
+  return 1;
 }
 
 function* fn2() {
-	try {
-		yield delay(5000);
-	} catch (e) {
-	} finally {
-		if (yield cancelled()) {
-			console.log("cancel");
-		}
-		console.log("finally");
-	}
+  try {
+    yield delay(5000);
+  } catch (e) {
+  } finally {
+    if (yield cancelled()) {
+      console.log("cancel");
+    }
+    console.log("finally");
+  }
 }
 
 function* watchSaga() {
-	const [res1, res2] = yield race([call(fn1), call(fn2)]);
-	console.log(res1, res2); // 输出 1, undefined
+  const [res1, res2] = yield race([call(fn1), call(fn2)]);
+  console.log(res1, res2); // 输出 1, undefined
 }
 ```
 
@@ -1959,19 +1960,19 @@ all 和 race 很像, 但是它必须等待 2 个都执行完了，才会继续�
 
 ```javascript
 function* fn1() {
-	yield delay(1000);
-	return 1;
+  yield delay(1000);
+  return 1;
 }
 
 function* fn2() {
-	yield delay(2000);
+  yield delay(2000);
 }
 
 function* watchSaga() {
-	console.time("saga");
-	const [res1, res2] = yield all([call(fn1), call(fn2)]);
-	console.timeEnd("saga");
-	console.log(res1, res2); // 输出 1, undefined
+  console.time("saga");
+  const [res1, res2] = yield all([call(fn1), call(fn2)]);
+  console.timeEnd("saga");
+  console.log(res1, res2); // 输出 1, undefined
 }
 ```
 
@@ -1986,31 +1987,31 @@ eee
 
 ```javascript
 function* fn1() {
-	yield delay(1000);
-	throw new Error("eee");
+  yield delay(1000);
+  throw new Error("eee");
 }
 
 function* fn2() {
-	try {
-		yield delay(5000);
-	} catch (e) {
-	} finally {
-		if (yield cancelled()) {
-			console.log("cancel");
-		}
-		console.log("finally");
-	}
+  try {
+    yield delay(5000);
+  } catch (e) {
+  } finally {
+    if (yield cancelled()) {
+      console.log("cancel");
+    }
+    console.log("finally");
+  }
 }
 
 function* watchSaga() {
-	try {
-		console.time("saga");
-		const [res1, res2] = yield all([call(fn1), call(fn2)]);
-		console.timeEnd("saga");
-		console.log(res1, res2); // 输出 1, undefined
-	} catch (e) {
-		console.log(e.message);
-	}
+  try {
+    console.time("saga");
+    const [res1, res2] = yield all([call(fn1), call(fn2)]);
+    console.timeEnd("saga");
+    console.log(res1, res2); // 输出 1, undefined
+  } catch (e) {
+    console.log(e.message);
+  }
 }
 ```
 
@@ -2020,14 +2021,14 @@ function* watchSaga() {
 
 ```javascript
 function* fn1() {
-	yield delay(1000);
+  yield delay(1000);
 }
 
 function* watchSaga() {
-	const task = yield fork(fn1);
-	console.log(task.isRunning()); // true
-	yield delay(1000);
-	console.log(task.isRunning()); // false
+  const task = yield fork(fn1);
+  console.log(task.isRunning()); // true
+  yield delay(1000);
+  console.log(task.isRunning()); // false
 }
 ```
 
@@ -2035,10 +2036,10 @@ function* watchSaga() {
 
 ```javascript
 function* watchSaga() {
-	const task = yield fork(fn1);
-	console.log(task.isCancelled()); // false
-	yield cancel(task);
-	console.log(task.isCancelled()); // true
+  const task = yield fork(fn1);
+  console.log(task.isCancelled()); // false
+  yield cancel(task);
+  console.log(task.isCancelled()); // true
 }
 ```
 
@@ -2046,14 +2047,14 @@ function* watchSaga() {
 
 ```javascript
 function* fn1() {
-	yield delay(1000);
-	return 1;
+  yield delay(1000);
+  return 1;
 }
 function* watchSaga() {
-	const task = yield fork(fn1);
-	console.log(task.result()); // undefined
-	yield delay(1000);
-	console.log(task.result()); // 1
+  const task = yield fork(fn1);
+  console.log(task.result()); // undefined
+  yield delay(1000);
+  console.log(task.result()); // 1
 }
 ```
 
@@ -2062,15 +2063,15 @@ function* watchSaga() {
 
 ```javascript
 function* fn() {
-	yield delay(0); // 不延迟0, 则 task 拿不到值
-	throw new Error("eee");
+  yield delay(0); // 不延迟0, 则 task 拿不到值
+  throw new Error("eee");
 }
 
 function* watchSaga() {
-	const task = yield fork(fn);
-	setTimeout(() => {
-		console.log(task.error()); // Error: eee
-	}, 0);
+  const task = yield fork(fn);
+  setTimeout(() => {
+    console.log(task.error()); // Error: eee
+  }, 0);
 }
 ```
 
@@ -2083,30 +2084,30 @@ function* watchSaga() {
 
 ```javascript
 function* fn() {
-	yield delay(0); // 不延迟0, 则 task 拿不到值
-	//   throw new Error("eee");
-	return "eee";
+  yield delay(0); // 不延迟0, 则 task 拿不到值
+  //   throw new Error("eee");
+  return "eee";
 }
 
 function* watchSaga() {
-	const task = yield fork(fn);
-	task
-		.toPromise()
-		.then((v) => {
-			console.log(v); // eee
-		})
-		.catch((e) => {
-			console.log(e); // Error: eee
-		});
+  const task = yield fork(fn);
+  task
+    .toPromise()
+    .then((v) => {
+      console.log(v); // eee
+    })
+    .catch((e) => {
+      console.log(e); // Error: eee
+    });
 }
 ```
 
 6. task.cancel()
-   和 ` yield cancel(task)` 效果一样
+   和 `yield cancel(task)` 效果一样
 
 ```javascript
 function* watchSaga() {
-	const task = yield fork(fn);
-	task.cancel();
+  const task = yield fork(fn);
+  task.cancel();
 }
 ```

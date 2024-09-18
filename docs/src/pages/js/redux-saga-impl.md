@@ -6,29 +6,29 @@ take 是注册一个函数, put 是执行注册的函数。
 
 ```javascript
 function channel() {
-	let taker;
+  let taker;
 
-	function take(cb) {
-		taker = cb;
-	}
+  function take(cb) {
+    taker = cb;
+  }
 
-	function put(input) {
-		if (taker) {
-			const tempTaker = taker;
-			taker = null;
-			tempTaker(input);
-		}
-	}
+  function put(input) {
+    if (taker) {
+      const tempTaker = taker;
+      taker = null;
+      tempTaker(input);
+    }
+  }
 
-	return {
-		put,
-		take,
-	};
+  return {
+    put,
+    take
+  };
 }
 
 const chan = channel();
 chan.take((v) => {
-	console.log(v); // 输出 'hello'
+  console.log(v); // 输出 'hello'
 });
 
 chan.put("hello");
@@ -38,69 +38,69 @@ chan.put("hello");
 
 ```javascript
 function channel() {
-	let taker;
+  let taker;
 
-	function take(cb) {
-		taker = cb;
-	}
+  function take(cb) {
+    taker = cb;
+  }
 
-	function put(input) {
-		if (taker) {
-			const tempTaker = taker;
-			taker = null;
-			tempTaker(input);
-		}
-	}
+  function put(input) {
+    if (taker) {
+      const tempTaker = taker;
+      taker = null;
+      tempTaker(input);
+    }
+  }
 
-	return {
-		put,
-		take,
-	};
+  return {
+    put,
+    take
+  };
 }
 
 const chan = channel();
 
 function take() {
-	return {
-		type: "take",
-	};
+  return {
+    type: "take"
+  };
 }
 
 function* mainSaga() {
-	const action = yield take();
-	console.log(action);
+  const action = yield take();
+  console.log(action);
 }
 
 function runTakeEffect(effect, cb) {
-	chan.take((input) => {
-		cb(input);
-	});
+  chan.take((input) => {
+    cb(input);
+  });
 }
 
 function task(iterator) {
-	const iter = iterator();
-	function next(args) {
-		const result = iter.next(args);
-		if (!result.done) {
-			const effect = result.value;
-			if (effect.type === "take") {
-				runTakeEffect(result.value, next);
-			}
-		}
-	}
-	next();
+  const iter = iterator();
+  function next(args) {
+    const result = iter.next(args);
+    if (!result.done) {
+      const effect = result.value;
+      if (effect.type === "take") {
+        runTakeEffect(result.value, next);
+      }
+    }
+  }
+  next();
 }
 
 task(mainSaga);
 
 let i = 0;
 $btn.addEventListener(
-	"click",
-	() => {
-		const action = `action data${i++}`;
-		chan.put(action);
-	},
-	false
+  "click",
+  () => {
+    const action = `action data${i++}`;
+    chan.put(action);
+  },
+  false
 );
 ```
 
@@ -109,7 +109,7 @@ $btn.addEventListener(
 
 ```javascript
 chan.take((input) => {
-	next(input);
+  next(input);
 });
 ```
 
@@ -117,8 +117,8 @@ next 的迭代器为 mainSaga 里的代码:
 
 ```javascript
 function* mainSaga() {
-	const action = yield take();
-	console.log(action);
+  const action = yield take();
+  console.log(action);
 }
 ```
 
@@ -128,10 +128,10 @@ function* mainSaga() {
 
 ```javascript
 function* mainSaga() {
-	while (true) {
-		const action = yield take();
-		console.log(action);
-	}
+  while (true) {
+    const action = yield take();
+    console.log(action);
+  }
 }
 ```
 
@@ -142,101 +142,101 @@ const $btn = document.querySelector("#test");
 const $result = document.querySelector("#result");
 
 function channel() {
-	let taker;
+  let taker;
 
-	function take(cb) {
-		taker = cb;
-	}
+  function take(cb) {
+    taker = cb;
+  }
 
-	function put(input) {
-		if (taker) {
-			const tempTaker = taker;
-			taker = null;
-			tempTaker(input);
-		}
-	}
+  function put(input) {
+    if (taker) {
+      const tempTaker = taker;
+      taker = null;
+      tempTaker(input);
+    }
+  }
 
-	return {
-		put,
-		take,
-	};
+  return {
+    put,
+    take
+  };
 }
 
 const chan = channel();
 
 let i = 0;
 $btn.addEventListener(
-	"click",
-	() => {
-		chan.put(`action data${i++}`);
-	},
-	false
+  "click",
+  () => {
+    chan.put(`action data${i++}`);
+  },
+  false
 );
 
 function take() {
-	return {
-		type: "take",
-	};
+  return {
+    type: "take"
+  };
 }
 
 function fork(cb) {
-	return {
-		type: "fork",
-		fn: cb,
-	};
+  return {
+    type: "fork",
+    fn: cb
+  };
 }
 
 function* takeEvery(worker) {
-	yield fork(function* () {
-		while (true) {
-			const action = yield take();
-			worker(action); // 5
-		}
-	});
+  yield fork(function* () {
+    while (true) {
+      const action = yield take();
+      worker(action); // 5
+    }
+  });
 }
 
 function* mainSaga() {
-	yield takeEvery((action) => {
-		$result.innerHTML = action;
-	});
+  yield takeEvery((action) => {
+    $result.innerHTML = action;
+  });
 }
 
 function runTakeEffect(effect, cb) {
-	// 5
-	chan.take((input) => {
-		cb(input);
-	});
+  // 5
+  chan.take((input) => {
+    cb(input);
+  });
 }
 
 function runForkEffect(effect, cb) {
-	task(effect.fn || effect); // 2
-	cb();
+  task(effect.fn || effect); // 2
+  cb();
 }
 
 function task(iterator) {
-	const iter = typeof iterator === "function" ? iterator() : iterator;
-	function next(args) {
-		const result = iter.next(args); // 3
-		if (!result.done) {
-			const data = result.value;
+  const iter = typeof iterator === "function" ? iterator() : iterator;
+  function next(args) {
+    const result = iter.next(args); // 3
+    if (!result.done) {
+      const data = result.value;
 
-			if (typeof data[Symbol.iterator] === "function") {
-				runForkEffect(data, next); // 1
-			} else if (data.type) {
-				switch (data.type) {
-					case "take":
-						runTakeEffect(result.value, next);
-						break;
-					case "fork":
-						runForkEffect(result.value, next); // 4
-						break;
-					default:
-						break;
-				}
-			}
-		}
-	}
-	next();
+      if (typeof data[Symbol.iterator] === "function") {
+        runForkEffect(data, next); // 1
+      } else if (data.type) {
+        switch (data.type) {
+          case "take":
+            runTakeEffect(result.value, next);
+            break;
+          case "fork":
+            runForkEffect(result.value, next); // 4
+            break;
+          default:
+            break;
+        }
+      }
+    }
+  }
+  next();
 }
 
 task(mainSaga);

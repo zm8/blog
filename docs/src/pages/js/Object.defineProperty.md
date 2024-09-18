@@ -18,7 +18,7 @@
 ```javascript
 var obj = {};
 Object.defineProperty(obj, "a", {
-	value: 1,
+  value: 1
 });
 console.log(obj.a); // 1
 ```
@@ -30,7 +30,7 @@ console.log(obj.a); // 1
 
 ```javascript
 Object.defineProperty(obj, "a", {
-	enumerable: false,
+  enumerable: false
 });
 // 等价
 Object.defineProperty(obj, "a", {});
@@ -41,11 +41,11 @@ Object.defineProperty(obj, "a", {});
 ```javascript
 var obj = {};
 Object.defineProperty(obj, "a", {
-	enumerable: false,
-	value: 1,
+  enumerable: false,
+  value: 1
 });
 for (let n in obj) {
-	console.log(n); // 输出不了 n
+  console.log(n); // 输出不了 n
 }
 ```
 
@@ -55,13 +55,13 @@ for (let n in obj) {
 var obj = { a: 1 };
 
 Object.defineProperty(obj, "b", {
-	enumerable: false,
-	value: 3,
+  enumerable: false,
+  value: 3
 });
 
 // 可以枚举 a, 不能枚举 b
 for (let key in obj) {
-	console.log("key", key);
+  console.log("key", key);
 }
 console.log(obj.a); // 3
 ```
@@ -74,13 +74,13 @@ console.log(obj.a); // 3
 ```javascript
 var obj = {};
 Object.defineProperty(obj, "a", {
-	configurable: false,
-	value: 1,
+  configurable: false,
+  value: 1
 });
 
 // 这里报错: TypeError: Cannot redefine property: a
 Object.defineProperty(obj, "a", {
-	value: 2,
+  value: 2
 });
 
 // TypeError: Cannot delete property 'a' of #<Object>
@@ -94,9 +94,9 @@ console.log(obj.a);
 ```javascript
 var obj = {};
 Object.defineProperty(obj, "a", {
-	configurable: false,
-	writable: true,
-	value: 1,
+  configurable: false,
+  writable: true,
+  value: 1
 });
 obj.a = 222;
 console.log(obj.a); // 222
@@ -111,7 +111,7 @@ console.log(obj.a); // 222
 ```javascript
 var obj = {};
 Object.defineProperty(obj, "a", {
-	writable: false,
+  writable: false
 });
 // 由于默认是 false, 所以等价
 // Object.defineProperty(obj, "a", {
@@ -135,11 +135,11 @@ console.log(obj.a);
 ```javascript
 var obj = { a: 1 };
 Object.defineProperty(obj, "a", {
-	get: function () {
-		// 不能写 console.log(this.a)
-		console.log("get");
-		return 3;
-	},
+  get: function () {
+    // 不能写 console.log(this.a)
+    console.log("get");
+    return 3;
+  }
 });
 console.log(obj.a);
 
@@ -155,13 +155,13 @@ console.log(obj.a);
 var i = 0;
 var obj = {};
 Object.defineProperty(obj, "a", {
-	get() {
-		return [1, 2, 3][i++];
-	},
+  get() {
+    return [1, 2, 3][i++];
+  }
 });
 
 if (obj.a === 1 && obj.a === 2 && obj.a === 3) {
-	console.log("done");
+  console.log("done");
 }
 ```
 
@@ -172,9 +172,9 @@ var obj = { a: 1 };
 var obj2 = { b: 1 };
 var s = Symbol();
 Object.defineProperty(Object.prototype, s, {
-	get() {
-		return this;
-	},
+  get() {
+    return this;
+  }
 });
 
 console.log(obj[s]); // {a: 1}
@@ -186,7 +186,7 @@ console.log(obj2[s]); // {b: 1}
 ```javascript
 var obj = { a: 1 };
 Object.defineProperty(obj, "a", {
-	get() {},
+  get() {}
 });
 // TypeError: Cannot set property a of #<Object> which has only a getter
 obj.a = 4;
@@ -203,9 +203,9 @@ obj.a = 4;
 ```javascript
 var obj = {};
 Object.defineProperty(obj, "a", {
-	set(v) {
-		console.log("set", v);
-	},
+  set(v) {
+    console.log("set", v);
+  }
 });
 
 obj.a = 4; // set 4
@@ -235,13 +235,13 @@ var obj = {
 
 ```javascript
 var obj = {
-	get a() {
-		console.log("get");
-		return 1;
-	},
-	set a(val) {
-		console.log("set", val);
-	},
+  get a() {
+    console.log("get");
+    return 1;
+  },
+  set a(val) {
+    console.log("set", val);
+  }
 };
 
 obj.a = 2; // 输出 set 2
@@ -254,13 +254,13 @@ console.log(obj.a); // get 1
 var obj = {};
 
 Object.defineProperty(obj, "a", {
-	get() {
-		console.log("get");
-		return 1;
-	},
-	set(val) {
-		console.log("set", val);
-	},
+  get() {
+    console.log("get");
+    return 1;
+  },
+  set(val) {
+    console.log("set", val);
+  }
 });
 
 obj.a = 2; // 输出 set 2

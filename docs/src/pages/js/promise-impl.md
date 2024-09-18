@@ -14,127 +14,119 @@ var FULFILLED = 1;
 var REJECTED = 2;
 
 function doResolve(fn, resolve, reject) {
-	var done = false;
-	try {
-		fn(
-			function (value) {
-				if (done) {
-					return;
-				}
-				done = true;
-				resolve(value);
-			},
-			function (value) {
-				if (done) {
-					return;
-				}
-				done = true;
-				reject(value);
-			}
-		);
-	} catch (e) {
-		done = true;
-		reject(e);
-	}
+  var done = false;
+  try {
+    fn(
+      function (value) {
+        if (done) {
+          return;
+        }
+        done = true;
+        resolve(value);
+      },
+      function (value) {
+        if (done) {
+          return;
+        }
+        done = true;
+        reject(value);
+      }
+    );
+  } catch (e) {
+    done = true;
+    reject(e);
+  }
 }
 
 function Promise(fn) {
-	var state = PENDING;
-	var handlers = [];
-	var value = null;
+  var state = PENDING;
+  var handlers = [];
+  var value = null;
 
-	function fulfill(result) {
-		state = FULFILLED;
-		value = result;
-		handlers.forEach(handle);
-		handlers = null;
-	}
+  function fulfill(result) {
+    state = FULFILLED;
+    value = result;
+    handlers.forEach(handle);
+    handlers = null;
+  }
 
-	function reject(error) {
-		state = REJECTED;
-		value = error;
-		handlers.forEach(handle);
-		handlers = null;
-	}
+  function reject(error) {
+    state = REJECTED;
+    value = error;
+    handlers.forEach(handle);
+    handlers = null;
+  }
 
-	function resolve(result) {
-		try {
-			// result 是一个 Promise 对象
-			if (result && result.then) {
-				// 如下方法也是可以的, 目前看不出什么区别
-				result.then(fulfill, reject);
-				// doResolve(result.then.bind(result), resolve, reject);
-				return;
-			}
-			fulfill(result);
-		} catch (e) {
-			reject(e);
-		}
-	}
+  function resolve(result) {
+    try {
+      // result 是一个 Promise 对象
+      if (result && result.then) {
+        // 如下方法也是可以的, 目前看不出什么区别
+        result.then(fulfill, reject);
+        // doResolve(result.then.bind(result), resolve, reject);
+        return;
+      }
+      fulfill(result);
+    } catch (e) {
+      reject(e);
+    }
+  }
 
-	// 这里写成同步的也没有影响, 但是为了 promise 是异步的, 所以写一个 setTimeout
-	this.done = function (onFulfilled, onRejected) {
-		setTimeout(() => {
-			handle({
-				onFulfilled,
-				onRejected,
-			});
-		}, 0);
-	};
+  // 这里写成同步的也没有影响, 但是为了 promise 是异步的, 所以写一个 setTimeout
+  this.done = function (onFulfilled, onRejected) {
+    setTimeout(() => {
+      handle({
+        onFulfilled,
+        onRejected
+      });
+    }, 0);
+  };
 
-	function handle(handler) {
-		if (state === PENDING) {
-			handlers.push(handler);
-		} else {
-			if (
-				state === FULFILLED &&
-				handler &&
-				typeof handler.onFulfilled === "function"
-			) {
-				handler.onFulfilled(value);
-			} else if (
-				state === REJECTED &&
-				handler &&
-				typeof handler.onRejected === "function"
-			) {
-				handler.onRejected(value);
-			}
-		}
-	}
+  function handle(handler) {
+    if (state === PENDING) {
+      handlers.push(handler);
+    } else {
+      if (state === FULFILLED && handler && typeof handler.onFulfilled === "function") {
+        handler.onFulfilled(value);
+      } else if (state === REJECTED && handler && typeof handler.onRejected === "function") {
+        handler.onRejected(value);
+      }
+    }
+  }
 
-	this.then = function (onFulfilled, onRejected) {
-		var self = this;
-		return new Promise(function (resolve, reject) {
-			return self.done(
-				function (result) {
-					if (typeof onFulfilled === "function") {
-						try {
-							// 当前函数的执行的返回结果, 当中下一个then的数据
-							resolve(onFulfilled(result));
-						} catch (ex) {
-							reject(ex);
-						}
-					} else {
-						resolve(result);
-					}
-				},
-				function (result) {
-					if (typeof onRejected === "function") {
-						try {
-							// 当前函数的执行的返回结果, 当中下一个then的数据
-							resolve(onRejected(result));
-						} catch (ex) {
-							reject(ex);
-						}
-					} else {
-						reject(result);
-					}
-				}
-			);
-		});
-	};
+  this.then = function (onFulfilled, onRejected) {
+    var self = this;
+    return new Promise(function (resolve, reject) {
+      return self.done(
+        function (result) {
+          if (typeof onFulfilled === "function") {
+            try {
+              // 当前函数的执行的返回结果, 当中下一个then的数据
+              resolve(onFulfilled(result));
+            } catch (ex) {
+              reject(ex);
+            }
+          } else {
+            resolve(result);
+          }
+        },
+        function (result) {
+          if (typeof onRejected === "function") {
+            try {
+              // 当前函数的执行的返回结果, 当中下一个then的数据
+              resolve(onRejected(result));
+            } catch (ex) {
+              reject(ex);
+            }
+          } else {
+            reject(result);
+          }
+        }
+      );
+    });
+  };
 
-	doResolve(fn, resolve, reject);
+  doResolve(fn, resolve, reject);
 }
 ```
 
@@ -144,28 +136,28 @@ promise 的 pollyfills 里面的 对于 then 的实现，会调用 asap 方法, 
 
 ```js
 if (typeof process !== "undefined" && process.nextTick) {
-	isNodeJS = true;
-	requestFlush = function () {
-		process.nextTick(flush);
-	};
+  isNodeJS = true;
+  requestFlush = function () {
+    process.nextTick(flush);
+  };
 } else if (typeof setImmediate === "function") {
-	if (typeof window !== "undefined") {
-		requestFlush = setImmediate.bind(window, flush);
-	} else {
-		requestFlush = function () {
-			setImmediate(flush);
-		};
-	}
+  if (typeof window !== "undefined") {
+    requestFlush = setImmediate.bind(window, flush);
+  } else {
+    requestFlush = function () {
+      setImmediate(flush);
+    };
+  }
 } else if (typeof MessageChannel !== "undefined") {
-	var channel = new MessageChannel();
-	channel.port1.onmessage = flush;
-	requestFlush = function () {
-		channel.port2.postMessage(0);
-	};
+  var channel = new MessageChannel();
+  channel.port1.onmessage = flush;
+  requestFlush = function () {
+    channel.port2.postMessage(0);
+  };
 } else {
-	requestFlush = function () {
-		setTimeout(flush, 0);
-	};
+  requestFlush = function () {
+    setTimeout(flush, 0);
+  };
 }
 ```
 

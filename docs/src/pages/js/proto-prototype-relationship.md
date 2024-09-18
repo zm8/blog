@@ -1,6 +1,6 @@
 # `__proto__`和`prototype`的区别和关系
 
-### 1. 先来个总结
+## 1. 先来个总结
 
 1. `__proto__`是每个对象都有的一个属性。
    js 里 万物皆对象，所以都有 `__proto__` 属性。
@@ -11,7 +11,7 @@
 - 比如内置函数 `Math.pow` 就没有
 - `(function(){}).bind({}).prototype` 也没有
 
-### 2. 梳理下
+## 2. 梳理下
 
 1. `prototype` 是显示原型
    每个函数在创建的时候都有一个 `prototype` 属性，这个属性是一个指针，指向一个对象，而这个对象的用途是包含所有实例共享的属性和方法。
@@ -19,7 +19,7 @@
 2. `__proto__` 是隐式原型
    JavaScript 中任意对象都有一个内置属性 `[[prototype]]`，在 ES5 之前不能访问这个内置属性，ES5 中可通过 `Object.getPrototypeOf()` 获取.
 
-### 3. 如何快速知道`obj`的`proto`是什么?
+## 3. 如何快速知道`obj`的`proto`是什么?
 
 1. 若 obj 有 prototype 属性, 比如 `Function, Object, Array, function f(){}`, 则说明它是个函数，它的`__proto__`是 `Function.prototype`。
 
@@ -29,11 +29,11 @@
 
 - 若不能，则一般是 `Object.prototype`。 `Object.prototype` 是所有对象的顶级的 `__proto__`。 另外 `Object.prototype.__proto__ === null`。
 
-### 4. 二者的关系：
+## 4. 二者的关系
 
 根据 ECMA 定义 `to the value of its constructor’s "prototype"`, 所以 `__proto__` 指向创建这个对象的构造函数的原型。
 
-### 5. 例子说明
+## 5. 例子说明
 
 ```javascript
 var o = {};
@@ -69,6 +69,6 @@ Number.prototype.__proto__ === Object.prototype;
 Object.prototype.__proto__ === null; // 特殊
 ```
 
-### 6. 关系如下图
+## 6. 关系如下图
 
 ![image](https://user-images.githubusercontent.com/32337542/55555690-724d2200-5718-11e9-96ec-2aeb6b5d2f71.png)

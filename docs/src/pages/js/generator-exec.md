@@ -1,22 +1,22 @@
-## Generator 代码执行的理解
+# Generator 代码执行的理解
 
 请先看代码：
 
 ```javascript
 function f1() {
-	console.log("f1");
-	return 1;
+  console.log("f1");
+  return 1;
 }
 function f2() {
-	console.log("f2");
-	return 2;
+  console.log("f2");
+  return 2;
 }
 function* g() {
-	var v1 = yield f1();
-	console.log(v1);
-	var v2 = yield f2();
-	console.log(v2);
-	return 3;
+  var v1 = yield f1();
+  console.log(v1);
+  var v2 = yield f2();
+  console.log(v2);
+  return 3;
 }
 var h = g();
 console.log(h.next()); // f1; { value: 1, done: false}
@@ -47,44 +47,44 @@ babel 转义如下：
 var _marked = /*#__PURE__*/ regeneratorRuntime.mark(g);
 
 function f1() {
-	console.log("f1");
-	return 1;
+  console.log("f1");
+  return 1;
 }
 function f2() {
-	console.log("f2");
-	return 2;
+  console.log("f2");
+  return 2;
 }
 function g() {
-	var v1, v2;
-	return regeneratorRuntime.wrap(
-		function g$(_context) {
-			while (1) {
-				switch ((_context.prev = _context.next)) {
-					case 0:
-						_context.next = 2;
-						return f1();
+  var v1, v2;
+  return regeneratorRuntime.wrap(
+    function g$(_context) {
+      while (1) {
+        switch ((_context.prev = _context.next)) {
+          case 0:
+            _context.next = 2;
+            return f1();
 
-					case 2:
-						v1 = _context.sent;
+          case 2:
+            v1 = _context.sent;
 
-						console.log(v1);
-						_context.next = 6;
-						return f2();
+            console.log(v1);
+            _context.next = 6;
+            return f2();
 
-					case 6:
-						v2 = _context.sent;
+          case 6:
+            v2 = _context.sent;
 
-						console.log(v2);
-						return _context.abrupt("return", 3);
+            console.log(v2);
+            return _context.abrupt("return", 3);
 
-					case 9:
-					case "end":
-						return _context.stop();
-				}
-			}
-		},
-		_marked,
-		this
-	);
+          case 9:
+          case "end":
+            return _context.stop();
+        }
+      }
+    },
+    _marked,
+    this
+  );
 }
 ```

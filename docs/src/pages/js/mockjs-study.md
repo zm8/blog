@@ -7,7 +7,7 @@
 
 ## 2. 例子 ([codesandbox 在线编辑](https://codesandbox.io/s/kind-hooks-cs347))
 
-### 简单例子 1:
+### 简单例子 1
 
 比如要生成 数组有 3 个元素, id 是累加的, status 是随机 1-3 的数字。
 
