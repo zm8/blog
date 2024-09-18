@@ -1,7 +1,7 @@
 # 如何动态监听 DOM 元素高度变化
 
-1. 通过内嵌 iframe 到 Wrap 元素里面。 动态监听 iframe 的 onResize 属性变化。
-2. Wrap 元素里面内容 动态在不断变多。
+1. 通过内嵌 iframe 到 wrap 元素里面。 动态监听 iframe 的 onResize 属性变化。
+2. wrap 元素里面内容动态在不断变多。
 3. css 里的 iframe 是撑满整个 wrapper 元素的。
 
 ```css

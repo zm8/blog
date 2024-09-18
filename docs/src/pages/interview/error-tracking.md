@@ -163,5 +163,6 @@ if (!e.filename || !e.filename.match(/^(http|https):\/\/yun./)) return true;
 
 ### 可视分析端（可视化平台）
 
-参考地址:
-https://juejin.cn/post/6987681953424080926?searchId=20230912110517E980562E7BE25191FF62
+:::tip 参考地址
+<https://juejin.cn/post/6987681953424080926?searchId=20230912110517E980562E7BE25191FF62>
+:::

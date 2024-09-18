@@ -1,12 +1,4 @@
-# Mac 汇总
-
-## 清空已经输入但还未执行的命令
-
-`Ctrl + U`：将光标前的内容清空。
-
-`Ctrl + W`：删除光标前的一个单词。
-
-`Ctrl + C`：取消当前的命令输入并开始一行新命令。
+# mac 汇总
 
 ## 修改 ~/.bashrc 重启不生效
 
@@ -26,7 +18,7 @@ vim .curlrc
 
 填入: `proxy = "socks5h://127.0.0.1:4781"`
 
-## Mac 下彻底卸载 node 和 npm
+## mac 下彻底卸载 node 和 npm
 
 为了用 brew 安装 nvm，再用 nvm 安装 node, 需要彻底删除 node，执行以下命令
 

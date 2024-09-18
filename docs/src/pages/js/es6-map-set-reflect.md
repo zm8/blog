@@ -1,4 +1,4 @@
-# ES6 之 Map, WeakMap, Set, WeakSet, Reflect
+# ES6 - Map, WeakMap, Set, WeakSet, Reflect
 
 ## Map Object Set Array 遍历方式
 

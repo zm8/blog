@@ -14,16 +14,31 @@ hero:
       link: /pages/guide/welcome.md
 
 features:
-  - title: React
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
+  - title: Leetcode 算法题
+    details: ...
+    link: /pages/algorithm/leetcode-algorithm
+
   - title: Vue
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: TypeScript
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Algorithm
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: CSS
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Nodejs
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
+    details: Vue3 实践与问题集锦, Vite 记录
+    link: /pages/vue/vue3-practical-guide
+
+  - title: 常用快捷键
+    details: ...
+    link: /pages/commands/keyboard-shortcuts
+
+  - title: JS 常见问题解决
+    details: ...
+    link: /pages/js/js-common-issues
+
+  - title: JS 实用技巧和注意事项
+    details: ...
+    link: /pages/js/js-tips-and-tricks
+
+  - title: H5 常见问题解决
+    details: ...
+    link: /pages/web/h5-solutions
+
+  - title: 常见异常问题解决
+    details: ...
+    link: /pages/Issues/common-problem-solutions
 ---

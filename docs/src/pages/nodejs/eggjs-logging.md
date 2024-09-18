@@ -1,4 +1,4 @@
-# eggjs 日志功能
+# Eggjs 日志功能
 
 ## 1.日志文件介绍
 
@@ -71,15 +71,15 @@ egg 调度日志 log
 agent 进程日志, 可在页面的根目录新建 agent.js
 
 ```javascript
-'use strict'
+"use strict";
 
 // agent.js
 module.exports = (agent) => {
-  agent.logger.debug('debug info')
-  agent.logger.info('启动耗时 %d ms', Date.now())
-  agent.logger.warn('warning!')
-  agent.logger.error('someErrorObj')
-}
+  agent.logger.debug("debug info");
+  agent.logger.info("启动耗时 %d ms", Date.now());
+  agent.logger.warn("warning!");
+  agent.logger.error("someErrorObj");
+};
 ```
 
 ## 2.日志级别
@@ -92,8 +92,8 @@ module.exports = (agent) => {
 ```javascript
 // config/config.${env}.js
 exports.logger = {
-  level: 'DEBUG'
-}
+  level: "DEBUG"
+};
 ```
 
 关闭所有日志:
@@ -101,8 +101,8 @@ exports.logger = {
 ```javascript
 // config/config.${env}.js
 exports.logger = {
-  level: 'NONE'
-}
+  level: "NONE"
+};
 ```
 
 ## 3.日志文件格式
@@ -113,7 +113,7 @@ exports.logger = {
 // config/config.${env}.js
 exports.logger = {
   outputJSON: true
-}
+};
 ```
 
 相同的代码, 对比下 `node_sat-web.log` 和 `node_sat-web.json.log` 的区别:
@@ -145,13 +145,13 @@ node_sat-web.log
 // config/config.${env}.js
 config.customLogger = {
   mylog: {
-    file: path.join(appInfo.root, 'logs/mylog/mylog.log'),
+    file: path.join(appInfo.root, "logs/mylog/mylog.log"),
     contextFormatter(meta) {
-      console.log('contextFormatter===\n', meta)
-      return `[${meta.date}] [${meta.ctx.method} ${meta.ctx.url}] ${meta.message}`
+      console.log("contextFormatter===\n", meta);
+      return `[${meta.date}] [${meta.ctx.method} ${meta.ctx.url}] ${meta.message}`;
     }
   }
-}
+};
 ```
 
 3. 调用打印日志:
@@ -193,13 +193,13 @@ contextFormatter===
 // config/config.${env}.js
 config.customLogger = {
   mylog: {
-    file: path.join(appInfo.root, 'logs/mylog/mylog.log'),
+    file: path.join(appInfo.root, "logs/mylog/mylog.log"),
     formatter(meta) {
-      console.log('formatter====\n', meta)
-      return `[${meta.date}] ${meta.message}`
+      console.log("formatter====\n", meta);
+      return `[${meta.date}] ${meta.message}`;
     }
   }
-}
+};
 ```
 
 3. 调用打印日志:
@@ -232,30 +232,30 @@ formatter====
 1. 新建中间件 `app/middleware/mylog.js`:
 
 ```javascript
-'use strict'
-const { v4: uuidv4 } = require('uuid')
+"use strict";
+const { v4: uuidv4 } = require("uuid");
 module.exports = () => {
   return async function (ctx, next) {
-    const startTime = Date.now()
-    await next()
-    const { code, gcode, msg, message } = ctx.body
+    const startTime = Date.now();
+    await next();
+    const { code, gcode, msg, message } = ctx.body;
     const obj = {
       traceId: uuidv4(),
       status: code !== undefined ? code : gcode, // 防止 code 为0, 所以判断一下
       msg: msg || message,
       responseTime: Date.now() - startTime
-    }
+    };
     // JSON.stringfy 会过滤调 undefined 的key
-    ctx.getLogger('mylog').info(JSON.stringify(obj))
-  }
-}
+    ctx.getLogger("mylog").info(JSON.stringify(obj));
+  };
+};
 ```
 
 2. 配置中间件:
 
 ```javascript
 // config/config.${env}.js
-config.middleware = ['mylog']
+config.middleware = ["mylog"];
 ```
 
 3. 自定义日志格式:
@@ -264,11 +264,11 @@ config.middleware = ['mylog']
 // config/config.${env}.js
 config.customLogger = {
   mylog: {
-    file: path.join(appInfo.root, 'logs/mylog/mylog.log'),
+    file: path.join(appInfo.root, "logs/mylog/mylog.log"),
     contextFormatter(meta) {
-      let message
+      let message;
       try {
-        message = JSON.parse(meta.message)
+        message = JSON.parse(meta.message);
       } catch (e) {}
       return JSON.stringify({
         serviceName: appInfo.name,
@@ -276,10 +276,10 @@ config.customLogger = {
         level: meta.level,
         URI: `${meta.ctx.method} ${meta.ctx.url}`,
         ...message
-      })
+      });
     }
   }
-}
+};
 ```
 
 最终每个 http 请求都写入到了日志目录 `logs/mylog/mylog.log`

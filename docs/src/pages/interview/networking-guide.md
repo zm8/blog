@@ -19,7 +19,10 @@ git 有 3 个目录:
 
 `git fetch` 它是把远程提交拉取到**本地仓库**，而不是**本地工作目录**;
 `git pull` 则相当于运行`git fetch`，然后立即将你的改动合并到**本地仓库**;
-参考地址: https://www.zhihu.com/question/38305012
+
+:::tip 参考地址
+<https://www.zhihu.com/question/38305012>
+:::
 
 ## 强缓存 和 协商缓存
 
@@ -70,8 +73,9 @@ app.listen(3000);
 
 注意：如果想看到 `from disk cache`, 不能直接刷新首页，而是必须新打开浏览器窗口。
 
-参考地址:
-https://juejin.cn/post/6974529351270268958?searchId=2023102715071669095F9EC5E6DDB360B7
+:::tip 参考地址
+<https://juejin.cn/post/6974529351270268958?searchId=2023102715071669095F9EC5E6DDB360B7>
+:::
 
 ## https 通俗理解
 
@@ -83,15 +87,17 @@ https://juejin.cn/post/6974529351270268958?searchId=2023102715071669095F9EC5E6DD
 6. 服务端用自己的私钥解密，得到对称密钥 R。
 7. 随后双方发送的内容，使用对称密钥 R 进行加密和解密通信内容。
 
-参考地址:
-https://www.zhihu.com/question/52493697
+:::tip 参考地址
+<https://www.zhihu.com/question/52493697>
+:::
 
 ## 密码登录和存储
 
 用户名是明文传输，密码是加密传输，那怎么加密传输呢?
 
-1. 用户向服务端请求，服务端返回**公钥**给客户端。
-2. 前端使用 RSA(非对称加密) 加密好之后，发送给客户端。
+1.用户向服务端请求，服务端返回**公钥**给客户端。
+
+2.前端使用 RSA(非对称加密) 加密好之后，发送给客户端。
 
 ```js
 import JSEncrypt from "jsencrypt";
@@ -101,20 +107,25 @@ encrypt.encrypt("登录密码");
 // 发送 post 用户名和密码 给服务端
 ```
 
-5. 服务端收到了密码，用私钥进行解密，发现可以解密，说明传输过程正常。
-6. 服务端把 明文密码和一个随机的字符串(加盐) 拼接在一起，用哈希算法加密，存储在数据库。
-   注意: 每个密码的盐是不一样的，并且盐会和密码一起存储到数据库，为了后续登录的校验。
+3.服务端收到了密码，用私钥进行解密，发现可以解密，说明传输过程正常。
 
-参考地址:
-https://zhuanlan.zhihu.com/p/36603247
-https://juejin.cn/post/6992424410581827592?searchId=20231021220101B06EAE764EFF6D1343D1
+4.服务端把 明文密码和一个随机的字符串(加盐) 拼接在一起，用哈希算法加密，存储在数据库。
+注意: 每个密码的盐是不一样的，并且盐会和密码一起存储到数据库，为了后续登录的校验。
+
+:::tip 参考地址
+<https://zhuanlan.zhihu.com/p/36603247>
+<https://juejin.cn/post/6992424410581827592?searchId=20231021220101B06EAE764EFF6D1343D1>
+:::
 
 ## session 和 cookie
 
 sessionId 是以 cookie 的形式存储在客户端。
 session 是存储在服务端，是以键值对的形式存储。键是 sessionId, 值是 用户的各种信息。
 ![image](https://github.com/zm8/blog_old/assets/32337542/995a23a3-c787-4df2-857e-4d2ba13d968f)
-参考地址: https://juejin.cn/post/7246675998758846522
+
+:::tip 参考地址
+<https://juejin.cn/post/7246675998758846522>
+:::
 
 ## 什么是 Websocket
 
@@ -130,8 +141,9 @@ Websocket 是一个持久化的协议, 经过一次 HTTP 握手，升级成 webs
 
 ![image](https://github.com/zm8/blog_old/assets/32337542/fea501cb-c3ef-4497-9159-b15db0009b5f)
 
-参考地址：
-https://zhuanlan.zhihu.com/p/31377253
+:::tip 参考地址
+<https://zhuanlan.zhihu.com/p/31377253>
+:::
 
 ## Http 协议与 TCP 协议简单理解
 
@@ -228,10 +240,10 @@ X-Frame-Options: 防止页面被嵌入到 iframe 中。
 设置请求头 CSP, 禁止加载外域的代码。
 上传一些文件，注意一些上传文件的格式，特别是服务端。
 
-### 参考地址
+:::tip 参考地址
+<https://segmentfault.com/a/1190000039165592>
 
-https://segmentfault.com/a/1190000039165592
-https://juejin.cn/post/6844904034181070861?searchId=20230905142008DDB90C9CBBC9C3CB54BD
-https://vue3js.cn/interview/http/status.html#%E4%BA%8C%E3%80%81%E5%88%86%E7%B1%BB
+<https://juejin.cn/post/6844904034181070861?searchId=20230905142008DDB90C9CBBC9C3CB54BD>
 
-###
+<https://vue3js.cn/interview/http/status.html#%E4%BA%8C%E3%80%81%E5%88%86%E7%B1%BB>
+:::

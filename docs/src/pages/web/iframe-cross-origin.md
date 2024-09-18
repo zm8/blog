@@ -1,4 +1,4 @@
-# Iframe 跨于问题总结
+# Iframe 跨域问题总结
 
 ## 导读
 
@@ -23,16 +23,16 @@ ifr.contentWindow.location = "https://www.baidu.com";
 // parent.html
 <iframe src="/child.html" id="ifr"></iframe>
 <script>
-	var ifr = document.getElementById("ifr");
-	// 必须load 完才能获取到里面的变量
-	ifr.addEventListener("load", () => {
-		console.log(ifr.contentWindow.child);
-	});
+  var ifr = document.getElementById("ifr");
+  // 必须load 完才能获取到里面的变量
+  ifr.addEventListener("load", () => {
+    console.log(ifr.contentWindow.child);
+  });
 </script>
 
 // child.html
 <script>
-	var child = 1;
+  var child = 1;
 </script>
 ```
 
@@ -43,13 +43,13 @@ ifr.contentWindow.location = "https://www.baidu.com";
 // parent.html
 <iframe src="/child.html" id="ifr"></iframe>
 <script>
-	window.pppp = 1;
+  window.pppp = 1;
 </script>
 
 // child.html
 <script>
-	alert(window.parent.pppp);
-	alert(window.top.pppp);
+  alert(window.parent.pppp);
+  alert(window.top.pppp);
 </script>
 ```
 
@@ -72,9 +72,9 @@ html 页面
 ```html
 <script src="http://localhost:8888/?a=1&b=2&callback=fn"></script>
 <script>
-	function fn(obj) {
-		console.log(obj); // obj 是个对象 => {"a":1,"b":2,"callback":"fn"}
-	}
+  function fn(obj) {
+    console.log(obj); // obj 是个对象 => {"a":1,"b":2,"callback":"fn"}
+  }
 </script>
 ```
 
@@ -86,15 +86,15 @@ var server = http.createServer();
 let url = require("url");
 
 server.on("request", function (req, res) {
-	let obj = url.parse(req.url, true);
-	// query 获取? 后面的参数
-	let query = obj.query;
-	var fn = query.callback;
-	res.writeHead(200, {
-		"Content-Type": "application/javascript; charset=utf-8",
-	});
-	res.write(fn + "(" + JSON.stringify(query) + ")");
-	res.end();
+  let obj = url.parse(req.url, true);
+  // query 获取? 后面的参数
+  let query = obj.query;
+  var fn = query.callback;
+  res.writeHead(200, {
+    "Content-Type": "application/javascript; charset=utf-8"
+  });
+  res.write(fn + "(" + JSON.stringify(query) + ")");
+  res.end();
 });
 
 server.listen("8888");
@@ -138,18 +138,18 @@ at :1:17
 // parent
 <iframe src="http://david.meetsocial.cn/child.html" id="ifr"></iframe>
 <script>
-	document.domain = "meetsocial.cn";
-	var ifr = document.getElementById("ifr");
-	// 必须load 完才能获取到里面的变量
-	ifr.addEventListener("load", () => {
-		console.log(ifr.contentWindow.child);
-	});
+  document.domain = "meetsocial.cn";
+  var ifr = document.getElementById("ifr");
+  // 必须load 完才能获取到里面的变量
+  ifr.addEventListener("load", () => {
+    console.log(ifr.contentWindow.child);
+  });
 </script>
 
 // child
 <script>
-	document.domain = "meetsocial.cn";
-	var child = 1;
+  document.domain = "meetsocial.cn";
+  var child = 1;
 </script>
 ```
 
@@ -171,30 +171,30 @@ at :1:17
 // parent.html
 <iframe src="http://david.meetsocial.cn/child.html" id="ifr"></iframe>
 <script>
-	var ifr = document.getElementById("ifr");
-	let flag;
-	// 必须load 完才能获取到里面的变量
-	ifr.addEventListener("load", () => {
-		// 防止变化location的时候, load 方法又执行，进入死循环。
-		if (flag) {
-			return;
-		}
-		flag = true;
-		ifr.contentWindow.location = "/blank.html";
-	});
-	function fn(data) {
-		console.log(data);
-	}
+  var ifr = document.getElementById("ifr");
+  let flag;
+  // 必须load 完才能获取到里面的变量
+  ifr.addEventListener("load", () => {
+    // 防止变化location的时候, load 方法又执行，进入死循环。
+    if (flag) {
+      return;
+    }
+    flag = true;
+    ifr.contentWindow.location = "/blank.html";
+  });
+  function fn(data) {
+    console.log(data);
+  }
 </script>
 
 // child.html
 <script>
-	window.name = "aabbcc";
+  window.name = "aabbcc";
 </script>
 
 // blank.html
 <script>
-	window.top.fn(window.name);
+  window.top.fn(window.name);
 </script>
 ```
 
@@ -206,36 +206,36 @@ at :1:17
 // parent.html
 <iframe src="http://david.meetsocial.cn/child.html" id="ifr"></iframe>
 <script>
-	var ifr = document.getElementById("ifr");
-	var obj = {
-		a: 1,
-	};
-	ifr.onload = function () {
-		ifr.contentWindow.postMessage(obj, "*");
-	};
-	// 接受 child 返回数据
-	window.addEventListener(
-		"message",
-		function (e) {
-			console.log("data from child ---> ", e.data);
-		},
-		false
-	);
+  var ifr = document.getElementById("ifr");
+  var obj = {
+    a: 1
+  };
+  ifr.onload = function () {
+    ifr.contentWindow.postMessage(obj, "*");
+  };
+  // 接受 child 返回数据
+  window.addEventListener(
+    "message",
+    function (e) {
+      console.log("data from child ---> ", e.data);
+    },
+    false
+  );
 </script>
 
 // child
 <script>
-	window.addEventListener(
-		"message",
-		function (e) {
-			console.log("data from parent ---> ", e.data);
-			e.data.a += 1;
+  window.addEventListener(
+    "message",
+    function (e) {
+      console.log("data from parent ---> ", e.data);
+      e.data.a += 1;
 
-			// 向 parent 传递数据
-			window.parent.postMessage(e.data, "http://localhost.meetsocial.cn");
-		},
-		false
-	);
+      // 向 parent 传递数据
+      window.parent.postMessage(e.data, "http://localhost.meetsocial.cn");
+    },
+    false
+  );
 </script>
 ```
 
@@ -248,7 +248,7 @@ at HTMLIFrameElement.ifr.onload (http://localhost.meetsocial.cn/:25:31)
 
 ```javascript
 var obj = {
-	a: 1,
-	fn: () => {},
+  a: 1,
+  fn: () => {}
 };
 ```

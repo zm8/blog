@@ -1,4 +1,4 @@
-# react-useFetch 封装
+# React useFetch 封装
 
 ```ts
 function useFetch(url: string, options: FetchOptions) {

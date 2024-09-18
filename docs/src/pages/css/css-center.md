@@ -1,6 +1,6 @@
 # CSS 元素居中
 
-## 1. flex
+## 1. `flex`
 
 ```css
 .box {

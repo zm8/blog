@@ -1,12 +1,13 @@
-# 正则表达式 -- 断言, 惰性, 贪婪
+# 正则表达式-断言, 惰性, 贪婪
 
-## 1. 断言
+## 一. 断言
 
-### 1. `^` 匹配开始的输入
+### 1.`^` 和 `$`
 
-### 2. `$` 匹配结尾的输入
+- `^` 匹配开始的输入
+- `$` 匹配结尾的输入
 
-### 3. `\b` 匹配文字边界, `\B` 匹配非文字边界
+### 2.`\b` 匹配文字边界, `\B` 匹配非文字边界
 
 ```js
 var str = "abcdefg";
@@ -14,7 +15,7 @@ str.replace(/\b/g, "8"); // 输出 "8abcdefg8"
 str.replace(/\B/g, "1"); // 输出 "a1b1c1d1e1f1g"
 ```
 
-### 4. 向前断言 `x(?=y)`
+### 3.向前断言 `x(?=y)`
 
 当 x 后面紧跟着 y 时, 匹配 x
 
@@ -24,7 +25,7 @@ str.replace(/x(?=y)/, "a"); // 输出 ay123
 str.replace(/x(?=t)/, "a"); // str 不变
 ```
 
-### 5. 向前否定断言 `x(?!y)`
+### 4. 向前否定断言 `x(?!y)`
 
 当 x 后面不紧跟着 y 时, 匹配 x
 
@@ -34,7 +35,7 @@ str.replace(/x(?!y)/, "a"); // 输出 az123
 str.replace(/x(?!z)/, "a"); // str 不变
 ```
 
-### 6. 向后断言 `(?<=y)x`
+### 5. 向后断言 `(?<=y)x`
 
 当 x 前面紧跟着 y, 匹配 x
 
@@ -44,7 +45,7 @@ str.replace(/(?<=y)x/, "a"); // 输出 ya123
 str.replace(/(?<=z)x/, "a"); // str 不变
 ```
 
-### 7. 向后否定断言 `(?<!y)x`
+### 6. 向后否定断言 `(?<!y)x`
 
 当 x 前面不紧跟着 y, 匹配 x
 
@@ -54,9 +55,9 @@ str.replace(/(?<!z)x/, "a"); // 输出 ya123
 str.replace(/(?<!y)x/, "a"); // str不变
 ```
 
-### 8. 兼容性
+### 7. 兼容性
 
-注意 "向后断言,向后否定断言"的 **兼容性很差**, PC safari , IOS Mobile , IE 11 都不兼容。
+注意 `向后断言`,`向后否定断言`的**兼容性很差**, PC Safari , iOS Mobile , IE 11 都不兼容。
 并且只要这个正则一加入到代码里，就算放在函数里，**函数不调用**，整个页面都报错了。
 
 ```js
@@ -65,10 +66,11 @@ function foo() {
 }
 ```
 
-https://caniuse.com/?search=%3F%3C%3D
+<https://caniuse.com/?search=%3F%3C%3D>
+
 ![image](https://user-images.githubusercontent.com/32337542/97840987-f82fb580-1d1f-11eb-9d24-ff79bd2d5b3f.png)
 
-### 9. 示例
+### 8. 示例
 
 如何给一个字符增加千分号
 
@@ -85,7 +87,7 @@ function numberWithCommas(x) {
 "1234567".replace(/\B(?=(\d{3})+(?!\d))/g, ","); // 每3个数字, 并且匹配的字符最后不能为数字, 输出1,234,567
 ```
 
-## 2. 惰性, 贪婪
+## 二. 惰性, 贪婪
 
 首先一个例子
 
@@ -145,8 +147,11 @@ str.replace(/<.+?>/g, "8888"); // 输出 8888Hello World8888
 ```
 
 :::tip 参考地址
-https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions
-https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions/Assertions
-https://stackoverflow.com/questions/2901102/how-to-print-a-number-with-commas-as-thousands-separators-in-javascript
-https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions/Quantifiers
+<https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions>
+
+<https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions/Assertions>
+
+<https://stackoverflow.com/questions/2901102/how-to-print-a-number-with-commas-as-thousands-separators-in-javascript>
+
+<https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions/Quantifiers>
 :::

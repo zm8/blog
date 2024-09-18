@@ -1,12 +1,66 @@
 # 学习 CommonJS 和 ES Modules
 
-## CommonJS
+## common.js 和 es6 中模块引入的区别
+
+### 1. CommonJS 模块输出的是一个值的拷贝，ES6 模块输出的是值的引用
+
+CommonJS 导出的是值的拷贝, 所以下面的例子 couter 的值始终是一样的; 除非定义一个 getCounter 方法, 动态的获取 counter 的值;
+
+```js
+// lib.js
+exports.counter = 3;
+exports.incCounter = () => {
+  ++exports.counter;
+};
+exports.getCounter = () => {
+  return exports.counter;
+};
+
+// index.js
+const { counter, incCounter, getCounter } = require("./lib");
+console.log(counter); // 3
+incCounter();
+console.log(counter); // 3
+console.log(getCounter()); // 4
+```
+
+而 ES6 却可以:
+
+```js
+// lib.js
+export let counter = 3;
+export function incCounter() {
+  counter++;
+}
+
+// index.js
+import { counter, incCounter } from "./lib";
+console.log(counter); // 3
+incCounter();
+console.log(counter); // 4
+```
+
+### CommonJS 模块是运行时加载，ES6 模块是编译时输出接口
+
+Commonjs 做不了 tree-shaking, 因为 这种引入是动态的，也意味着我们可以基于条件来导入需要的代码：
+
+```js
+let dynamicModule;
+// 动态导入
+if (condition) {
+  myDynamicModule = require("foo");
+} else {
+  myDynamicModule = require("bar");
+}
+```
+
+## 一. CommonJS
 
 - Node 在服务端是用 CommonJS 来实现
 - Browserify 让 CommonJS 在浏览器可以实现。
 - Webpack 对 CommonJS 的支持和转换。
 
-### 1 CommonJS 使用与原理
+### 1. CommonJS 使用与原理
 
 `exports` 和 `module.exports` 负责将内容模块的导出。
 `require` 函数帮忙导入其他模块内容。
@@ -45,7 +99,7 @@ const modulefunction = wrapper(`
 runInThisContext(modulefunction)(module.exports, require, module, __filename, __dirname);
 ```
 
-### require 加载原理
+### 2.require 加载原理
 
 require 源码如下:
 
@@ -77,11 +131,11 @@ function require(id) {
 }
 ```
 
-### require 避免循环引用
+### 3.require 避免循环引用
 
 由于 require 加载模块是同步的，如果当前已经 require 过了，则会放到缓存里面，设置一个标志，不会再执行。
 
-### exports 和 module.exports
+### 4.exports 和 module.exports
 
 ```js
 exports.name = `《React进阶实践指南》`;
@@ -151,7 +205,7 @@ module.exports = [1, 2, 3]; // 导出数组
 module.exports = function () {}; //导出方法
 ```
 
-## ES Modules
+## 二. ES Modules
 
 从 ES6 开始，Javascript 才有真正意义上的模块化规范。
 ES Modules 的优势:
@@ -159,7 +213,7 @@ ES Modules 的优势:
 - 静态导入导出的优势，实现 `tree shaking`。
 - 通过`import()` 懒加载方式实现代码分割。
 
-## ES6 module 特性
+## 三. ES6 module 特性
 
 import 会**自动提升到代码顶层**，import，export 不能放在 **块级作用域** 或 **条件语句**。
 这种静态语法，适合进行 tree-shaking。也可以对导入导出做静态类型检查。
@@ -177,7 +231,7 @@ function say() {
 isexport &&  export const  name = '《React进阶实践指南》'
 ```
 
-## import() 动态引入
+## 四. import() 动态引入
 
 main.mjs:
 
@@ -235,7 +289,7 @@ class index extends React.Component{
     }
 ```
 
-## 五 CommonJS 和 ES Modules 总结
+## 五. CommonJS 和 ES Modules 总结
 
 CommonJS 的特性如下：
 

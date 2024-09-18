@@ -1,4 +1,4 @@
-# vscode debug js
+# VSCode debug js
 
 当前 node 版本 v12.13.1
 
@@ -51,12 +51,12 @@ console.log(a);
 ```javascript
 var http = require("http");
 http
-	.createServer()
-	.on("request", (req, res) => {
-		res.statusCode = 200;
-		res.end("Hello World");
-	})
-	.listen(3000);
+  .createServer()
+  .on("request", (req, res) => {
+    res.statusCode = 200;
+    res.end("Hello World");
+  })
+  .listen(3000);
 ```
 
 2. 控制台执行命令
@@ -141,9 +141,9 @@ npm 里面的命令不是 node 执行。
 ```javascript
 var assert = require("assert");
 describe("test", function () {
-	it("equal", function () {
-		assert.equal(0, 0);
-	});
+  it("equal", function () {
+    assert.equal(0, 0);
+  });
 });
 ```
 
@@ -169,7 +169,7 @@ describe("test", function () {
 
 ### 1. 可以不写 `launch.json`
 
-只要 `vscode` 设置里面把 `Node: Auto Attach` 打开, 或者 `command+shift+p` 运行 `Debug: Toggle Auto Attach`
+只要 `VSCode` 设置里面把 `Node: Auto Attach` 打开, 或者 `command+shift+p` 运行 `Debug: Toggle Auto Attach`
 
 ### 2. package.json 配置如下
 
@@ -177,12 +177,12 @@ describe("test", function () {
 
 ```json
 {
-	"scripts": {
-		"start": "node inspect start.js",
-		"test": "mocha  --inspect-brk test.js",
-		"test2": "mocha  --inspect-brk=5555 test.js",
-		"test3": "node --inspect-brk=5555 ./node_modules/.bin/mocha test.js"
-	}
+  "scripts": {
+    "start": "node inspect start.js",
+    "test": "mocha  --inspect-brk test.js",
+    "test2": "mocha  --inspect-brk=5555 test.js",
+    "test3": "node --inspect-brk=5555 ./node_modules/.bin/mocha test.js"
+  }
 }
 ```
 
@@ -200,5 +200,5 @@ npm run test3
 - 1 和 6 是常用的。
 
 :::tip 参考地址
-https://code.visualstudio.com/docs/nodejs/nodejs-debugging#_auto-attach-feature
+<https://code.visualstudio.com/docs/nodejs/nodejs-debugging#_auto-attach-feature>
 :::

@@ -1,6 +1,6 @@
 # 重绘和重排
 
-页面如何渲染
+## 页面如何渲染
 
 1. 处理 HTML 标记并构建 DOM 树。
 2. 处理 CSS 标记并构建 CSSOM 树。
@@ -14,7 +14,7 @@
 
 **回流一定会触发重绘，而重绘不一定会回流**
 
-1. Reflow(回流)
+## 1. Reflow(回流)
 
 - 页面首次渲染
 - 浏览器窗口大小发生改变
@@ -33,11 +33,14 @@ clientTop, clientLeft, clientWidth, clientHeight
 
 以上的属性和方法都会返回最新的布局信息，因此浏览器不得不清空队列，触发回流重绘来返回正确的值。
 
-2. Repaint(重绘)
-   当页面中元素样式的改变并不影响它在文档流中的位置时（例如：color、background-color、visibility 等），浏览器会将新样式赋予给元素并重新绘制它，这个过程称为重绘。
+## 2. Repaint(重绘)
+
+当页面中元素样式的改变并不影响它在文档流中的位置时（例如：color、background-color、visibility 等），浏览器会将新样式赋予给元素并重新绘制它，这个过程称为重绘。
 
 :::tip 参考地址
-https://segmentfault.com/a/1190000017329980
-https://developers.google.com/web/fundamentals/performance/critical-rendering-path/render-tree-construction?hl=zh-cn
-https://www.w3cschool.cn/webpo/wxtf12i0.html
+<https://segmentfault.com/a/1190000017329980>
+
+<https://developers.google.com/web/fundamentals/performance/critical-rendering-path/render-tree-construction?hl=zh-cn>
+
+<https://www.w3cschool.cn/webpo/wxtf12i0.html>
 :::

@@ -1,4 +1,4 @@
-# JavaScript 中的异步模式
+# JS 的异步模式
 
 ## Callback
 

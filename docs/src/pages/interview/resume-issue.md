@@ -12,9 +12,9 @@
 JSBridge 简单理解就是向 JavaScript 中提供了可以调用 Native 方法的 api。
 ![image](https://github.com/zm8/blog_old/assets/32337542/91010ff4-5cf0-4dbe-99e3-274e4e617ce2)
 
-- 1. 单纯的向 Native 发送信息
-- 2. 调用 Native 方法，传递信息，并执行回调函数。
-- 3. 监听 Native 事件。
+- 单纯的向 Native 发送信息
+- 调用 Native 方法，传递信息，并执行回调函数。
+- 监听 Native 事件。
 
 其中第 2 点，由于传递的时候只能传递字符串，所以不能直接传递回调函数，
 所以得传入一个自增的唯一的 ID，并且把回调函数传入到 Map 里，那么 Native 收到消息回调 JS 方法的时候，传回自增 ID，这样可以调用那个回调函数。
@@ -22,12 +22,18 @@ JSBridge 简单理解就是向 JavaScript 中提供了可以调用 Native 方法
 #### admin 后台
 
 使用 Vue 开发 admin 后台，beforeEach 来进行路由拦截(1. 判断 localStorage 是否有 token 2. 把服务端的路由转换成 vue 的路由，判断路由是否有 name 属性，从而跳转到无权限的页面)，addRoutes 来添加动态子路由。
-参考地址： https://juejin.cn/post/7250386282400596029?searchId=20231027140618E67D299193E407B25092#heading-8
+
+:::tip 参考地址
+<https://juejin.cn/post/7250386282400596029?searchId=20231027140618E67D299193E407B25092#heading-8>
+:::
 
 #### 数据大屏
 
 使用 rem 做适配，然后定义 Vue 指令 "chart-resize"，使用 npm 包 "element-resize-detector" 监听 echarts 的 dom 元素变化，触发 `chart.resize();`
-参考地址: https://juejin.cn/post/7163932925955112996?searchId=2023110213310242B65CD183DDD7FD04E7#heading-9
+
+:::tip 参考地址
+<https://juejin.cn/post/7163932925955112996?searchId=2023110213310242B65CD183DDD7FD04E7#heading-9>
+:::
 
 ```js
 // directive.js
@@ -197,7 +203,9 @@ javascript 是单线程，浏览器是多线程。
 
 5. Modal 组件二次封装
 
-参考地址: https://juejin.cn/post/6844904159385223175
+:::tip 参考地址
+<https://juejin.cn/post/6844904159385223175>
+:::
 
 ### less 和 scss 的区别
 
@@ -229,13 +237,16 @@ location / {
 
 ### qiankun 父子应用如何通信
 
-1. 通过 initGlobalState 来注册 MicroAppStateActions 实例用于通信。
+#### 1. 通过 initGlobalState 来注册 MicroAppStateActions 实例用于通信。
 
 - setGlobalState 来设置 globalState - 设置新的值
 - onGlobalStateChange：注册 观察者 函数, 子应用的 props 里面自带这个属性
 - offGlobalStateChange: 取消 观察者 函数, 子应用的 props 里面自带这个属性
 
-参考地址: https://qiankun.umijs.org/zh/api#initglobalstatestate
+#### 2.共享 shared
 
-2. 共享 shared
-   通用主应用定义 redux 全局状态，然后传递给子应用的 props，当然子应用也要单独维护一套自己的全局状态的控制。
+通用主应用定义 redux 全局状态，然后传递给子应用的 props，当然子应用也要单独维护一套自己的全局状态的控制。
+
+:::tip 参考地址
+<https://qiankun.umijs.org/zh/api#initglobalstatestate>
+:::

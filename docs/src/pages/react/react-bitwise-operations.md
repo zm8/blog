@@ -1,4 +1,4 @@
-# 架构篇-React 中的位运算及其应用
+# React 中的位运算及其应用
 
 ## 为什么要用位运算？
 
@@ -12,14 +12,14 @@
 如果一个值即代表 A 又代表 B 那么就可以通过位运算的 | 来处理。
 
 ```js
-const A = 0b0000000000000000000000000000001
-const B = 0b0000000000000000000000000000010
-const C = 0b0000000000000000000000000000100
-const N = 0b0000000000000000000000000000000
-const value = A | B
-console.log((value & A) !== N) // true
-console.log((value & B) !== N) // true
-console.log((value & C) !== N) // false
+const A = 0b0000000000000000000000000000001;
+const B = 0b0000000000000000000000000000010;
+const C = 0b0000000000000000000000000000100;
+const N = 0b0000000000000000000000000000000;
+const value = A | B;
+console.log((value & A) !== N); // true
+console.log((value & B) !== N); // true
+console.log((value & C) !== N); // false
 ```
 
 **位掩码**: 对于常量的声明（如上的 A B C ）必须满足只有**一个 1 位**，而且每一个常量**二进制 1 的所在位数**都不同，如下所示：
@@ -46,17 +46,17 @@ React 解决方案就是多个更新优先级的任务存在的时候，高优�
 在新版本 React 中，每一个更新中会把待更新的 fiber 增加了一个更新优先级，我们这里称之为 lane ，而且存在不同的更新优先级，这里枚举了一些优先级，如下所示：
 
 ```js
-export const NoLanes = /*                        */ 0b0000000000000000000000000000000
-const SyncLane = /*                        */ 0b0000000000000000000000000000001
+export const NoLanes = /*                        */ 0b0000000000000000000000000000000;
+const SyncLane = /*                        */ 0b0000000000000000000000000000001;
 
-const InputContinuousHydrationLane = /*    */ 0b0000000000000000000000000000010
-const InputContinuousLane = /*             */ 0b0000000000000000000000000000100
+const InputContinuousHydrationLane = /*    */ 0b0000000000000000000000000000010;
+const InputContinuousLane = /*             */ 0b0000000000000000000000000000100;
 
-const DefaultHydrationLane = /*            */ 0b0000000000000000000000000001000
-const DefaultLane = /*                     */ 0b0000000000000000000000000010000
+const DefaultHydrationLane = /*            */ 0b0000000000000000000000000001000;
+const DefaultLane = /*                     */ 0b0000000000000000000000000010000;
 
-const TransitionHydrationLane = /*                */ 0b0000000000000000000000000100000
-const TransitionLane = /*                        */ 0b0000000000000000000000001000000
+const TransitionHydrationLane = /*                */ 0b0000000000000000000000000100000;
+const TransitionLane = /*                        */ 0b0000000000000000000000001000000;
 ```
 
 lane 的代表的数值**越小**，此次更新的优先级就**越大**。
@@ -69,17 +69,17 @@ lane 的代表的数值**越小**，此次更新的优先级就**越大**。
 
 ```js
 function getHighestPriorityLane(lanes) {
-  return lanes & -lanes
+  return lanes & -lanes;
 }
 ```
 
 举例:
 
 ```js
-const SyncLane = 0b0000000000000000000000000000001
-const InputContinuousLane = 0b0000000000000000000000000000100
-const lane = SyncLane | InputContinuousLane
-console.log((lane & -lane) === SyncLane) // true
+const SyncLane = 0b0000000000000000000000000000001;
+const InputContinuousLane = 0b0000000000000000000000000000100;
+const lane = SyncLane | InputContinuousLane;
+console.log((lane & -lane) === SyncLane); // true
 ```
 
 ## React 位掩码场景（2）——更新上下文
@@ -89,26 +89,26 @@ console.log((lane & -lane) === SyncLane) // true
 React 中常用的更新上下文表示:
 
 ```js
-export const NoContext = /*             */ 0b0000000
-const BatchedContext = /*               */ 0b0000001
-const EventContext = /*                 */ 0b0000010
-const DiscreteEventContext = /*         */ 0b0000100
-const LegacyUnbatchedContext = /*       */ 0b0001000
-const RenderContext = /*                */ 0b0010000
-const CommitContext = /*                */ 0b0100000
-export const RetryAfterError = /*       */ 0b1000000
+export const NoContext = /*             */ 0b0000000;
+const BatchedContext = /*               */ 0b0000001;
+const EventContext = /*                 */ 0b0000010;
+const DiscreteEventContext = /*         */ 0b0000100;
+const LegacyUnbatchedContext = /*       */ 0b0001000;
+const RenderContext = /*                */ 0b0010000;
+const CommitContext = /*                */ 0b0100000;
+export const RetryAfterError = /*       */ 0b1000000;
 ```
 
 在 React 事件系统中给 executionContext 赋值 EventContext，在执行完事件后，再重置到之前的状态。
 
 ```js
 function batchedEventUpdates() {
-  var prevExecutionContext = executionContext
-  executionContext |= EventContext // 赋值事件上下文 EventContext
+  var prevExecutionContext = executionContext;
+  executionContext |= EventContext; // 赋值事件上下文 EventContext
   try {
-    return fn(a) // 执行函数
+    return fn(a); // 执行函数
   } finally {
-    executionContext = prevExecutionContext // 重置之前的状态
+    executionContext = prevExecutionContext; // 重置之前的状态
   }
 }
 ```
@@ -121,22 +121,22 @@ function batchedEventUpdates() {
 先来看一下 React 应用中存在什么种类的 flags：
 
 ```js
-export const NoFlags = /*                      */ 0b00000000000000000000000000
-export const PerformedWork = /*                */ 0b00000000000000000000000001
-export const Placement = /*                    */ 0b00000000000000000000000010
-export const Update = /*                       */ 0b00000000000000000000000100
-export const Deletion = /*                     */ 0b00000000000000000000001000
-export const ChildDeletion = /*                */ 0b00000000000000000000010000
-export const ContentReset = /*                 */ 0b00000000000000000000100000
-export const Callback = /*                     */ 0b00000000000000000001000000
-export const DidCapture = /*                   */ 0b00000000000000000010000000
-export const ForceClientRender = /*            */ 0b00000000000000000100000000
-export const Ref = /*                          */ 0b00000000000000001000000000
-export const Snapshot = /*                     */ 0b00000000000000010000000000
-export const Passive = /*                      */ 0b00000000000000100000000000
-export const Hydrating = /*                    */ 0b00000000000001000000000000
-export const Visibility = /*                   */ 0b00000000000010000000000000
-export const StoreConsistency = /*             */ 0b00000000000100000000000000
+export const NoFlags = /*                      */ 0b00000000000000000000000000;
+export const PerformedWork = /*                */ 0b00000000000000000000000001;
+export const Placement = /*                    */ 0b00000000000000000000000010;
+export const Update = /*                       */ 0b00000000000000000000000100;
+export const Deletion = /*                     */ 0b00000000000000000000001000;
+export const ChildDeletion = /*                */ 0b00000000000000000000010000;
+export const ContentReset = /*                 */ 0b00000000000000000000100000;
+export const Callback = /*                     */ 0b00000000000000000001000000;
+export const DidCapture = /*                   */ 0b00000000000000000010000000;
+export const ForceClientRender = /*            */ 0b00000000000000000100000000;
+export const Ref = /*                          */ 0b00000000000000001000000000;
+export const Snapshot = /*                     */ 0b00000000000000010000000000;
+export const Passive = /*                      */ 0b00000000000000100000000000;
+export const Hydrating = /*                    */ 0b00000000000001000000000000;
+export const Visibility = /*                   */ 0b00000000000010000000000000;
+export const StoreConsistency = /*             */ 0b00000000000100000000000000;
 ```
 
 React 的更新流程和如上这个游戏如出一撤，也是分了两个阶段：
@@ -145,30 +145,30 @@ React 的更新流程和如上这个游戏如出一撤，也是分了两个阶�
 - 接下来在另一个阶段，通过 flags 来证明当前 fiber 发生了什么类型的更新，然后执行这些更新。
 
 ```js
-const NoFlags = 0b00000000000000000000000000
-const PerformedWork = 0b00000000000000000000000001
-const Placement = 0b00000000000000000000000010
-const Update = 0b00000000000000000000000100
+const NoFlags = 0b00000000000000000000000000;
+const PerformedWork = 0b00000000000000000000000001;
+const Placement = 0b00000000000000000000000010;
+const Update = 0b00000000000000000000000100;
 //初始化
-let flag = NoFlags
+let flag = NoFlags;
 
 //发现更新，打更新标志
-flag = flag | PerformedWork | Update
+flag = flag | PerformedWork | Update;
 
 //判断是否有  PerformedWork 种类的更新
 if (flag & PerformedWork) {
   //执行
-  console.log('执行 PerformedWork')
+  console.log("执行 PerformedWork");
 }
 
 //判断是否有 Update 种类的更新
 if (flag & Update) {
   //执行
-  console.log('执行 Update')
+  console.log("执行 Update");
 }
 
 if (flag & Placement) {
   //不执行
-  console.log('执行 Placement')
+  console.log("执行 Placement");
 }
 ```

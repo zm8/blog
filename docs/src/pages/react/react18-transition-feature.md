@@ -1,4 +1,4 @@
-# React18 新特性 --- transition
+# React18 新特性 transition
 
 Transition 本质上用来解决并发渲染的问题。用于不是很紧急的更新上。
 `startTransition` 依赖于 `concurrent Mode` 渲染并发模式。

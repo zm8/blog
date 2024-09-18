@@ -1,4 +1,4 @@
-# 原理篇—事件原理（v18 新版本）
+# 原理篇-事件原理（v18 新版本）
 
 ## 一 前言
 
@@ -10,31 +10,27 @@
 
 ```jsx
 function Index() {
-  const refObj = React.useRef(null)
+  const refObj = React.useRef(null);
   useEffect(() => {
     const handler = () => {
-      console.log('事件监听')
-    }
-    refObj.current.addEventListener('click', handler)
+      console.log("事件监听");
+    };
+    refObj.current.addEventListener("click", handler);
     return () => {
-      refObj.current.removeEventListener('click', handler)
-    }
-  }, [])
+      refObj.current.removeEventListener("click", handler);
+    };
+  }, []);
   const handleClick = () => {
-    console.log('冒泡阶段执行')
-  }
+    console.log("冒泡阶段执行");
+  };
   const handleCaptureClick = () => {
-    console.log('捕获阶段执行')
-  }
+    console.log("捕获阶段执行");
+  };
   return (
-    <button
-      ref={refObj}
-      onClick={handleClick}
-      onClickCapture={handleCaptureClick}
-    >
+    <button ref={refObj} onClick={handleClick} onClickCapture={handleCaptureClick}>
       点击
     </button>
-  )
+  );
 }
 ```
 
@@ -52,13 +48,8 @@ dispatchEvent 保留核心的代码如下：
 
 ```js
 batchedUpdates(function () {
-  return dispatchEventsForPlugins(
-    domEventName,
-    eventSystemFlags,
-    nativeEvent,
-    ancestorInst
-  )
-})
+  return dispatchEventsForPlugins(domEventName, eventSystemFlags, nativeEvent, ancestorInst);
+});
 ```
 
 dispatchEventsForPlugins 代码如下:
@@ -72,9 +63,9 @@ function dispatchEventsForPlugins(
   targetContainer
 ) {
   /* 找到发生事件的元素——事件源 */
-  var nativeEventTarget = getEventTarget(nativeEvent)
+  var nativeEventTarget = getEventTarget(nativeEvent);
   /* 待更新队列 */
-  var dispatchQueue = []
+  var dispatchQueue = [];
   /* 找到待执行的事件 */
   extractEvents(
     dispatchQueue,
@@ -83,9 +74,9 @@ function dispatchEventsForPlugins(
     nativeEvent,
     nativeEventTarget,
     eventSystemFlags
-  )
+  );
   /* 执行事件 */
-  processDispatchQueue(dispatchQueue, eventSystemFlags)
+  processDispatchQueue(dispatchQueue, eventSystemFlags);
 }
 ```
 
@@ -149,29 +140,29 @@ if (inCapturePhase) {
     var _dispatchListeners$i = dispatchListeners[i],
       instance = _dispatchListeners$i.instance,
       currentTarget = _dispatchListeners$i.currentTarget,
-      listener = _dispatchListeners$i.listener
+      listener = _dispatchListeners$i.listener;
 
     if (instance !== previousInstance && event.isPropagationStopped()) {
-      return
+      return;
     }
 
     /* 执行事件 */
-    executeDispatch(event, listener, currentTarget)
-    previousInstance = instance
+    executeDispatch(event, listener, currentTarget);
+    previousInstance = instance;
   }
 } else {
   for (var _i = 0; _i < dispatchListeners.length; _i++) {
     var _dispatchListeners$_i = dispatchListeners[_i],
       _instance = _dispatchListeners$_i.instance,
       _currentTarget = _dispatchListeners$_i.currentTarget,
-      _listener = _dispatchListeners$_i.listener
+      _listener = _dispatchListeners$_i.listener;
 
     if (_instance !== previousInstance && event.isPropagationStopped()) {
-      return
+      return;
     }
     /* 执行事件 */
-    executeDispatch(event, _listener, _currentTarget)
-    previousInstance = _instance
+    executeDispatch(event, _listener, _currentTarget);
+    previousInstance = _instance;
   }
 }
 ```

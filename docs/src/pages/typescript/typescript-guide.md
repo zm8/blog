@@ -375,7 +375,7 @@ interface Foo {
 type foo = keyof Foo; // "num" | 5555
 ```
 
-**小技巧**: 为了在 vscode 方便查看 `keyof Foo` 的值，使用:
+**小技巧**: 为了在 VSCode 方便查看 `keyof Foo` 的值，使用:
 
 ```ts
 type foo = keyof Foo & {};
