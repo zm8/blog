@@ -1,9 +1,9 @@
 # git 相关问题
 
-## git 配置不再忽略大小写
+## git 全局配置不再忽略大小写
 
 ```bash
-git config core.ignorecase false
+git config --global core.ignorecase false
 ```
 
 ## git 若出现错误 error: cannot lock ref 'xxx'
