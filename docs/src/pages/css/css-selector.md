@@ -26,6 +26,25 @@
 
 ### 1. `:has` 包含指定元素的元素
 
+下面的代码只作用在第 1 个 box 上, 因为它里面包含了 h1
+
+```vue
+<template>
+  <div class="box">
+    <h1>hello</h1>
+  </div>
+  <div class="box">
+    <h2>你好</h2>
+  </div>
+</template>
+
+<style scoped>
+.box:has(h1) {
+  border: 1px solid red;
+}
+</style>
+```
+
 ### 2. `:is` 指定条件的元素
 
 ```css
@@ -269,10 +288,10 @@
 <!DOCTYPE html>
 <head>
   <style>
-    div[alt*='hello'] {
+    div[alt*="hello"] {
       color: red;
     }
-    div[alt~='hello'] {
+    div[alt~="hello"] {
       color: blue;
     }
   </style>
