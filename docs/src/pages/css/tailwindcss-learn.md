@@ -1,4 +1,4 @@
-# tailwindcss 学习
+# Tailwindcss 学习
 
 ## 1.group
 
@@ -118,40 +118,43 @@ const list = ref([
 
 下面代码最终显示效果为:
 
-![image](https://github.com/user-attachments/assets/a0d1f0ad-dab1-44d8-ae9d-2ecdb2982545)
+:::tip 显示效果
+
+项目 1
+
+项目 2
+
+项目 3
+这是第 3 个项目的详细信息
+
+项目 4
+
+:::
 
 ```vue
 <template>
   <ul>
-    <li class="group mb-4">
-      <div class="hidden bg-gray-100 p-2 group-[&:nth-of-type(3)]:block">
-        这是第 1 个项目的详细信息
-      </div>
+    <li class="group">
       <span>项目 1</span>
+      <div class="hidden group-[&:nth-of-type(3)]:block">这是第 1 个项目的详细信息</div>
     </li>
-    <li class="group mb-4">
-      <div class="hidden bg-gray-100 p-2 group-[&:nth-of-type(3)]:block">
-        这是第 2 个项目的详细信息
-      </div>
+    <li class="group">
       <span>项目 2</span>
+      <div class="hidden group-[&:nth-of-type(3)]:block">这是第 2 个项目的详细信息</div>
     </li>
-    <li class="group mb-4">
-      <div class="hidden bg-gray-100 p-2 group-[&:nth-of-type(3)]:block">
-        这是第 3 个项目的详细信息
-      </div>
+    <li class="group">
       <span>项目 3</span>
+      <div class="hidden group-[&:nth-of-type(3)]:block">这是第 3 个项目的详细信息</div>
     </li>
-    <li class="group mb-4">
-      <div class="hidden bg-gray-100 p-2 group-[&:nth-of-type(3)]:block">
-        这是第 4 个项目的详细信息
-      </div>
+    <li class="group">
       <span>项目 4</span>
+      <div class="hidden group-[&:nth-of-type(3)]:block">这是第 4 个项目的详细信息</div>
     </li>
   </ul>
 </template>
 ```
 
-## Styling based on descendants (has-{modifier})
+## 4.Styling based on descendants (has-{modifier})
 
 下面代码 p 默认都是隐藏, 只有包含了 a 的 group 里面的 p 是显示的
 
