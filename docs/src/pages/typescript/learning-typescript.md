@@ -20,6 +20,7 @@ var list:(number|string)[] = [1, '2'];
 
 // enum 类型
 enum Color { Red, Green, Blue}
+
 // 会变编译成:
 var Color;
 (function (Color) {
@@ -61,7 +62,6 @@ if (typeof str === "string") {
 类型别名实质上与原来的类型一样，它们仅仅是一个替代的名字。
 
 ```ts
-// 目前测试看来, P也不一定要大写
 type PArr = Array<string | number>;
 var arr: PArr = ["1", 2];
 
@@ -200,17 +200,6 @@ greet = function (name: string): string {
   }
   return name;
 };
-
-// callback 的参数只接受一个 number 类型参数, 且无任何返回值的函数。
-// void 这里有歧义, 如果我 callback 有返回值, 貌似也不会报错
-var sum = (a: number, b: number, callback: (res: number) => void) => {
-  callback(a + b);
-};
-sum(1, 2, (res) => console.log(res));
-
-// 但是 void 这种写法就报错了
-var foo: () => void = () => {};
-var f: number = foo();
 ```
 
 ### 6. 定义类

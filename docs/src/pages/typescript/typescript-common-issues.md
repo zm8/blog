@@ -49,11 +49,10 @@ type HasNullOrUndefined<T> = Extract<T, null | undefined> extends never ? false 
 // 或者
 type HasNullOrUndefined<T> = (null | undefined) & T extends never ? false : true;
 
-// 或者   NonNullable 的作用是: Exclude null and undefined from T
-type HasNullOrUndefined<T> = [T] extends [NonNullable<T>] ? false : true;
-
-// PS: NonNullable 相当于如下:
+// 或者
+// NonNullable 的作用是: Exclude null and undefined from T
 type NonNullable<T> = T extends null | undefined ? never : T;
+type HasNullOrUndefined<T> = [T] extends [NonNullable<T>] ? false : true;
 
 // 测试用例
 type A = HasNullOrUndefined<number | undefined>; // true
@@ -62,23 +61,6 @@ type C = HasNullOrUndefined<undefined>; // true
 type D = HasNullOrUndefined<null>; // true
 type E = HasNullOrUndefined<number>; // false
 ```
-
-## TS 奇怪的地方
-
-```ts
-type HasNullOrUndefined<T> = T extends null | undefined ? true : false;
-
-// 使用例子
-type A = HasNullOrUndefined<null>; // true
-type B = HasNullOrUndefined<undefined>; // true
-type C = HasNullOrUndefined<boolean>; // false
-
-type D = HasNullOrUndefined<boolean | null>; // boolean
-type E = HasNullOrUndefined<number | undefined>; // boolean
-```
-
-D 和 E 竟然都是 boolean, 但是下面不用泛型传入的方式却为 false。
-**chatgpt** 的解释如下, `HasNullOrUndefined<boolean | null>` 会分成 2 步来执行, 第一步是 `HasNullOrUndefined<boolean>`为 false, 第二步是 `HasNullOrUndefined<null>` 为 true, 所以最终结果就变成了 `boolean`。
 
 ## 判断 2 个类型是否一致
 
@@ -114,7 +96,7 @@ const two = {
 };
 
 for (const key of Object.keys(one)) {
-  two[key] = one[key as keyof typeof one];
+  two[key] = one[key];
 }
 ```
 
@@ -142,29 +124,7 @@ function updateObject<T>(target: T, source: Partial<T>): void {
 updateObject(two, one);
 ```
 
-### 2. 使用非空断言
-
-```ts
-interface IObj {
-  a: number;
-  b: number;
-}
-
-const obj: Partial<IObj> = {
-  a: 1
-};
-
-const obj2: IObj = {
-  a: 1,
-  b: 2
-};
-
-for (const key of Object.keys(obj) as (keyof IObj)[]) {
-  obj2[key] = obj[key]!;
-}
-```
-
-### 3. 使用 Object.entries 遍历键值对
+### 2. 使用 Object.entries 遍历键值对
 
 ```ts
 interface IObj {
@@ -184,46 +144,6 @@ const obj2: IObj = {
 for (const [key, value] of Object.entries(obj) as [keyof IObj, number][]) {
   obj2[key] = value;
 }
-```
-
-### 4. 使用 as 类型断言
-
-```ts
-const one = {
-  text: "a",
-  num: 1
-};
-
-const two = {
-  text: "b",
-  num: 2
-};
-
-type ITwoValue = (typeof two)[keyof typeof two];
-
-for (const key of Object.keys(one) as (keyof typeof one)[]) {
-  (two[key] as ITwoValue) = one[key as keyof typeof one];
-}
-```
-
-### 5.使用 Object.assign 进行合并
-
-```ts
-interface IObj {
-  a: number;
-  b: number;
-}
-
-const obj: Partial<IObj> = {
-  a: 1
-};
-
-const obj2: IObj = {
-  a: 1,
-  b: 2
-};
-
-Object.assign(obj2, obj);
 ```
 
 ## for...in 遍历对象报错
@@ -413,9 +333,9 @@ const key1: EnumKeys = "title"; // true
 const key2: EnumKeys = "description"; // true
 
 // 获取枚举值当作类型
-type EnumValues = (typeof ETodo)[EnumKeys]; // ETodo.title | ETodo.description
-// 更简单的写法: type EnumValues = ETodo;
-// 不建议这样写: type EnumValues = `${ETodo}`;
+type EnumValues = ETodo; // ETodo.title | ETodo.description
+// 或者
+type EnumValues = (typeof ETodo)[EnumKeys];
 
 const val: EnumValues = ETodo.title; // true
 const val2: EnumValues = ETodo.description; // true
