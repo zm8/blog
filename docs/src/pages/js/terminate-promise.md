@@ -79,6 +79,37 @@ const onClick = async () => {
 </template>
 ```
 
+另外 `promise-withresolvers.ts` 可以封装成一个 `polyfills`:
+
+```ts
+interface PromiseWithResolvers<T> {
+  promise: Promise<T>;
+  resolve: (value: T | PromiseLike<T>) => void;
+  reject: (reason?: any) => void;
+}
+
+if (!Promise.withResolvers) {
+  Promise.withResolvers = function <T>(): PromiseWithResolvers<T> {
+    let resolve!: (value: T | PromiseLike<T>) => void;
+    let reject!: (reason?: any) => void;
+    const promise = new Promise<T>((res, rej) => {
+      resolve = res;
+      reject = rej;
+    });
+    return { promise, resolve, reject };
+  };
+}
+
+// 为了让 TypeScript 认识这个新方法，我们需要扩展 Promise 的类型定义
+declare global {
+  interface PromiseConstructor {
+    withResolvers<T>(): PromiseWithResolvers<T>;
+  }
+}
+
+export {}; // 使这个文件成为一个模块
+```
+
 :::tip 参考地址
 https://mp.weixin.qq.com/s/-KZmFC3IJO9LzrStStuqqw
 
