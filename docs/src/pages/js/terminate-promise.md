@@ -9,7 +9,7 @@ type Result<T> = {
   error: null | Error;
 };
 
-const canceledError = new Error("CanceledError");
+const canceledError = new Error("cancelled");
 
 const buildCancelableTask = <T>(asyncFn: () => Promise<T>) => {
   let rejected = false;
@@ -21,7 +21,7 @@ const buildCancelableTask = <T>(asyncFn: () => Promise<T>) => {
         asyncFn()
           .then((data) => resolve({ data, cancelled: false, error: null }))
           .catch((error: Error) => {
-            const cancelled = error === canceledError;
+            const cancelled = error.me === canceledError;
             resolve({ data: null, cancelled, error: cancelled ? null : error });
           });
       }
@@ -29,7 +29,7 @@ const buildCancelableTask = <T>(asyncFn: () => Promise<T>) => {
     },
     cancel: () => {
       rejected = true;
-      resolve({ data: null, cancelled: true, error: canceledError });
+      reject({ data: null, error: canceledError });
     }
   };
 };
