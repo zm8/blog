@@ -4,32 +4,44 @@
 
 ```ts
 type Result<T> = {
-  data: T | null;
+  data?: T;
+  error?: Error;
   cancelled: boolean;
-  error: null | Error;
 };
 
-const canceledError = new Error("cancelled");
+const CANCELED = "canceled";
+const canceledError = new Error(CANCELED);
 
-const buildCancelableTask = <T>(asyncFn: () => Promise<T>) => {
+const buildCancelableTask = <T, K extends any[]>(service: (...params: K) => Promise<T>) => {
   let rejected = false;
-  const { promise, resolve } = Promise.withResolvers<Result<T>>();
-
+  const { promise, resolve, reject } = Promise.withResolvers<T>();
+  let done = false;
   return {
-    run: () => {
+    run: (...params: K): Promise<Result<T>> => {
       if (!rejected) {
-        asyncFn()
-          .then((data) => resolve({ data, cancelled: false, error: null }))
+        service(...params)
+          .then((data) => resolve(data))
           .catch((error: Error) => {
-            const cancelled = error.me === canceledError;
-            resolve({ data: null, cancelled, error: cancelled ? null : error });
+            reject(error);
           });
       }
-      return promise;
+      return promise
+        .then((data) => ({ data, cancelled: false }))
+        .catch((error) => {
+          const cancelled = error.message === CANCELED;
+          return {
+            error: cancelled ? undefined : error,
+            cancelled
+          };
+        })
+        .finally(() => {
+          done = true;
+        });
     },
     cancel: () => {
+      if (done) return;
       rejected = true;
-      reject({ data: null, error: canceledError });
+      reject(canceledError);
     }
   };
 };
