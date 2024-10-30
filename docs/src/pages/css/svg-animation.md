@@ -1,6 +1,6 @@
 # svg 动画
 
-通过网站 https://yqnn.github.io/svg-path-editor/ 可以画路径，然后根据这个路径来做动画。
+通过网站 <https://yqnn.github.io/svg-path-editor/> 可以画路径，然后根据这个路径来做动画。
 
 <img width="323" alt="image" src="https://github.com/user-attachments/assets/9a2e0bb7-52f4-4427-9088-75bd3779ff53">
 
