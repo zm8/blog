@@ -1,5 +1,55 @@
 # Vue3 实践与问题集锦
 
+## 使用 reactive 进行解包
+
+reactive 包装的纯的 js 对象, 如果里面属性值有使用 ref, 那么会自动对它进行解包。
+
+[官网地址说明](https://cn.vuejs.org/api/reactivity-core.html#reactive)
+
+```vue
+<script setup lang="ts">
+import { reactive, ref, watchEffect } from "vue";
+
+const obj = {
+  count: ref(1)
+};
+const obj2 = reactive(obj);
+watchEffect(() => {
+  console.log(obj.count.value);
+  console.log(obj2.count);
+});
+</script>
+
+<template>
+  <div class="text-[200px]" @click="obj2.count++">累加</div>
+</template>
+```
+
+:::tip
+目前版本 `^3.5.0` 已经支持传递属性自动解包了。
+:::
+
+使用场景, 比如我们使用 `useChart` 返回一个纯对象, 对象的值却是 ref 对象, 那么使用 reactive 包装以后, template 里就不用加 `.value` 了。
+
+```vue
+<script setup lang="ts">
+function useChart(el, option) {
+  let chart = shallowRef(echart.init(el));
+  chart.setOption(option);
+  return {
+    chart
+  };
+}
+
+const chart1 = useChart();
+const chart2 = reactive(useChart());
+</script>
+<template>
+  <Comp1 :chart="chart1.chart.value"></Comp1>
+  <Comp2 :chart="chart2.chart"></Comp2>
+</template>
+```
+
 ## Vue 组件命名规范
 
 尽量使用大驼峰的形式, 即 PascalCase, 比如 `StarRate`, 那么使用的时候可以是 `<StarRate />` 或者 `<star-rate></star-rate>`, 不要使用短横线，因为有的组件就一个名字, 比如 `<Button />`。
