@@ -6,7 +6,7 @@
 
 下面的 html 代码, 最终展示的效果是:
 
-![1](https://github.com/user-attachments/assets/e1e7c826-de78-426d-a2af-c283c812c4f2)
+![1](https://github.com/user-attachments/assets/48a6e94c-e8aa-4704-835a-8bebc2c9ecef)
 
 - `stroke-dasharray` 用来定义 dashed 样式。通过变化`stroke-dashoffset` 成不同的值来做动画。
 
