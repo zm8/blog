@@ -1,5 +1,22 @@
 # Vite 记录
 
+## vite 简介
+
+vite 是用 rollup 作为打包工具(bundler), 注意打包和压缩概念不一样。
+
+开发和生产环境默认都是使用 esbuild 进行代码压缩。
+
+1. 开发环境
+
+- 无打包，按需编译，使用 esbuild 进行依赖预构建（prebundle dependencies）。
+- 开发环境的插件是用 Vite 自己的插件系统来处理的，这个插件系统既兼容 Rollup 插件，也提供了 Vite 特有的钩子，这使得 Rollup 插件可以在 Vite 的开发环境和生产环境中使用。
+- Vite 会在开发时将插件注册到其开发服务器中，但某些只适用于构建的 Rollup 钩子（如 generateBundle）在开发模式下可能不会执行。
+
+2. 生产环境
+
+- 使用 Rollup 进行打包，并完全支持 Rollup 插件。
+- esbuild 作为 minifier（压缩工具）使用。
+
 ## `tsconfig.json` 的 target, module, lib 的作用
 
 ### 1. 配置 lib
