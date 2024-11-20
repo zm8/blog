@@ -8,9 +8,10 @@
 - [你应该在 React 中传递 Promise](https://mp.weixin.qq.com/s/OAlOn1Cz4ju9rPmsZVW48w)
 
 ## 小游戏
+
 - [Flexbox Froggy](https://flexboxfroggy.com/) --- 完成
 - [练习 css 动画](https://css-animations.io/)
-- [练习 grid网格](https://cssgridgarden.com/) --- 完成
+- [练习 grid 网格](https://cssgridgarden.com/) --- 完成
 - [练习 css 选择器](https://flukeout.github.io/) --- 完成
 - [程序逻辑思维练习](https://lab.reaal.me/jsrobot/#level=1&language=en)
 - [Learn Git Branching](https://learngitbranching.js.org/?locale=zh_CN)
