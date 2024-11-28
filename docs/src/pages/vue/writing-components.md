@@ -4,7 +4,7 @@
 
 单文件组件, 以 `*.vue` 作为文件扩展名, 是 Vue 官方推荐的方式。
 
-特点: 模版和逻辑分离, 结构比较清晰。
+**特点**: 模版和逻辑分离, 结构比较清晰。
 
 `Test.vue` 代码如下:
 
@@ -29,7 +29,7 @@ const num = ref(0);
 
 Vue 提供了一个 `h()` 函数用于创建 `vnodes`。
 
-特点: 需要引入 `h` 和 `defineComponent` 函数, 没有模版语法。
+**特点**: 需要引入 `h` 和 `defineComponent` 函数, 没有模版语法。
 
 `Test.ts` 代码如下:
 
@@ -55,7 +55,7 @@ export default defineComponent({
 
 JSX 和 TSX 是 React 的语法扩展, Vue 也支持这种语法。
 
-特点: 不需要引入 `h` 函数, 但是需要 `defineComponent` 定义组件。
+**特点**: 不需要引入 `h` 函数, 但是需要 `defineComponent` 定义组件。
 
 `tsconfig.json` 需要配置:
 
@@ -110,7 +110,7 @@ export default defineComponent({
 
 一般不推荐使用, 因为 `ref` 只能写在函数外, 是一个全局共享状态。
 
-特点: 不需要引入 `h` 和 `defineComponent`, 直接导出一个函数即可。
+**特点**: 不需要引入 `h` 和 `defineComponent`, 直接导出一个函数即可。
 
 `Test.tsx` 代码如下:
 
