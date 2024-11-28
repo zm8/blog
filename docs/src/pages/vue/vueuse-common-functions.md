@@ -47,6 +47,10 @@
 - useTemplateRefsList
 - useVirtualList
 
+## Reactivity
+
+- computedWithControl
+
 ## Utilities
 
 - useDebounceFn
