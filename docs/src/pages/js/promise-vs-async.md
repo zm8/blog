@@ -1,12 +1,5 @@
 # Promise 和 Async 对比
 
-## await 总结
-
-- await 同一行后面的内容对应 Promise 主体内容，即同步执行的 await
-- 下一行的内容对应 then()里面的内容，是异步执行的
-- await 同一行后面应该跟着一个 Promise 对象，如果不是，需要转换（如果是常量会自动转换）
-- async 函数的返回值还是一个 Promise 对象
-
 ## Promise 和 async 区别
 
 1. async 是 ES7, Promise 是 ES6
