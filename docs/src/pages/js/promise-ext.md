@@ -1,90 +1,55 @@
 # Promise 衍生方法(catch, all, race, deferred)的实现
 
-```js
-Promise.resolve = function (value) {
-  return new Promise((resolve, reject) => {
-    resolve(value);
-  });
+```ts
+Promise.resolve = function <T>(value?: T | PromiseLike<T>): Promise<Awaited<T>> | Promise<void> {
+  if (value === undefined) {
+    return new Promise<void>((resolve) => resolve());
+  }
+  return new Promise<Awaited<T>>((resolve) => resolve(value as Awaited<T>));
 };
 
-Promise.reject = function (reason) {
-  return new Promise((resolve, reject) => {
-    reject(reason);
-  });
+Promise.reject = function (reason: unknown) {
+  return new Promise<never>((_, reject) => reject(reason));
 };
 
-Promise.prototype.catch = function (fn) {
-  return this.then(null, fn);
+Promise.prototype.catch = function <T>(onRejected: (reason: unknown) => T) {
+  return this.then(null, onRejected);
 };
 
-Promise.prototype.finally = function (fn) {
-  // return v 和 throw v 为了透传
+Promise.prototype.finally = function (onFinally: () => void) {
   return this.then(
-    (v) => {
-      fn();
-      return v;
+    (value) => {
+      onFinally();
+      return value;
     },
-    (v) => {
-      fn();
-      throw v;
+    (reason) => {
+      onFinally();
+      throw reason;
     }
   );
 };
 
-Promise.all = function (promises) {
-  return new Promise((resolve, reject) => {
-    let arr = [];
-    let j = 0;
-    let len = promises.length;
-    for (let i = 0; i < len; i++) {
-      Promise.resolve(promises[i]).then(
-        (data) => {
-          arr[i] = data;
-          j++;
-          if (j == len) {
-            resolve(arr);
-          }
-        },
-        (reason) => {
-          reject(reason);
+Promise.race = function <T>(promises: Promise<T>[]) {
+  return new Promise<T>((resolve, reject) => {
+    promises.forEach((promise) => {
+      promise.then(resolve, reject);
+    });
+  });
+};
+
+Promise.all = function <T>(promises: Promise<T>[]) {
+  return new Promise<T[]>((resolve, reject) => {
+    let resolvedCount = 0;
+    const result: T[] = [];
+    promises.forEach((promise, index) => {
+      promise.then((value) => {
+        result[index] = value;
+        resolvedCount += 1;
+        if (resolvedCount === promises.length) {
+          resolve(result);
         }
-      );
-    }
+      }, reject);
+    });
   });
 };
-
-Promise.race = function (promises) {
-  return new Promise((resolve, reject) => {
-    let len = promises.length;
-    for (let i = 0; i < len; i++) {
-      Promise.resolve(promises[i])
-        .then((data) => {
-          resolve(data);
-        })
-        .catch((v) => {
-          reject(v);
-        });
-    }
-  });
-};
-
-Promise.deferred = function () {
-  var dfd = {};
-  dfd.promise = new Promise((resolve, reject) => {
-    dfd.resolve = resolve;
-    dfd.reject = reject;
-  });
-  return dfd;
-};
-
-// Promise.deferred 的使用
-let dtd = Promise.deferred();
-async function f() {
-  const res = await dtd.promise;
-  console.log(res);
-}
-f();
-setTimeout(() => {
-  dtd.resolve("done");
-}, 2000);
 ```

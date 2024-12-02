@@ -4,8 +4,7 @@
 
 1. async 是 ES7, Promise 是 ES6
 2. async 函数返回的是一个 Promise
-3. async 本质上是 yield, 而不是 promise
-4. 捕获错误 async 得用 try...catch, 而 promise 使用 catch
+3. 捕获错误 async 得用 try...catch, 而 promise 使用 catch
 
 ## Promise
 
@@ -23,10 +22,11 @@ Promise.resolve()
   .then(() => console.log("ok"));
 ```
 
-### 原理上:
+### 原理上
 
 1. 控制反转
    比如我异步获取到一个数据，数据可以先存起来，但是什么时候消费这个数据，是由我的 then 控制的，
+
 2. 只能 resolve 1 次
    防止被第 3 方连续调用我们的回调函数。
 
