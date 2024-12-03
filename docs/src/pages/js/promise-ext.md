@@ -2,9 +2,6 @@
 
 ```ts
 Promise.resolve = function <T>(value?: T | PromiseLike<T>): Promise<Awaited<T>> | Promise<void> {
-  if (value === undefined) {
-    return new Promise<void>((resolve) => resolve());
-  }
   return new Promise<Awaited<T>>((resolve) => resolve(value as Awaited<T>));
 };
 
