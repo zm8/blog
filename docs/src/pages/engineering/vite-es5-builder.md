@@ -1,18 +1,18 @@
-# Vite 打包 ES5
+大家好，我是**前端大卫**。
+
+今天跟大家分享一下 `Vite 打包 ES5`：
 
 ## 一.背景
 
-目前 Vue3 已经放弃对 IE11 的支持，Vite 打包最低支持到 ES6，所以通常研究打包 ES5 库没太大必要。不过，如果你需要适配较低端的手机或者支持 IE11 浏览器的项目，这还是有用的。
+虽然目前 Vue3 已经放弃对 IE11 的支持，Vite 打包最低支持到 ES6，但是在某些需要适配较低端手机或支持 IE11 的项目中，例如银行或证券金融公司，这仍然非常有用。
 
-由于 Vite 生产环境使用 rollup 打包代码，所以相关配置需要参考 rollup 官网。
+由于 Vite 生产环境使用 Rollup 打包代码，因此相关配置需要参考 Rollup 官网：
 
 <https://rollupjs.org/tools/#babel>
 
-:::tip 提示
-当前使用的 Vite 版本为 6
-:::
+> 本文基于 Vite 6 版本。
 
-## 二.实现
+## 二. 实现步骤
 
 ### 1.搭建 Vite 项目
 
@@ -61,7 +61,7 @@ export default defineConfig({
 
 ### 4.新建 `.babelrc.json`
 
-在项目根目录下新建 .babelrc.json 文件，配置 Babel：
+在项目根目录下新建 `.babelrc.json` 文件，配置 Babel：
 
 ```json
 {
@@ -78,13 +78,9 @@ export default defineConfig({
 }
 ```
 
-:::tip 提示
+> `useBuiltIns: usage` 会根据代码中实际使用的 API 按需引入 `polyfill`，`corejs` 设置为 3 表示使用 `corejs` 的第 3 版。
 
-`useBuiltIns: usage` 会根据代码中实际使用的 API 按需引入 `polyfill`，`corejs` 设置为 3 表示使用 `corejs` 的第 3 版。
-
-:::
-
-## 三.测试 1 - 字符串扩展方法 `trimEnd`
+## 三.示例 1 - 字符串扩展方法 `trimEnd`
 
 ### 1. 新建 `main.ts`
 
@@ -116,34 +112,22 @@ dist/assets/main-B5CCLAht.js  15.24 kB │ gzip: 6.19 kB
 
 ### 3. 分析打包结果
 
-打开 `dist/assets/main-B5CCLAht.js` 文件，搜索 `trimEnd`，可以看到字符串的`trimEnd` 相关的 `core-js` pollyfill 已经注入。
+打开 `dist/assets/main-B5CCLAht.js` 文件，搜索 `trimEnd`，可以看到字符串的 `trimEnd` 相关的 polyfill 已经注入。
 
 ### 4. 测试结果
 
 #### 4.1 修改 `index.html` 页面
 
-在 `index.html` 页面中删除 js 字符串的原型方法，注入以下代码：
+在 `index.html` 中删除 JS 字符串的原型方法：
 
 ```html
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + Vue + TS</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script>
-      delete String.prototype.trimEnd;
-    </script>
-    <script type="module" src="./dist/assets/main-B5CCLAht.js"></script>
-  </body>
-</html>
+<script>
+  delete String.prototype.trimEnd;
+</script>
+<script type="module" src="./dist/assets/main-B5CCLAht.js"></script>
 ```
 
-#### 4.2 本地开发启动
+#### 4.2 本地测试
 
 运行以下命令启动本地开发服务器：
 
@@ -153,18 +137,18 @@ pnpm dev
 
 #### 4.3 查看浏览器控制台
 
-打开 Chrome 控制台，输入 `String.prototype.trimEnd`，发现它已经被替换成 pollyfill 的 `trimEnd` 方法。
+打开 Chrome 浏览器控制台，输入 `String.prototype.trimEnd`，可以发现其已被替换成 polyfill 的方法。
 
 ```
 > String.prototype.trimEnd
 < ƒ (){return r(this)}
 ```
 
-## 四.测试 2 - 箭头函数, async/await
+## 四.示例 2 - 箭头函数, async/await
 
 ### 1. 修改 `main.ts`
 
-修改 main.ts 文件，添加以下代码：
+更新 `main.ts` 文件：
 
 ```ts
 const fn = () => {
@@ -211,37 +195,41 @@ dist/assets/main-DbF_Kl-a.js  35.76 kB │ gzip: 13.88 kB
 
 ### 4. 测试结果
 
-打开浏览器控制台, 代码正常执行, 并且 `window.Promise` 已经被替换成 `Babel` 的 `Promise` 方法。
+#### 4.1 修改 index.html 页面
+
+在 index.html 中删除 `window.Promise`：
 
 ```html
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + Vue + TS</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script>
-      delete window.Promise;
-    </script>
-    <script type="module" src="./dist/assets/main-DbF_Kl-a.js"></script>
-  </body>
-</html>
+<script>
+  delete window.Promise;
+</script>
+<script type="module" src="./dist/assets/main-DbF_Kl-a.js"></script>
 ```
+
+#### 4.2 本地测试
+
+运行以下命令启动本地开发服务器：
+
+```bash
+pnpm dev
+```
+
+#### 4.3 查看浏览器控制台
+
+打开 Chrome 浏览器控制台，输入 `window.Promise`，可以发现其已被替换成 polyfill 的方法。
 
 ```
 > window.Promise // 控制台输入
 < ƒ (P){R(this,_),s(P),a(Or,this);var j=W(this);try{P(ur(qr,j),ur(cr,j))}catch(N){cr(j,N)}}
 ```
 
-## 五.使用不同方式加载 polyfill 包的大小
+## 五.不同方式加载 Polyfill 的对比
 
-### 1. 不用 babel 插件, 直接导入 `core-js` 里的 `trimEnd` 方法
+### 1. 使用 Core-JS 手动导入
 
-1.修改 `main.ts` 文件:
+#### 1.修改 `main.ts` 和 `vite.config.ts`
+
+1.在 `main.ts` 导入 pollyfill:
 
 ```ts
 import "core-js/modules/es.string.trim-end";
@@ -268,9 +256,9 @@ export default defineConfig({
 });
 ```
 
-### 2. 打包
+#### 2.打包
 
-运行以下命令打包项目：
+运行以下命令
 
 ```bash
 pnpm run build
@@ -287,7 +275,7 @@ dist/assets/main-CmKR8JeS.js  15.24 kB │ gzip: 6.19 kB
 ✓ built in 430ms
 ```
 
-### 3. 分析打包结果
+#### 3. 分析打包结果
 
 - 打包的文件大小和之前使用 `babel` 插件的文件大小一样。
 - 打包出来的代码和之前基本一样，唯一的区别是 `const` 没有转换成 `var`。
@@ -308,7 +296,7 @@ var Cn = "123".trimEnd();
 console.log(Cn);
 ```
 
-### 2.直接下载对应的 polyfill 包
+### 2.下载 Polyfill
 
 在 Vite 的官网的 [Building for Production](https://vite.dev/guide/build.html#browser-compatibility) 章节, 找到一个可以下载 polyfill 包的网站如下:
 
@@ -318,11 +306,7 @@ console.log(Cn);
 
 <https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?version=4.8.0&features=String.prototype.trimEnd>
 
-:::tip 注意
-
-这个地址在支持 `String.prototype.trimEnd` 的 Chrome 浏览器是看不到代码的。
-
-:::
+> 这个地址在支持 `String.prototype.trimEnd` 的 Chrome 浏览器是看不到代码的。
 
 得使用 `IE Tab` Chrome 插件设置好 IE11, 打开这个地址, 就可以下载代码了。
 
