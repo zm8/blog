@@ -1,4 +1,4 @@
-# svg 动画
+# SVG 动画
 
 ![1](https://github.com/user-attachments/assets/39085f30-afb9-4f3f-b644-3abe2cbc18fc)
 

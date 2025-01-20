@@ -21,7 +21,7 @@
 }
 ```
 
-## 3. 子元素 `absolute` + `transform`
+## 3. 父元素 `relative`，子元素 `absolute` + `transform`
 
 ```css
 .box {
@@ -35,9 +35,12 @@
 }
 ```
 
-### 4. 子元素 `absolute` 撑满 + `margin auto`
+### 4. 父元素 `relative`，子元素 `absolute` 撑满 + `margin auto`
 
 ```css
+.box {
+  position: relative;
+}
 .box .item {
   position: absolute;
   top: 0;

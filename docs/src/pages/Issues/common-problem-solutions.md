@@ -17,21 +17,32 @@ curl: (7) Failed to connect to 127.0.0.1 port 4781 after 0 ms: Couldn't connect 
 中文必须先转换成 unicode:
 
 ```js
-function toUnicode(s) {
-  return s.replace(/([\u4E00-\u9FA5]|[\uFE30-\uFFA0])/g, function (newStr) {
-    return "\\u" + newStr.charCodeAt(0).toString(16);
-  });
+function toUnicode(str) {
+  return str
+    .split('')
+    .map(char => '\\u' + char.charCodeAt(0).toString(16).padStart(4, '0'))
+    .join('');
 }
 
+
 toUnicode("以下数据仅供参考");
-// '\\u4ee5\\u4e0b\\u6570\\u636e\\u4ec5\\u4f9b\\u53c2\\u8003'
+// '\u4ee5\u4e0b\u6570\u636e\u4ec5\u4f9b\u53c2\u8003'
 ```
+
+解释:
+
+- `str.split('')`：将字符串分割为单个字符的数组。
+- `char.charCodeAt(0)`：获取每个字符的 Unicode 编码。
+- `.toString(16)`：将编码转换为 16 进制字符串。
+- `.padStart(4, '0')`：保证每个 Unicode 值长度为 4 位，前面补零。
+- `\\u`：每个字符的 Unicode 表示以 `\u` 开头。
+- `.join('')`：将结果数组合并成一个完整的字符串。
 
 ## Ant design 上传大文件(也就 100 多 k)，服务器报 500 错误
 
-本地开发环境大文件没问题 ok, 但是代码上到开发和测试环境 大文件报 500 错误。
+本地开发环境大文件没问题 OK, 但是代码上到开发和测试环境 大文件报 500 错误。
 
-虽然已经设置允许跨域了，但是控制台提示是跨域问题(如下图)。
+虽然已经设置允许跨域了，但是控制台提示是跨域问题。
 
 真正原因是文件目录的访问权限的问题，得让运维同学配置`nginx`的 `client_body_temp_path(/var/lib/nginx)` 的目录有写的权限。
 
