@@ -41,13 +41,13 @@ const arr: Row = ["1", "2"];
 ## 判断类型中有 null 或者 undefined 则为 true, 否则为 false
 
 ```ts
+type HasNullOrUndefined<T> = null extends T ? true : undefined extends T ? true : false;
+
+// 或者
 type HasNullOrUndefined<T> = T & (null | undefined) extends never ? false : true;
 
 // 或者
 type HasNullOrUndefined<T> = Extract<T, null | undefined> extends never ? false : true;
-
-// 或者
-type HasNullOrUndefined<T> = (null | undefined) & T extends never ? false : true;
 
 // 或者
 // NonNullable 的作用是: Exclude null and undefined from T
