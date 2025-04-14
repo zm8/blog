@@ -5,7 +5,7 @@
 功能: 主要用来本地 mock 数据时生成随机数据, 快捷方便。机数据
 官网地址: http://mockjs.com/
 
-## 2. 例子 ([codesandbox 在线编辑](https://codesandbox.io/s/kind-hooks-cs347))
+## 2. 例子
 
 ### 简单例子 1
 

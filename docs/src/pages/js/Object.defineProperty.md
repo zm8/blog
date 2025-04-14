@@ -4,7 +4,7 @@
 
 继承原理里面大量使用了, `Object.defineProperty` 和 `Object.create`, 所以有必要先分析下这 2 个方法。
 
-## Object.defineProperty(obj, prop, descriptor) [codesandbox](https://codesandbox.io/s/objectdefineproperty-7osqn)
+## Object.defineProperty(obj, prop, descriptor)
 
 它的属性描述符有 2 种形式: **数据描述符**和**存取描述符**
 
