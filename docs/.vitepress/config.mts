@@ -3,13 +3,21 @@ import { generateStructure } from './generateStructure.mjs';
 
 export default {
   base: '/blog/',
-  title: 'Ming Blog',
+  title: 'David.Zheng Blog',
   description: 'A Front-End Developer',
   head: head(),
   srcDir: 'src',
   themeConfig: {
+    sidebarMenuLabel: '菜单',
+    siteTitle: 'Ming.Zheng Blog',
     darkModeSwitchLabel: '主题',
     darkModeSwitchTitle: '切换到深色模式',
+    socialLinks: [
+      {
+        icon: 'github',
+        link: 'https://github.com/zm8/blog',
+      },
+    ],
     docFooter: {
       next: '下一页',
       prev: '上一页',
@@ -26,7 +34,6 @@ export default {
     },
     lightModeSwitchTitle: '切换到浅色模式',
     logo: '/images/vite.svg',
-    nav: nav(),
     outline: {
       label: '页面导航',
     },
@@ -57,8 +64,6 @@ export default {
     sidebar: {
       '/pages/': { base: '/pages/', items: sidebarPages() },
     },
-    sidebarMenuLabel: '菜单',
-    siteTitle: 'Ming Blog',
   },
   vite: {
     server: {
@@ -67,36 +72,6 @@ export default {
     },
   },
 };
-
-function nav(): DefaultTheme.NavItem[] {
-  return [
-    {
-      link: 'https://vueuse.org/',
-      text: 'Vue',
-    },
-    {
-      link: 'https://react.dev/',
-      text: 'React',
-    },
-    {
-      text: '常用链接',
-      items: [
-        {
-          link: 'https://chatgpt.com/',
-          text: 'ChatGpt',
-        },
-        {
-          link: 'https://github.com/',
-          text: 'Github',
-        },
-        {
-          link: 'https://www.typescriptlang.org/play/',
-          text: 'TS Playground',
-        },
-      ],
-    },
-  ];
-}
 
 function sidebarPages(): DefaultTheme.SidebarItem[] {
   return generateStructure();
@@ -111,7 +86,7 @@ function head(): HeadConfig[] {
         name: 'keywords',
       },
     ],
-    ['link', { href: '/logo.svg', rel: 'icon', type: 'image/svg+xml' }],
+    ['link', { href: '/blog/logo.svg', rel: 'icon', type: 'image/svg+xml' }],
     [
       'meta',
       {

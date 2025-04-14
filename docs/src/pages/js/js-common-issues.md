@@ -131,54 +131,6 @@ reg.lastIndex = 0;
 reg.test("1"); // true
 ```
 
-## String
-
-公司的项目发现 String 下面赋值就报错。
-
-```javascript
-// Uncaught TypeError: Cannot assign to read only property '0' of object '[object String]'
-Object.assign("a", "b");
-```
-
-实际上 string 是 immutable，不能被改变值的。
-
-```javascript
-var str = "ab";
-str[0] = "1111"; // 虽然赋值不会报错
-console.log(str); // 'ab'
-```
-
-若要改变可以用, `str.replace`
-
-```javascript
-var str = "ab";
-var str2 = str.replace("a", "1");
-console.log(str2); // '1b'
-```
-
-或者 `Object.assign`赋值一个空字符串
-
-```javascript
-var str = Object.assign("", ""); // String {""}
-str[0] = "1"; // String {"", 0: "1"}
-console.log(str[0]); // 1
-```
-
-或者 用`Object.defineProperty`
-
-```javascript
-// 注意这里不能用  var obj = '',
-// 否则会报错 Uncaught TypeError: Object.defineProperty called on non-object
-var obj = new String();
-Object.defineProperty(obj, "a", {
-  writable: true,
-  value: "1"
-});
-console.log(obj.a); // 1
-obj.a = "2";
-console.log(obj.a); // 2
-```
-
 ## 滚动相关
 
 ### 1. 获取滚动条的高度

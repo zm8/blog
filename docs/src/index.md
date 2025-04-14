@@ -3,7 +3,7 @@
 layout: home
 
 hero:
-  name: Ming Blog
+  name: Ming.Zheng Blog
   text: A Front-End Developer
   image:
     src: /logo.svg
@@ -14,31 +14,19 @@ hero:
       link: /pages/guide/welcome.md
 
 features:
-  - title: Leetcode 算法题
-    details: ...
+  - title: <div style="display:flex;gap:6px;align-items:center;"><img src="https://assets.leetcode.com/static_assets/public/icons/favicon-32x32.png" style="width:20px;height:20px;" />Leetcode</div>
+    details: 包含常见算法题解，分类整理，便于查阅与练习，适合作为面试备考参考。
     link: /pages/algorithm/leetcode-algorithm
 
-  - title: Vue
-    details: Vue3 实践与问题集锦, Vite 记录
-    link: /pages/vue/vue3-practical-guide
+  - title: <div style="display:flex;gap:6px;align-items:center;"><img src="https://react.dev/favicon-32x32.png" style="width:20px;height:20px;" />React</div>
+    details: 聚焦组件机制与底层原理，包括异步加载、渲染流程、Fiber 架构等实战解析。
+    link: /pages/react/react-async-components.html
 
-  - title: 常用快捷键
-    details: ...
-    link: /pages/commands/keyboard-shortcuts
+  - title: <div style="display:flex;gap:6px;align-items:center;"><img src="https://vuejs.org/logo.svg" style="width:20px;height:20px;" />Vue</div>
+    details: 探索 Vue 组件通信与响应式系统的实现原理，覆盖自定义封装与底层行为解析。
+    link: /pages/vue/calling-deep-component.html
 
-  - title: JS 常见问题解决
-    details: ...
-    link: /pages/js/js-common-issues
-
-  - title: JS 实用技巧和注意事项
-    details: ...
-    link: /pages/js/js-tips-and-tricks
-
-  - title: H5 常见问题解决
-    details: ...
-    link: /pages/web/h5-solutions
-
-  - title: 常见异常问题解决
-    details: ...
-    link: /pages/Issues/common-problem-solutions
+  - title: <div style="display:flex;gap:6px;align-items:center;"><img src="https://www.typescriptlang.org/favicon-32x32.png" style="width:20px;height:20px;" />Typescript</div>
+    details: 类型定义、条件类型与类型推导的实践整理，辅助构建更健壮的项目类型系统。
+    link: /pages/typescript/learning-typescript.html
 ---
