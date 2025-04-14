@@ -1,5 +1,11 @@
 # 常用命令
 
+## VSCode 清除没有引入的 import
+
+```bash
+option + shift + o
+```
+
 ## mac 压缩和解压
 
 ```bash
