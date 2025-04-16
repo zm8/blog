@@ -3,13 +3,13 @@ import { generateStructure } from './generateStructure.mjs';
 
 export default {
   base: '/blog/',
-  title: 'David.Zheng Blog',
+  title: 'David Blog',
   description: 'A Front-End Developer',
   head: head(),
   srcDir: 'src',
   themeConfig: {
     sidebarMenuLabel: '菜单',
-    siteTitle: 'Ming.Zheng Blog',
+    siteTitle: 'David Blog',
     darkModeSwitchLabel: '主题',
     darkModeSwitchTitle: '切换到深色模式',
     socialLinks: [

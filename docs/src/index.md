@@ -3,7 +3,7 @@
 layout: home
 
 hero:
-  name: Ming.Zheng Blog
+  name: David Blog
   text: A Front-End Developer
   image:
     src: /logo.svg
