@@ -6,6 +6,10 @@
 - [为什么尤雨溪说 react 的性能不如 vue？](https://www.zhihu.com/question/501745074/answer/2533826292?utm_campaign=shareopn&utm_content=group3_Answer&utm_medium=social&utm_psn=1785066827983921152&utm_source=wechat_session&utm_id=0)
 - [Separating Events from Effects](https://react.dev/learn/separating-events-from-effects#choosing-between-event-handlers-and-effects)
 
+## Vue
+
+- [Renderless Components in Vue.js](https://adamwathan.me/renderless-components-in-vuejs/)
+
 ## 小游戏
 
 - [Flexbox Froggy](https://flexboxfroggy.com/) --- 完成
