@@ -1,20 +1,3 @@
-<style module>
-  .technologies {
-    :global(p) {
-        display: flex;
-        gap: 20px;
-    }
-  }
-
-  .stats{
-    display: flex;
-    gap: 20px;
-    :global(p){
-        margin: 0;
-    }
-  }
-</style>
-
 # 👋 Hi there
 
 I'm a passionate front-end developer focused on building high-quality web applications.
@@ -62,3 +45,20 @@ I'm a passionate front-end developer focused on building high-quality web applic
 [![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=zm8&show_icons=true&theme=vue&layout=compact)](https://github.com/anuraghazra/github-readme-stats)
 
 </div>
+
+<style module>
+  .technologies {
+    :global(p) {
+        display: flex;
+        gap: 20px;
+    }
+  }
+
+  .stats{
+    display: flex;
+    gap: 20px;
+    :global(p){
+        margin: 0;
+    }
+  }
+</style>
