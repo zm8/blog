@@ -1,5 +1,39 @@
 # Vue2 实践与问题集锦
 
+## $forceUpdate 更新问题
+
+`$forceUpdate` 会让当前组件强制重新渲染，子组件自身的数据和 props 没变，则不会强制刷新子组件。
+
+## 先赋值再 $set 会无效
+
+下面的代码先赋值 `this.obj.a = 1` 再 `$set` 时，内部判断发现属性已存在，只是 `set` 一下，不会再走 `defineReactive`，也不会替换 `getter/setter`。
+
+```html
+<template>
+  <div id="app">
+    <div>{{ obj.num }}</div>
+    <button @click="handleClick">点击</button>
+  </div>
+</template>
+
+<script>
+  export default {
+    name: "App",
+    data() {
+      return {
+        obj: {}
+      };
+    },
+    methods: {
+      handleClick() {
+        this.obj.num = 1;
+        this.$set(this.obj, "num", 2);
+      }
+    }
+  };
+</script>
+```
+
 ## Checkbox 的选中和反向选中
 
 通过 computed set 属性反作用其它元素。
