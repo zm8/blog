@@ -1,5 +1,107 @@
 # Vue2 实践与问题集锦
 
+## Vue2 的代码执行时机
+
+- `Child.vue` 的 `mounted` 钩子不会等待 `created` 中的异步逻辑完成后再执行。
+- `$emit` 触发是一个同步调用。
+- 在监听 `num` 时，父组件的 watch 会先触发，子组件的 watch 随后才会触发。
+
+最终输出顺序如下：
+
+```
+Parent watch num: 1
+Child watch num: 1
+Child mounted
+Parent mounted
+
+# 延迟 1 秒后
+=== Child before init ===
+Parent onInit
+=== Child after init ===
+Parent watch num: 2
+Child watch num: 2
+```
+
+`Parent.vue`:
+
+```html
+<template>
+  <div>
+    <p id="box">{{ num }}</p>
+    <Count :num="num" @init="onInit" />
+  </div>
+</template>
+
+<script>
+  import Count from "./components/Child.vue";
+
+  export default {
+    components: {
+      Count
+    },
+    watch: {
+      num: {
+        handler(data) {
+          console.log("Parent watch num:", data);
+        },
+        immediate: true
+      }
+    },
+    data() {
+      return {
+        num: 1
+      };
+    },
+    methods: {
+      onInit(data) {
+        this.num = data.num;
+        console.log("Parent onInit");
+      }
+    },
+    mounted() {
+      console.log("Parent mounted");
+    }
+  };
+</script>
+```
+
+`Child.vue`:
+
+```html
+<template>
+  <div></div>
+</template>
+
+<script>
+  export default {
+    props: {
+      num: Number
+    },
+    watch: {
+      num: {
+        handler(val) {
+          console.log("Child watch num:", val);
+        },
+        immediate: true
+      }
+    },
+    async created() {
+      await new Promise((r) => {
+        setTimeout(r, 1000);
+      });
+      console.log("=== Child before init ===");
+      this.$emit("init", {
+        num: 2
+      });
+      console.log("=== Child after init ===");
+    },
+    mounted() {
+      console.log("Child mounted");
+    }
+  };
+</script>
+```
+
 ## $nextTick 更新时机
 
 这个时候 `dom` 已经更新完毕。
