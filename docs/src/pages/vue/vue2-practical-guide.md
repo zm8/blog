@@ -1,6 +1,6 @@
 # Vue2 实践与问题集锦
 
-## Vue2 的代码执行时机
+## Vue2 的代码执行时机 - 1
 
 - `Child.vue` 的 `mounted` 钩子不会等待 `created` 中的异步逻辑完成后再执行。
 - `$emit` 触发是一个同步调用。
@@ -15,9 +15,9 @@ Child mounted
 Parent mounted
 
 # 延迟 1 秒后
-=== Child before init ===
-Parent onInit
-=== Child after init ===
+=== Child before created ===
+Parent onHandle
+=== Child after created ===
 Parent watch num: 2
 Child watch num: 2
 ```
@@ -28,7 +28,7 @@ Child watch num: 2
 <template>
   <div>
     <p id="box">{{ num }}</p>
-    <Count :num="num" @init="onInit" />
+    <Count :num="num" @handle="onHandle" />
   </div>
 </template>
 
@@ -53,9 +53,9 @@ Child watch num: 2
       };
     },
     methods: {
-      onInit(data) {
+      onHandle(data) {
         this.num = data.num;
-        console.log("Parent onInit");
+        console.log("Parent onHandle");
       }
     },
     mounted() {
@@ -89,17 +89,33 @@ Child watch num: 2
       await new Promise((r) => {
         setTimeout(r, 1000);
       });
-      console.log("=== Child before init ===");
-      this.$emit("init", {
+      console.log("=== Child before created ===");
+      this.$emit("handle", {
         num: 2
       });
-      console.log("=== Child after init ===");
+      console.log("=== Child after created ===");
     },
     mounted() {
       console.log("Child mounted");
     }
   };
 </script>
+```
+
+## Vue2 的代码执行时机 - 2
+
+如果上面的代码把 `await new Promise(r => { setTimeout(r, 1000); });` 注释了，则输出：
+
+```
+Parent watch num: 1
+Child watch num: 1
+=== Child before created ===
+Parent onHandle
+=== Child after created ===
+Child mounted
+Parent mounted
+Parent watch num: 2
+Child watch num: 2
 ```
 
 ## $nextTick 更新时机
