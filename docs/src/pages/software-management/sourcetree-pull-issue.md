@@ -8,4 +8,6 @@
 
    - 路径：`C:\Users\zm25588\AppData\Local\Atlassian\SourceTree\passwd`
 
-   删除该文件后，重新尝试拉取代码，Sourcetree 会要求你重新输入 Git 的用户名和密码，从而解决认证失败的问题。
+   删除该文件后，Sourcetree 拉取代码，会要求你重新输入 Git 的用户名和密码，从而解决认证失败的问题。
+
+2. Sourcetree 菜单"工具-选项-验证"，删除里面所有的 "Git 已存密码"。
