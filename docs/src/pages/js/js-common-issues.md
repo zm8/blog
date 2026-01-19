@@ -1,5 +1,22 @@
 # JS 常见问题解决
 
+## requestIdleCallback
+
+最好传入第 2 个参数的 timeout，防止主线程一直占用而不执行 callback 方法。
+
+```js
+requestIdleCallback(
+  (deadline) => {
+    if (deadline.didTimeout) {
+      // 必须执行（兜底逻辑）
+    } else {
+      // 真正的 idle 执行
+    }
+  },
+  { timeout: 2000 }
+);
+```
+
 ## new Date 兼容性问题
 
 以下环境 的代码会报错
