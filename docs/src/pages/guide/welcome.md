@@ -40,9 +40,7 @@ I'm a passionate front-end developer focused on building high-quality web applic
 
 <div :class="$style.stats">
 
-<img src="https://github-readme-stats.vercel.app/api?username=zm8&show_icons=true&theme=vue&hide_rank=true" />
-
-[![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=zm8&show_icons=true&theme=vue&layout=compact)](https://github.com/anuraghazra/github-readme-stats)
+<img src="https://github-readme-stats-fast.vercel.app/api?username=zm8&show_icons=true&theme=vue&hide_rank=true" />
 
 </div>
 
